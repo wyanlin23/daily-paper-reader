@@ -1,0 +1,574 @@
+Title: Any2Any 3D Diffusion Models with Knowledge Transfer: A Radiotherapy Planning Study
+
+URL Source: https://arxiv.org/pdf/2605.09622v1
+
+Published Time: Tue, 12 May 2026 01:41:58 GMT
+
+Number of Pages: 22
+
+Markdown Content:
+# Any2Any 3D Diffusion Models with Knowledge Transfer: 
+
+# A Radiotherapy Planning Study 
+
+## Yuhan Wang 1,2,† Zihan Li 2,3,† Han Liu 2 Simon Arberet 2 Martin Kraus 2
+
+## Yuyin Zhou 1 Florin-Cristian Ghesu 2 Dorin Comaniciu 2 Ali Kamen 2 Riqiang Gao 2,*
+
+> 1
+
+## UC Santa Cruz 2Siemens Healthineers 3University of Washington †Equal contribution 
+
+## Abstract 
+
+Voxel-wise dose prediction is a critical yet challenging task in practical radiotherapy (RT) planning, as bespoke models trained from scratch often struggle to generalize across di-verse clinical settings. Meanwhile, generative models trained on billion-scale datasets from vision domains have achieved impressive performance. Herein, we propose DiffKT3D , a unified Any2Any 3D diffusion framework that leverages prior knowledge from pretrained video diffusion models for effi-cient and clinically meaningful dose prediction. To enable flexible conditioning across multiple clinical modalities (CT, anatomical structures, body, beam settings, etc.), we intro-duce an Any2Any conditional paradigm utilizing modality-specific embeddings without cross-attention overhead. Fur-ther, we design a novel reinforcement learning (RL) post-training mechanism guided by a clinically-informed Score-card explicitly tailored to institutional treatment preferences. Compared with winner of GDP–HMM challenge, DiffKT3D sets a new state-of-the-art in dose prediction by reducing voxel-level MAE from 2.07 to 1.93. In addition, DiffKT3D achieves superior image quality and preference match. These results demonstrate that transferring diffusion priors via modality-aware conditioning and clinically aligned RL post-training can provide a robust and generalizable solution for RT planning across various clinical scenarios. 
+
+## 1. Introduction 
+
+Radiotherapy (RT) is one of the most commonly used cancer treatments. Dose prediction (DP) is a prominent AI appli-cation in RT planning, aiming to generate a 3D dose dis-tribution from patient data and machine configurations by learning from large-scale historical, deliverable treatment solutions [ 4 , 14 , 16 , 31 ]. DP task typically includes a plan-ning CT scan and delineated structures e.g., planning target volumes (PTVs), organs at risk (OARs) as input, and ref-erence 3D RT dose as targets. Dose predictors have wide 
+
+> *Corresponding author: riqiang.gao@siemens-healthineers.com Billions of videos / images
+> 1. Public pre -train models
+> (large domain gap)
+> Multiple modalities of RT data (thousands)
+> 2. Refine for any -to -
+> any modeling
+> RT clinical guidelines
+> 3. RL post -training align
+> on clinic preference
+> Efficient inference for RT task
+> E
+> DLDM
+> / DiT
+> …
+
+Figure 1. Illustration of the proposed DiffKT3D. We first transfer priors from diffusion models pretrained on large-scale public video or CT data, despite a substantial domain gap to radiotherapy dose prediction. These backbones are then adapted to heterogeneous RT modalities with relatively limited data, followed by RL post-training driven by guideline-derived clinical Scorecards to better align predictions with institutional planning preferences. 
+
+applications in RT pipeline, including planning optimiza-tion [ 1, 5], fluence prediction [ 64 ], leaf sequencing [ 15 ], and quality improvement [ 18 ]. Towards precise and personalized prediction, additional conditions such as beam geometries and prescriptions can also be incorporated. DP task has been historically addressed as a supervised regression problem, training models to minimize voxel-wise errors (e.g., MAE, MSE) between predicted and reference dose [ 4, 16 ]. Recent advances in generative modeling have opened new avenues for DP. Generative models such as GANs [ 14 , 28 ], and diffusion models [ 13 , 76 ] have been explored for dose prediction, showing promise in capturing complex dose distributions and improving prediction quality. Existing work primarily are trained from scratch and without post-training for e.g., clinical alignment. Concurrently, foundational models have been promis-ing in natural language processing, computer vision, and medical imaging [ 2, 43 , 47 ]. Those primarily trained with self-supervised learning or unrelated tasks but show to trans-fer effectively to target tasks via light adaptation or even training-free [ 23 , 55 , 65 ]. More surprisingly, recent studies show that general-domain foundational models pretrained on natural images can also transfer effectively to medical imaging tasks [ 19 , 23 , 34 , 55 , 74 ], despite the significant 1
+
+> arXiv:2605.09622v1 [cs.CV] 10 May 2026
+
+domain gap. However, previous work mainly on the feature extraction backbone rather than generation, this motivates our question about first type knowledge transfer: Can 3D dif-fusion prior knowledge trained on a distant source domain help improve target-domain generation? 
+
+User preference is another critical consideration in gen-erative AI [ 44 , 48 ]. It is particularly important in RT because multi-disciplinary team (oncologists, physicists, dosimetrists) collaboratively design treatment plans tai-lored to individual patients, and different institutions follow slightly or largely different protocols [ 9, 12 ]. Post-training with reinforcement learning (RL) has emerged as a powerful paradigm to align generative models with user preferences in NLP and CV [ 10 , 30 , 61 , 68 , 71 ]. However, its application in medical imaging, especially RT dose planning, remains underexplored. User preference in RT dose planning is multi-faceted, involving complex trade -offs between PTV coverage and OAR sparing usually reflecting in institutional protocols. This motivates our question about second type knowledge transfer: Can we align diffusion generations with clinical preferences via RL post-training? 
+
+As illustrated in Figure 1, we propose DiffKT3D , a novel 3D Diff usion model framework addressing two critical 
+
+Knowledge Transfer questions. Three main contributions of DiffKT3D are outlined below. 
+
+First , we adapt advanced 3D diffusion models pretrained on natural videos (Wan 2.1 [ 62 ]) or CT data (MAISI [ 77 ]) and fine-tune them slightly for dose prediction. Despite sub-stantial domain gaps, this approach yields notable improve-ments in both accuracy and efficiency. Moreover, the benefit of diffusion-based transfer becomes even more pronounced when the domain gap is smaller, demonstrating significantly stronger generalization than regression-based models. 
+
+Second , considering (1) the heterogeneous nature of DP data which may involve seven modalities {CT, PTV, OAR, body, beam plate, angle plate, dose }, and (2) our findings on cross domain / modal diffusion knowledge transfer, we introduce a modality- and role-aware Any2Any conditioning scheme. In this framework, any modalities can serve as the target while the remaining modalities act as conditions. This design enables flexible handling of variable input combina-tions and supports dose prediction in diverse scenarios. 
+
+Third , we introduce a RL post-train, termed as Scard-NFT , with a new rewarding mechanism based on planning preferences captured by Score card . This method is inspired by success of Diffusion NFT [ 78 ] in text-to-image alignment and tailored for clinical-guided refinement. We experiment DiffKT3D on over 8,000 plans from the GDP–HMM Grand Challenge [ 16 ] (head-and-neck and lung) and prostate plans from the REQUITE patients [ 53 ]. Our method achieves substantial MAE gains over top challenge solutions and shows improved image quality and preference alignment. Beyond diffusion priors from non-RT domains, DiffKT3D demonstrates strong transferability: models pre-trained on head-and-neck and lung data adapt quickly to prostate cancer with minimal fine-tuning, offering clear prac-tical benefits for efficiently supporting new disease sites with limited computational resources. Our study conducts extensive validation in RT planning context, core ideas of DiffKT3D are broadly applicable to other generative tasks. 
+
+## 2. Related Work 
+
+RT Dose Prediction. Voxel-wise dose prediction has gained popularity in recent years due to advances in deep learning. Inspired by the success in image segmentation, Convolu-tional UNet [ 50 ] and its variants including ResUNet [ 11 ], H-DenseUNet [ 33 ], and MedNeXt [ 51 ] have been used for dif-ferent cancer sites including head-and-neck [ 37 , 41 , 56 , 63 ], lung [ 8, 14 , 25 ], prostate [ 27 , 28 , 42 ], esophageal [ 3 , 72 ]. Al-though many studies use regression losses such as L1 or L2, researchers [ 13 , 14 , 28 , 76 ] have also explored generative methods, including GANs [ 17 ] and diffusion models [ 21 ], to improve image quality. Across challenges like OpenKBP [4 ] and GDP-HMM [ 16 ], there is growing emphasis on gen-eralizable models that handle multiple contexts rather than highly specialized ones. In computer vision, diffusion mod-els often outperform GANs in complex scenarios, but state-of-the-art diffusion methods are data-hungry, computation-ally expensive, and mostly designed for 2D. Existing work [ 13 , 76 ] trains slice-wise diffusion models, which struggle with spatial consistency across slices, highlighting needs of efficient 3D diffusion models for dose prediction. 
+
+Diffusion Priors and Any2Any Generation. Diffusion models have achieved notable success in conditional gener-ation tasks across various modalities, initially excelling in image synthesis and later adapted for dense prediction tasks like depth estimation and segmentation [ 26 ]. Recent frame-works have further extended diffusion models to Any2Any generation, enabling unified conditional generation for arbi-trary modality pairs, exemplified by Versatile Diffusion [ 69 ], UniDiffuser [ 6], CoDi [ 57 ], OmniGen [ 67 ], and OmniFlow [ 32 ]. Techniques like ControlNet [ 73 ], T2I-Adapter [ 40 ], and MultiDiffusion [ 7] further facilitate flexible integration of diverse conditions, including edge maps and segmenta-tion masks. Additionally, instruction-tuned models such as PixWizard [ 35 ] and joint generation-understanding models like JoDI [ 70 ] enhance practical applicability. Inspired by these methodological advances, we adapt diffusion priors to radiotherapy dose prediction, leveraging their flexibility and cross-modal generalization for robust clinical outcomes. 
+
+Post-training for Diffusion Models. Standard diffusion models typically optimize voxel-level losses (e.g., MSE or MAE), which often misalign with nuanced clinical objec-tives. To address complex, preference-driven tasks, recent methods such as DDPO [ 10 ], Diffusion-DPO [ 61 , 71 ], and DiffusionNFT [ 78 ] apply reinforcement learning (RL) strate-2Figure 2. Training mechanism for DiffKT3D. The multi-modal data first pass through the VAE encoder to obtain latent features. With the Any2Any gating mechanism, each modality is randomly assigned as either a condition or a target. Conditional modalities are independently encoded into patch tokens, while target modalities are combined with latent noise xt. Each token is annotated with a domain embedding (indicating its modality) and a role embedding (distinguishing targets from conditions). The DiT jointly attends to the clean condition tokens and the noised target tokens, predicting the noise parameterization ( vθ ) for the selected target modality. The VAE and DiT are pretrained on videos, and only the DiT blocks are fine-tuned. During post-training, we convert a clinically informed Scorecard into an RL reward, improving clinical preference alignment while maintaining voxel-level fidelity. 
+
+gies for preference-based fine-tuning. However, their clini-cal applicability remains underexplored, as general-purpose preference frameworks like ImageReward [ 68 ], HPS [ 66 ], PickaPic [ 30 ], and MPS [ 75 ] lack necessary interpretability. Radiotherapy dose prediction involves complex trade-offs encoded in institutional guidelines, motivating our clinically-informed RL-based post-training strategy. We introduce a Scorecard reward mechanism explicitly encoding clinical metrics, guiding diffusion generations toward institutional preferences and enhancing clinical acceptability. 
+
+## 3. Method 
+
+3.1. Problem Description and Motivation 
+
+RT planning involves designing a treatment strategy that precisely delivers radiation to the target region while mini-mizing exposure to nearby healthy tissues and organs. Dose prediction aims to generate accurate 3D dose distributions from diverse multimodal inputs (as shown in Figure 1), often under inconsistent or incomplete contouring of the PTVs and OARs. Because planning protocols vary across institutions, preferences in plan quality also differ. These variations can be captured using clinical Scorecards [ 39 , 58 , 59 ], which quantitatively evaluate and compare treatment plans. Con-sequently, generalizable dose prediction can be framed as a 3D generation problem conditioned on varied inputs and guided by preference-oriented objectives. 
+
+Motivation for Methodology. Diffusion-based generative models have achieved remarkable success in computer vi-sion, typically trained on billions of samples. In contrast, most dose prediction models rely on only hundreds or thou-sands of cases due to the limited availability of RT data. The DINO family has demonstrated strong feature extraction ca-pabilities that transfer well to medical imaging even when trained on natural images, yet our work focuses on genera-tion. We therefore explore leveraging large-scale diffusion priors from non-RT domains for dose prediction, forming our first methodological contribution. After establishing that diffusion-based generative knowl-edge can effectively transfer across domains and modal-ities ( first contribution ), we further aim to enhance per-formance within the RT domain, which involves diverse multimodal inputs. To this end, we formulate dose predic-tion as an Any2Any conditional generation task, enabling flexible selection of any target modality τ from the set 
+
+M={ct , ptv , oar , body , beam , angle , dose }, condi-3tioned on the remaining available inputs C={x(m)0 | m ∈
+
+S ⊆ M \ { τ }} . The target modality at the t-th step of the forward diffusion process becomes: 
+
+x(τ ) 
+
+> t
+
+= αtx(τ )0 + σtε, ε ∼ N (0 , I), t ∼ U (0 , 1) , (1) where x0 denotes the clean data, and N and U represent Gaussian and uniform distributions, respectively. The coeffi-cients αt and σt follow a standard variance-preserving noise schedule (with α2 
+
+> t
+
++ σ2 
+
+> t
+
+=1 ), and discrete diffusion steps are linearly rescaled to t ∈ [0 , 1] for notational simplicity. This formulation allows any modality in M to serve as the gener-ation target, facilitating cross-modality diffusion knowledge transfer while mitigating overfitting in low-data regimes. In addition, reinforcement learning (RL) has achieved no-table success in LLM post-training and text-to-image align-ment, both of which share a common goal with RT clinical Scorecards: capturing user or expert preferences. Motivated by this similarity, we adapt the state-of-the-art DiffusionNFT framework by reformulating the clinically evaluation-based Scorecard into an RL reward function for post-training. This provides an additional safeguard for out-of-distribution cases by explicitly aligning the generative model with clinically preferred trade-offs. Figure 2 summarizes our approach, with detailed model structure provided in Supplementary A, and method details presented in the following subsections. 
+
+3.2. Any2Any DiT framework 
+
+Patchify Head. Our diffusion process operates entirely within a shared VAE latent space. For each modality m,raw input volumes are first encoded into latent representa-tions by a pretrained, frozen VAE encoder. We then reuse the 3D patch embedding block from the Wan DiT backbone and extend it to be modality-specific: a lightweight modality-specific patch embedding PE m, implemented as a compact 3D convolution with the same structure as the original DiT patch embed, projects these latent grids (or their noised ver-sions x(τ ) 
+
+> t
+
+for target modalities) into tokens with hidden dimension D. After diffusion in token space, predictions are decoded back to the original voxel space via the VAE decoder. This design keeps the DiT backbone architecture unchanged while delegating modality handling to the patch-embedding blocks, allowing the backbone to operate in a unified latent token space. 
+
+Role-aware conditioning and AdaLayerNorm. We use a single binary role embedding erole ∈ { etar , e cond } to tag each token as either the noised prediction target or a clean condition. To inject conditioning into the backbone, we con-struct a global conditioning code eC directly from the con-ditional role embedding econd and simply add this vector to the original timestep embedding et, yielding a fused signal 
+
+˜et = et + eC . Following Wan, all transformer blocks share one AdaLayerNorm modulation network, and ˜et is the only input to this shared AdaLayerNorm in every block. This scheme keeps conditioning as a simple additive modulation on the timestep embedding, reuses Wan’s AdaLayerNorm pa-rameters, introduces no additional pooling or cross-attention modules, and allows the backbone to jointly model targets and conditions using full self-attention. 
+
+Slot-aware 4D RoPE positional embeddings. To explicitly encode token origins (dose vs. conditions) while preserv-ing precise 3D spatial relationships, we extend standard 3D RoPE with an additional slot axis, yielding a 4D RoPE. To-kens are arranged in slot-major order, where each slot index 
+
+S corresponds to one modality (the target dose or a particular condition). For each attention head, we split the channel dimension d
+
+into four sub-dimensions assigned to the slot and the three spatial axes: 
+
+d = dS + dH + dW + dD . (2) This allocation reserves a dedicated subspace for each axis, so that slot and spatial phases can be rotated independently. For each axis a ∈ { S, H, W, D }, sinusoidal frequencies are precomputed as 
+
+freqs a(i) = θ− 2i/d a 
+
+> a
+
+, i = 0 , 1, . . . , da 
+
+> 2
+
+− 1, (3) where θa is a base period hyperparameter for axis a. Fol-lowing standard RoPE parameterization, larger θa values yield longer-wavelength components. In all experiments, we simply set θS = Nslots and θH = H, θ W = W, θ D = D,so that the lowest frequencies roughly span the full extent of each axis while higher indices encode finer spatial detail. The 4D rotary embedding for a token at coordinates 
+
+(S, H, W, D ) concatenates axis-wise embeddings: 
+
+RoPE 4D (S, H, W, D ) =  RoPE S (S), RoPE H (H),
+
+RoPE W (W ), RoPE D (D) .
+
+(4) During self-attention, queries and keys are rotated as 
+
+Q′ = RoPE 4D(S, H, W, D )◦ Q, K′ = RoPE 4D(S, H, W, D )◦ K, (5) where ◦ denotes element-wise complex rotation on paired channels, and the rotated (Q′, K ′) are then used in standard dot-product attention. The slot axis supplies a dedicated ro-tary phase per modality (e.g., S=0 for dose and S≥1 for different conditions), while the spatial axes (H, W, D ) are shared across slots. This design preserves a unified full-attention pass, but encourages structured cross-slot interac-tions (dose ↔ CT/structures/beams) without adding extra parameters or attention blocks. 
+
+3.3. v-parameterized Diffusion Objective 
+
+Instead of predicting noise ε, we adopt the v-parameterization , which provides a better balance of 4signal-to-noise across timesteps. Given the forward process in (1), we define 
+
+v(x0, ε, t ) = αt ε − σt x0. (6) Given (x(τ ) 
+
+> t
+
+, C, t ) the model outputs vθ (x(τ ) 
+
+> t
+
+, C, t ) ∈
+
+RH×W ×D and is trained by 
+
+Ldiff = Et,ε,τ,S 
+
+h
+
+vθ (x(τ ) 
+
+> t
+
+, C, t ) − v(x(τ )0 , ε, t ) 22
+
+i
+
+. (7) This choice is notationally convenient and improves op-timization stability on 3D dose grids. In particular, from 
+
+(x(τ ) 
+
+> t
+
+, v, t ) we can recover x0 and ε exactly: 
+
+x0 = αtxt − σtv, ε = σtxt + αtv. (8) Thus vθ still parameterizes the same forward process as noise prediction, but yields better-conditioned gradients across diffusion timesteps in practice. At each training step we sample a target modality τ
+
+uniformly from M and then draw a conditioning set S ⊆
+
+M \ { τ } according to a simple curriculum on the number of observed modalities. This ensures that any modality can act either as a target or as a condition, exposes the model to diverse conditioning patterns, and strengthens robustness to missing or incomplete inputs at inference time. 
+
+3.4. Scorecard-aligned RL Post-training 
+
+Pure diffusion training does not explicitly optimize for clini-cal objectives, such as precise PTV coverage or OAR sparing. To bridge this gap, we propose ScardNFT , an RL-based post-training approach inspired by DiffusionNFT [ 78 ], which aligns generated dose distributions with clinical guidelines via differentiable, Scorecard-based rewards. 
+
+Scorecard Reward. We define a scalar clinical reward rraw 
+
+from standardized plan-quality metrics. For each anatom-ical structure s ∈ S, the Scorecard specifies one of three metric types: DoseAtVolume , VolumeAtDose , or 
+
+MeanDose , and maps each measured metric value into a normalized structure-specific score via a piecewise-linear function score s(·). Let ϕs(y; C) denote the corresponding DVH-style statistic computed from a candidate dose y under conditions C, and let ws ≥ 0 be a tunable importance weight. The aggregate reward is then computed as a weighted sum: 
+
+rraw (y, C ) = X
+
+> s∈S
+
+ws score s
+
+ ϕs(y; C), y ≡ x(dose )0 .
+
+(9) We adjust these clinical Scorecards using established radio-therapy templates for head and neck [ 58 ] and lung [ 59 ], cov-ering critical dose–volume histogram (DVH) points, mean dose, and ring constraints. When patient prescriptions dif-fer from the scorecard template, we proportionally rescale PTV thresholds to the prescribed dose to maintain consistent clinical scoring criteria across cases. 
+
+Normalization & Anchors. Plan quality can vary widely across patients and sites, so raw rewards must be normalized for stable learning. Within each case, we first standardize per-structure scores and aggregate them into rraw , and optionally apply site-wise normalization to account for systematic site differences. To prevent reward hacking, we introduce two anchor terms: (i) a hinge penalty enforcing strict adherence to hard clinical constraints (e.g., minimum PTV D95 or max-imum OAR thresholds), and (ii) an MAE anchor relative to available reference doses, discouraging trivial reductions in overall dose magnitude. The resulting optimality probability 
+
+r used for RL is clipped to [0 , 1] :
+
+r = 12 + 12 clip 
+
+ rraw − Ey∼πold [rraw ]
+
+ZC
+
+, −1, 1
+
+
+
+, (10) where πold denotes the current diffusion policy and ZC is a running estimate of reward dispersion under conditions 
+
+C. Thus r ∈ [0 , 1] behaves as a Bernoulli-style optimality probability, with r ≈ 1 indicating clinically preferred plans and r ≈ 0 indicating poor plans under the same inputs. 
+
+Policy Update & Final Objective. Starting from a pre-trained diffusion checkpoint, we perform clinical preference-aligned policy updates via ScardNFT. For each training case, we first draw K candidate samples multiple independent ini-tial noises using a deterministic ODE sampler (Flow/DPM-solver family, with scheduler state snapshots for reproducibil-ity). Each candidate dose y is evaluated by computing its reward rraw (y, C ), which is then transformed into an opti-mality probability r via (10) . Inspired by DiffusionNFT [ 78 ], we introduce two implicit policy targets:            
+
+> ˜v+
+> θ= (1 −β)vold +β v θ,˜v−
+> θ= (1+ β)vold −β v θ,
+> (11)
+
+where vold is derived from the current model (with gradients stopped), vθ is the new prediction, and β ∈ (0 , 1] is a small mixing coefficient controlling how aggressively we move away from the old policy. We then optimize a dual loss that increases likelihood for higher-rewarded samples and penalizes lower-rewarded ones: 
+
+LNFT = E
+
+h
+
+r ∥˜v+ 
+
+> θ
+
+− v∥22 + (1 −r) ∥˜v− 
+
+> θ
+
+− v∥22
+
+i
+
+, (12) where v denotes the ground-truth target from Eq. (6) . The final training objective balances voxel-level diffusion consis-tency and clinical preference alignment: 
+
+L(θ) = LNFT (θ) + λ Ldiff (θ), (13) with λ > 0 controlling the strength of the RL-style update. 
+
+Why this works. Intuitively, Ldiff preserves voxelwise fi-delity to historical plans, while LNFT reshapes the condi-tional diffusion score field, assigning higher likelihood to dose configurations that satisfy clinical Scorecards under identical conditions C. The v-parameterization ensures well-scaled gradients across timesteps (αt, σ t), which we find 5Table 1. Main results on GDP-HMM (validation & test). Metrics: MAE (Gy; ↓), clinical Scorecard (Score) ( ↑), PSNR (dB; ↑), SSIM ( ↑), and LPIPS ( ↓). The main table spans both columns; bold indicates the best in its block. Family Method Backbone Pretrain Any2Any RL Validation Test MAE ↓ Score ↑ PSNR ↑ SSIM ↑ LPIPS ↓ MAE ↓ Score ↑ PSNR ↑ SSIM ↑ LPIPS ↓                                                                                                                                                      
+
+> Regression Yasin (AAPM ’25 Chal.) MedNeXt –––2.03 134.26 31.50 0.972 0.037 2.07 134.81 32.06 0.974 0.033 Regression tyxiong123 (AAPM ’25 Chal.) MedNeXt –––2.18 133.95 29.89 0.929 0.067 2.20 134.10 30.62 0.925 0.064 Regression rcgao (AAPM ’25 Chal.) MedNeXt –––2.05 133.40 31.24 0.972 0.051 2.08 133.62 31.77 0.972 0.048 Regression PVmed (AAPM ’25 Chal.) MedNeXt –––2.15 133.78 31.40 0.971 0.034 2.17 133.99 31.53 0.970 0.031 Regression SKLSDE-BH (AAPM ’25 Chal.) nnUnet –––2.25 133.02 31.40 0.972 0.040 2.27 133.20 31.34 0.968 0.039 Regression MedVision (AAPM ’25 Chal.) LDM –––2.19 134.50 31.54 0.970 0.029 2.21 134.72 31.66 0.973 0.030 Diffusion MAISI + Ours LDM ✓––1.89 135.89 32.02 0.975 0.028 1.95 135.23 32.13 0.976 0.026 Diffusion Ours (Conditional) DiT ✓––2.07 135.41 31.88 0.973 0.031 2.12 134.60 32.01 0.974 0.029 Diffusion Ours (Any2Any) DiT ✓✓–1.90 136.22 32.43 0.977 0.025 1.93 135.36 32.60 0.978 0.023 Diffusion Ours (Any2Any+NFT) DiT ✓✓✓1.91 138.17 32.55 0.979 0.022 1.93 137.55 32.73 0.980 0.020
+
+empirically stabilizes ScardNFT updates, especially in high signal-to-noise ratio regimes. 
+
+## 4. Experiments 
+
+4.1. Setup: Datasets, Splits, Metrics, and Training 
+
+We evaluate on the complete GDP-HMM Grand Challenge dataset [ 1], comprising official training (2,878 plans), valida-tion (356 plans), and test (498 plans) splits for head-and-neck (HaN) and lung cancer sites, and the REQUITE dataset, com-prising training (5,100 plans) and test (256 plans) splits for prostate cancer patients from [ 53 ], with mask-augmented plans re-optimized using the Eclipse Script API. Unless explicitly stated otherwise, voxelwise evaluations are con-ducted within the body mask. 
+
+Preprocessing. All data preprocessing steps adhere strictly to the official challenge geometry and voxel spacing. CT im-ages undergo intensity clipping to [-1000, 1000] HU, patient-wise z-score normalization, and mask binarization. Beam and angle plates are rasterized onto the same grid. Before patch embedding, each modality is min-max scaled to [-1,1]. Comprehensive details regarding resampling, cropping, and normalization are provided in the supplementary material. The angle beam plates are created following [ 14 ], consistent with the GDP-HMM challenge. 
+
+Primary metrics. We evaluate performance using the fol-lowing metrics: (i) voxelwise mean absolute error (MAE), computed within the body mask with a 5 Gy threshold fol-lowing the challenge protocol [ 16 ]; (ii) clinically-informed plan quality Scorecards [ 58 , 59 ], integrating key PTV and OAR metrics into a single scalar score; and (iii) standard image quality metrics including PSNR, SSIM, LPIPS, Dice, and 2D slice-level FID. 
+
+Training details. We utilize the Any2Any DiT architecture described in Sec. 3.2. The backbone is Wan 2.1 (1.3B param-eters), paired with VAE 2.1. Training proceeds through three distinct stages: (A) Any2Any pretraining with uniform target sampling and curriculum masking, (B) dose-only fine-tuning, and (C) ScardNFT post-training, balancing losses LNFT and 
+
+Ldiff via a tunable hyperparameter λ. Further training details are provided in supplementary B. 
+
+4.2. Main Results on GDP-HMM Dataset 
+
+The GDP-HMM benchmark contains a broad set of strong regression-based challenge entries built on MedNeXt, nnUNet, and LDM backbones (Table 1). These models rep-resent the best supervised pipelines available but remain constrained by voxel-level training. To form a complete com-parison spectrum, we additionally include (i) a conditional diffusion U-Net adapted from MAISI, and (ii) our own condi-tional DiT baseline that simply concatenates all conditioning modalities with dose for prediction. Our Any2Any design yields an improvement in per-formance over both regression-style models and the concatenation-based diffusion baseline. Beyond numerical gains, this indicates that (1) jointly modeling all modalities in a unified diffusion space and (2) separating “role” (target vs. condition) through explicit embeddings are both essen-tial for robust cross-modal dependency learning. Adding ScardNFT introduces consistent improvements in clinical alignment without degrading voxel-level fidelity, confirming that RL-guided updates reshape preference behavior rather than the underlying reconstruction quality. 
+
+Single-step prediction analysis. To better understand dif-fusion behavior in dose prediction, we compare single-step variants of x-pred and v-pred (Table 2) and their scaling trends in Figure 3. While x-pred directly regresses x0, the v-pred approach achieves substantially better performance, indicating a higher potential accuracy ceiling. Furthermore, iterative refinement from 1 to 10 steps consistently improves predictions, confirming that multi-step refinement remains essential for peak dosimetric performance. 
+
+4.3. Results on REQUITE Prostate 
+
+We further assess the knowledge transfer capabilities of our model by fine-tuning checkpoints pretrained on GDP–HMM (head-and-neck and lung) directly on the REQUITE prostate dataset. As shown in Table 3 and Figure 3(b), our Any2Any 
+
+diffusion model rapidly converges to superior performance compared to top regression baselines, achieving better ac-6Table 2. Any2Any prediction under different prediction types and sampling steps. 
+
+Method Pred Type Steps MAE ↓ Score ↑
+
+Ours (Any2Any) x-pred 1 2.45 117.64 Ours (Any2Any) v-pred 1 2.12 133.59 Ours (Any2Any) v-pred 10 1.91 138.17 
+
+Table 3. Comparisons on REQUITE-Prostate. We report MAE (Gy; ↓), PSNR (dB; ↑), SSIM ( ↑), and LPIPS ( ↓). Both ours and baselines are pretrained with GDP-HMM and fine-tuned on prostate data. † denotes best-of-n.Method MAE (Gy) ↓ PSNR (dB) ↑ SSIM ↑ LPIPS ↓
+
+Yasin (AAPM ’25 Chal.) 1.48 34.53 0.956 0.026 tyxiong123 (AAPM ’25 Chal.) 1.37 34.74 0.957 0.023 rcgao (AAPM ’25 Chal.) 1.53 33.51 0.953 0.031 PVmed (AAPM ’25 Chal.) 1.52 33.54 0.950 0.030 SKLSDE-BH (AAPM ’25 Chal.) 1.65 32.74 0.944 0.034 MedVision (AAPM ’25 Chal.) 1.48 34.42 0.949 0.032 
+
+Ours (Any2Any) 1.01 36.80 0.963 0.012 Ours (Any2Any) † 0.97 37.09 0.965 0.011 
+
+Table 4. Component ablations on validation set Variant Pre. Any2Any RoleEmb FullAttn PatchEmb 4D RoPE MAE ↓/Score ↑                                                        
+
+> From scratch (baseline) ––––––2.58 / 119.82 + Pretrain ✓–––––2.07 / 135.41 + Any2Any ✓✓✓✓✓✓1.90 / 136.22 - Role Emb ✓✓–✓✓–2.01 / 134.04 - Full Attention ✓✓✓–✓–2.15 / 130.80 - Patch Embed ✓✓✓✓––2.02 / 134.71 - 4D RoPE ✓✓✓✓✓–1.96 / 135.27
+> Ours+ScardNFT ✓✓✓✓✓✓1.91 / 138.17
+
+Table 5. Single-modality prediction under the remaining-1 (predict-one) setting. What this table shows: each modality is predicted from all the others. CT uses FID; segmentation-like modalities use Dice; Dose and Beam Plate use MAE only. 
+
+Method Output Modality FID ↓ Dice ↑ MAE ↓
+
+Ours (Any2Any) CT 1.47 – –Ours (Any2Any) PTV mask – 72.13 –Ours (Any2Any) OAR mask – 54.63 –Ours (Any2Any) Body mask – 95.09 –Ours (Any2Any) Dose – – 1.91 Ours (Any2Any) Beam Plate – – 1.54 
+
+curacy in fewer epochs. This demonstrates our framework’s efficiency in leveraging pretrained representations to quickly adapt and achieve higher-quality predictions on new cancer sites. Moreover, adopting a best-of-n sampling strategy pro-vides additional gains, underscoring the model’s potential for further improvements through stochastic decoding. 
+
+4.4. Ablations and Supporting Studies 
+
+Detailed ablation studies in Table 4 and Figure 3(a) clarify the contributions of key components and design choices. In-troducing pretraining substantially accelerates convergence compared to training from scratch and achieves significantly better final performance, confirming the value of leverag-1 2 4 10 20 50 100          
+
+> Epoch
+> 2
+> 4
+> 6
+> 8
+> 10
+> 12
+> MAE on Test Set
+> (a) Wan Backbone on GDP-HMM
+> Train from Scratch
+> with Wan Pretrain
+> 12410 20
+> Epoch
+> 1.00
+> 1.25
+> 1.50
+> 1.75
+> 2.00
+> 2.25
+> 2.50 (b) Transfer to Prostate Data
+> Challenge Top1
+> Ours (Any2Any)
+> 12410 20
+> Inference Step
+> 1.85
+> 1.90
+> 1.95
+> 2.00
+> 2.05
+> 2.10
+> 2.15 (c) Test Time Scaling
+> Single Infer.
+> Best of N
+
+Figure 3. MAE vs. training epochs / inference steps. The single figure contains three subplots: (left) pretrain vs. from-scratch across epochs, (middle) model-transfer finetuning curve, and (right) test-time scaling (single vs. best-of-n). 0.3     
+
+> 0.4
+> 0.6
+> 0.7
+> 0.9
+> 1.0 PTVHigh
+> PTVMid
+> PTVLow
+> OCavity-PTV
+> Larynx-PTV
+> Trachea
+> PostNeck
+> Lips
+> Spinalcord
+> Ref Top-1 Ours Ours+ScardNFT
+> 0.95
+> 0.86
+> 0.90
+> 0.80
+> 0.73
+> 0.82
+> 0.71
+> 0.76
+> 0.76
+
+Figure 4. Per-structure scorecard value comparison of head-and-neck plans. The plot contrasts reference, the challenge Top-1 baseline, our diffusion model, and our RL-enhanced variant (Ours+ScardNFT), showing how reinforcement learning can im-prove alignment with institutional planning objectives. 
+
+ing pretrained knowledge. Transitioning from conditional diffusion to the unified Any2Any training paradigm further boosts performance, demonstrating the effectiveness of flexi-ble cross-modality modeling. Removing critical components notably reduces performance. Omitting the role embeddings, which explicitly indicate the target and conditioning roles, clearly degrades voxelwise accuracy and clinical scores. Sim-ilarly, replacing full attention with causal attention weak-ens the model’s ability to capture cross-modal dependen-cies. Performance also declines without modality-specific patch embeddings, emphasizing their importance in preserv-ing detailed input modality information. The proposed 4D RoPE positional embedding further boosts performance by uniquely identifying each condition in both spatial and tem-poral dimensions. Although 4D RoPE appears related to role embeddings, it specifically distinguishes among different in-put modalities spatially, whereas role embeddings explicitly inform the model of modalities serving as either conditions 7(a ) CT /PTV (b ) Reference (c ) Ours (d ) Top1 -solution Figure 5. Qualitative predictions on GDP-HMM and REQUITE (top: head-and-neck, middle: lung, bottom: prostate). Columns: Input CT, reference dose, our Any2Any+NFT, Top-1 baseline. Our method achieves superior target conformity. 
+
+or targets. Finally, integrating ScardNFT post-training im-proves clinical alignment, significantly enhancing clinical preference scores without compromising MAE. Figure 3 further elucidates our model’s training efficiency and transferability. Figure 3(a) clearly illustrates the sub-stantial efficiency gains from Wan pretraining compared to training from scratch, reaching lower MAE values with significantly fewer epochs. Figure 3(b) demonstrates the model’s strong adaptability when transferring to the prostate dataset, rapidly converging and consistently outperforming the top GDP–HMM challenge solution. Finally, Figure 3(c) highlights the benefit of a best-of-n inference strategy, pro-viding a clear accuracy improvement over single inference. As illustrated in Figure 4, ScardNFT post-training notably enhances clinical alignment across key anatomical structures. Compared to our baseline without ScardNFT and the top regression method, the ScardNFT variant achieves consis-tently higher clinical scores for PTV coverage and OAR sparing, while maintaining identical voxelwise MAE perfor-mance (Table 1). This improvement significantly benefits downstream clinical tasks such as plan optimization and automated quality assurance. Qualitative examples in Figure 5 further confirm our method’s robustness. Compared to the leading regression baseline, Our Any2Any+ScardNFT model produces more clinically realistic dose distributions, improving conformity around targets (head-and-neck), reducing artifacts (lung), and mitigating oversmoothing (head-and-neck and prostate). More visualizations are provided in Supplementary C. Table 5 assesses our model’s robustness under the remaining-1 prediction scenario, where each modality is predicted from all other modalities. Our model consistently generates high-quality predictions across imaging (CT), seg-mentation (PTV, OAR, Body mask), and dose-related modal-ities, validating its strong cross-modal generative capability. 
+
+## 5. Conclusion and Discussion 
+
+Conclusion. We presented DiffKT3D, an Any2Any 3D dif-fusion framework for voxel-wise radiotherapy dose predic-tion and cross-modal imputation. By integrating pretrained diffusion priors through a modality-aware conditioning in-terface and aligning predictions to clinical guidelines via reinforcement learning post-training, DiffKT3D consistently outperformed strong regression and diffusion baselines on the GDP–HMM challenge and REQUITE datasets. 
+
+Discussion. Beyond gains in dose prediction accuracy, in-ference efficiency, and preference compliance, our findings suggest broader methodological implications. 
+
+Diffusion priors trained on cross-domain datasets can transfer effectively to specialized tasks, mitigating domain shift and reducing training cost. In our experiments, priors trained on CT (MAISI) or video (Wan) already improve dose generation. While feature-extraction foundation models such as the DINO family [ 43 , 54 ] demonstrate cross-domain robustness, 3D generative priors remain underexplored. Our results show that public diffusion backbones are effective initializations for RT dose modeling, avoiding the need to train large 3D models from scratch. 
+
+RL post-training is widely used for LLMs and diffusion-based text-to-image alignment. Here, we apply it to clinical decision-making tasks, where rewards are derived directly from clinical protocols. Our scorecard-aligned reward trans-lates guideline criteria into optimization signals and should extend to other medical tasks. The unified Any2Any conditional architecture provides a flexible paradigm for handling diverse multi-modal scenarios beyond RT dose prediction, underscoring the potential of our approach as a generalizable framework for conditional generative modeling. 
+
+Limitation and Future Work. One limitation of DiffKT3D is its computational efficiency. The Wan 1.3B backbone with full 3D attention is inherently expensive, and even with a 4-step sampler, end-to-end inference for a full 3D dose takes about 10 s on a single GPU. While this remains far faster than optimization-based systems (e.g., 15–30 min for head-and-neck VMAT), future work will investigate efficiency-oriented strategies such as lighter backbones, structured or sparse attention, token pruning, and distilling the Any2Any DiT into compact student models. The training objective can be further enhanced by incor-porating dose-specific loss functions, such as DVH-based terms [ 14 , 25 , 42 ] and weighted MAE [ 16 ], into our diffu-sion training pipeline. Additionally, validating the model’s effectiveness in real clinical settings remains an important direction for future work. Finally, the Any2Any design of DiffKT3D extends beyond dose prediction; applying it to other stages of the radiotherapy planning pipeline (e.g., leaf sequencing) and to broader generative tasks represents a natural and promising next step. 8Disclaimer. The information in this paper is based on research results that are not commercially available. Future commercial availability cannot be guaranteed. 
+
+Acknowledgement : We thank all the contributors to the REQUITE project, including the patients, clinicians and nurses. The core REQUITE consortium consists of David Azria, Erik Briers, Jenny Chang-Claude, Alison M. Dunning, Rebecca M. Elliott, Corinne Faivre-Finn, Sara Guti ´errez-Enr ´ıquez, Kerstie Johnson, Zoe Lingard, Tiziana Rancati, Tim Rattay, Barry S. Rosenstein, Dirk De Ruysscher, Pe-tra Seibold, Elena Sperk, R. Paul Symonds, Hilary Stobart, Christopher Talbot, Ana Vega, Liv Veldeman, Tim Ward, Adam Webb and Catharine M.L. West. 
+
+## References 
+
+[1] Generalizable dose prediction for heterogeneous multi-cohort and multi-site radiotherapy planning (gdp-hmm) grand chal-lenge. https://www.aapm.org/GrandChallenge/ GDP-HMM/ , 2025. Accessed: 2025-10-24. 1, 6 [2] Bobby Azad, Reza Azad, Sania Eskandari, Afshin Bozorg-pour, Amirhossein Kazerouni, Islem Rekik, and Dorit Merhof. Foundational models in medical imaging: A comprehensive survey and future vision. arXiv preprint arXiv:2310.18689 ,2023. 1 [3] Aaron Babier, Rafid Mahmood, Andrea L. McNiven, Adam Diamant, and Timothy C. Y. Chan. Knowledge-based auto-mated planning with three-dimensional generative adversarial networks. Medical Physics , 47(2):297–306, 2020. 2 [4] Aaron Babier, Binghao Zhang, Rafid Mahmood, Kevin L. Moore, Thomas G. Purdie, Andrea L. McNiven, and Timothy C. Y. Chan. Openkbp: The open-access knowledge-based planning grand challenge. arXiv preprint arXiv:2011.14076 ,2020. 1, 2 [5] Aaron Babier et al. Openkbp-opt: An international and open-source framework for plan optimization in knowledge-based planning. arXiv preprint arXiv:2202.08303 , 2022. 1 [6] Fan Bao et al. One transformer fits all distributions in multi-modal diffusion at scale. arXiv preprint arXiv:2303.06555 ,2023. 2 [7] Omer Bar-Tal et al. Multidiffusion: Fusing diffusion paths for controlled image generation. arXiv preprint arXiv:2302.08113 , 2023. 2 [8] Ana Mar ´ıa Barrag ´an-Montero, Dan Nguyen, Weiguo Lu, Mu Han Lin, Roya Norouzi-Kandalan, Xavier Geets, Edmond Sterpin, and Steve Jiang. Three-dimensional dose predic-tion for lung imrt patients with deep neural networks: robust learning from heterogeneous beam configurations. Medical Physics , 2019. 2 [9] Søren M. Bentzen, Louis S. Constine, Joseph O. Deasy, Avra-ham Eisbruch, Andrew Jackson, Lawrence B. Marks, Ran-dall K. Ten Haken, and Ellen D. Yorke. Quantitative analyses of normal tissue effects in the clinic (QUANTEC): an in-troduction to the scientific issues. International Journal of Radiation Oncology Biology Physics , 2010. 2 [10] Kevin Black, Michael Janner, Yilun Du, Ilya Kostrikov, and Sergey Levine. Training diffusion models with reinforcement learning. arXiv preprint arXiv:2305.13301 , 2023. 2 [11] Foivos I. Diakogiannis, Fran c¸ ois Waldner, Peter Caccetta, and Chen Wu. Resunet-a: A deep learning framework for semantic segmentation of remotely sensed data. ISPRS Journal of Photogrammetry and Remote Sensing , 162:94–114, 2020. 2 [12] Gary A. Ezzell, Jay W. Burmeister, Nesrin Dogan, Thomas J. LoSasso, John G. Mechalakos, Dimitris Mihailidis, Aimee Molineu, Jatinder R. Palta, Chester R. Ramsey, Brian J. Salter, Jianguo Shi, Ping Xia, Cedric X. Yu, and Ying Xiao. IMRT commissioning: multiple institution planning and dosimetry comparisons, a report from AAPM task group 119. Medical Physics , 2009. 2 [13] Zhenghao Feng et al. Diffdp: Radiotherapy dose prediction via a diffusion model. arXiv preprint arXiv:2307.09794 , 2023. 1, 2, 19 [14] Riqiang Gao, Bin Lou, Zhoubing Xu, Dorin Comaniciu, and Ali Kamen. Flexible-c m gan: Towards precise 3d dose predic-tion in radiotherapy. In Proceedings of the IEEE/CVF Confer-ence on Computer Vision and Pattern Recognition (CVPR) ,pages 715–725, 2023. 1, 2, 6, 8 [15] Riqiang Gao, Florin-Cristian Ghesu, Simon Arberet, Shahab Basiri, Esa Kuusela, Martin Kraus, Dorin Comaniciu, and Ali Kamen. Multi-agent reinforcement learning meets leaf sequencing in radiotherapy. arXiv preprint arXiv:2406.01853 ,2024. 1 [16] Riqiang Gao, Mamadou Diallo, Han Liu, Anthony Magliari, Jonathan Sackett, Wilko Verbakel, Sandra Meyers, Rafe Mc-beth, Masoud Zarepisheh, Simon Arberet, et al. Automating rt planning at scale: High quality data for ai training. arXiv preprint arXiv:2501.11803 , 2025. 1, 2, 6, 8, 15, 17 [17] Ian J. Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron C. Courville, and Yoshua Bengio. Generative adversarial nets. In Advances in Neural Information Processing Systems , pages 2672–2680, 2014. 2 [18] Mary P Gronberg, Beth M Beadle, Adam S Garden, Heath Skinner, Skylar Gay, Tucker Netherton, Wenhua Cao, Car-los E Cardenas, Christine Chung, David T Fuentes, et al. Deep learning–based dose prediction for automated, individualized quality assurance of head and neck radiation therapy plans. 
+
+Practical radiation oncology , 13(3):e282–e291, 2023. 1 [19] Pengfei Guo, Can Zhao, Dong Yang, Yufan He, Vishwesh Nath, Ziyue Xu, Pedro RAS Bassi, Zongwei Zhou, Ben-jamin D Simon, Stephanie Anne Harmon, et al. Text2ct: Towards 3d ct volume generation from free-text descriptions using diffusion model. arXiv preprint arXiv:2505.04522 ,2025. 1 [20] Pengfei Guo, Can Zhao, Dong Yang, Ziyue Xu, Vish-wesh Nath, Yucheng Tang, Benjamin Simon, Mason Belue, Stephanie Harmon, Baris Turkbey, et al. Maisi: Medical ai for synthetic imaging. In 2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV) , pages 4430–4441. IEEE, 2025. 15, 21 [21] Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffu-sion probabilistic models. In Advances in Neural Information Processing Systems , pages 6840–6851, 2020. 2, 20 
+
+9[22] Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. LoRA: Low-rank adaptation of large language models. In In-ternational Conference on Learning Representations (ICLR) ,2022. 16 [23] Chengwei Huang, Yicheng Zhang, Chen Chen, Meng Wang, Bing Li, and Xiangming He. Adapting visual-language mod-els for generalizable anomaly detection in medical images. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 3312–3322, 2024. 1 [24] Fabian Isensee, Paul F. Jaeger, Simon A. A. Kohl, Jens Pe-tersen, and Klaus H. Maier-Hein. nnu-net: a self-configuring method for deep learning-based biomedical image segmenta-tion. Nature Methods , 18(2):203–211, 2021. 15 [25] Gourav Jhanwar, Navdeep Dahiya, Parmida Ghahremani, Ma-soud Zarepisheh, and Saad Nadeem. Domain knowledge driven 3d dose prediction using moment-based loss function. 
+
+Physics in Medicine & Biology , 67(18):185017, 2022. 2, 8 [26] Bingxin Ke, Anton Obukhov, Shengyu Huang, Nando Met-zger, Rodrigo Caye Daudt, and Konrad Schindler. Repurpos-ing diffusion-based image generators for monocular depth estimation. arXiv preprint arXiv:2312.02145 , 2023. 2 [27] Vasant Kearney, Jason W Chan, Samuel Haaf, Martina De-scovich, and Timothy D Solberg. Dosenet: a volumetric dose prediction algorithm using 3d fully-convolutional neural net-works. Physics in Medicine & Biology , 63(23):235022, 2018. 2[28] Vasant Kearney, Jason W. Chan, Tianqi Wang, Alan Perry, Martina Descovich, Olivier Morin, Sue S. Yom, and Timo-thy D. Solberg. DoseGAN: a generative adversarial network for synthetic dose prediction using attention-gated discrimi-nation and generation. Scientific Reports , 2020. 1, 2 [29] Diederik P. Kingma and Max Welling. Auto-encoding varia-tional bayes. arXiv preprint arXiv:1312.6114 , 2014. 14 [30] Yuval Kirstain et al. Pick-a-pic: An open dataset of user preferences for text-to-image generation. In Advances in Neural Information Processing Systems , 2023. 2, 3 [31] Xiaoyan Kui, Fang Liu, Min Yang, Hao Wang, Canwei Liu, Dan Huang, Qinsong Li, Liming Chen, and Beiji Zou. Areview of dose prediction methods for tumor radiation therapy. 
+
+Meta-Radiology , 2(1):100057, 2024. 1 [32] Shufan Li, Konstantinos Kallidromitis, Akash Gokul, Zichun Liao, Yusuke Kato, Kazuki Kozuka, and Aditya Grover. Om-niflow: Any-to-any generation with multi-modal rectified flows. arXiv preprint arXiv:2412.01169 , 2024. 2 [33] Xiaomeng Li, Hao Chen, Xiaojuan Qi, Qi Dou, Chi-Wing Fu, and Pheng-Ann Heng. H-DenseUNet: hybrid densely connected UNet for liver and tumor segmentation from CT volumes. IEEE Transactions on Medical Imaging , 2018. 2 [34] Weixiong Lin, Ziheng Zhao, Xiaoman Zhang, Chaoyi Wu, Ya Zhang, Yanfeng Wang, and Weidi Xie. PMC-CLIP: Con-trastive language-image pre-training using biomedical docu-ments. arXiv preprint arXiv:2303.07240 , 2023. 1 [35] Weifeng Lin, Xinyu Wei, Renrui Zhang, Le Zhuo, Shitian Zhao, Siyuan Huang, Huan Teng, Junlin Xie, Yu Qiao, Peng Gao, et al. Pixwizard: Versatile image-to-image visual assistant with open-language instructions. arXiv preprint arXiv:2409.15278 , 2024. 2 [36] Yaron Lipman, Ricky T. Q. Chen, and Heli Ben-Hamu. Flow matching for generative modeling. arXiv preprint arXiv:2210.02747 , 2022. 16 [37] Shuolin Liu, Jingjing Zhang, Teng Li, Hui Yan, and Jianfei Liu. Technical note: A cascade 3d u-net for dose prediction in radiotherapy. Medical Physics , 48(11):7132–7141, 2021. 2 [38] Cheng Lu, Yuhao Zhou, Fan Bao, Jianfei Chen, Chongxuan Li, and Jun Zhu. DPM-Solver: A fast ODE solver for diffusion probabilistic model sampling in around 10 steps. In Advances in Neural Information Processing Systems , 2022. 16 [39] Anthony Magliari, Ryan Clark, Lesley Rosa, and Sushil Beri-wal. Hn-sib-bpi: A single click, sub-site specific, dosimetric scorecard tuned rapidplan model created from a foundation model for treating head and neck with bilateral neck. Medical Dosimetry , 50(1):63–69, 2025. 3 [40] Chong Mou et al. T2I-Adapter: Learning adapters to dig out more controllable ability for text-to-image diffusion models. 
+
+arXiv preprint arXiv:2302.08453 , 2023. 2 [41] Dan Nguyen, Xun Jia, David Sher, Mu-Han Lin, Zohaib Iqbal, Hui Liu, and Steve Jiang. 3d radiotherapy dose predic-tion on head and neck cancer patients with a hierarchically densely connected u-net deep learning architecture. Physics in Medicine & Biology , 2019. 2 [42] Dan Nguyen, Rafe McBeth, Azar Sadeghnejad Barkousaraie, Gyanendra Bohara, Chenyang Shen, Xun Jia, and Steve Jiang. Incorporating human and learned domain knowledge into training deep neural networks: A differentiable dose-volume histogram and adversarial inspired framework for generating pareto optimal dose distributions in radiation therapy. Medical Physics , 47(3):837–849, 2020. 2, 8 [43] Maxime Oquab, Piotr Bojanowski, Gautier Izacard, et al. DINOv2: Learning robust visual features without supervision. 
+
+arXiv preprint arXiv:2304.07193 , 2023. 1, 8 [44] Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agar-wal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback. arXiv preprint arXiv:2203.02155 , 2022. 2 [45] William Peebles and Saining Xie. Scalable diffusion mod-els with transformers. In Proceedings of the IEEE/CVF In-ternational Conference on Computer Vision (ICCV) , pages 4195–4205, 2023. 14, 15, 21 [46] Ethan Perez, Florian Strub, Harm de Vries, Vincent Dumoulin, and Aaron Courville. FiLM: Visual reasoning with a general conditioning layer. In Proceedings of the AAAI Conference on Artificial Intelligence , 2018. 14 [47] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, and Ilya Sutskever. Learning transferable visual models from natural language supervision. In Proceedings of the 38th International Conference on Machine Learning ,pages 8748–8763. PMLR, 2021. 1 
+
+10 [48] Rafael Rafailov, Archit Sharma, Eric Mitchell, and Chelsea Finn. Direct preference optimization: Your language model is secretly a reward model. arXiv preprint arXiv:2305.18290 ,2023. 2 [49] Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Bj ¨orn Ommer. High-resolution image synthesis with latent diffusion models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 10684–10695, 2022. 15 [50] Olaf Ronneberger, Philipp Fischer, and Thomas Brox. U-Net: Convolutional networks for biomedical image segmentation. In Medical Image Computing and Computer Assisted Inter-vention (MICCAI) . Springer, 2015. 2 [51] Saikat Roy, Gregor Koehler, Constantin Ulrich, Michael Baumgartner, Jens Petersen, Fabian Isensee, Paul F. Jaeger, and Klaus H. Maier-Hein. Mednext: Transformer-driven scal-ing of convnets for medical image segmentation. In Medical Image Computing and Computer Assisted Intervention (MIC-CAI) , 2023. 2, 15 [52] Tim Salimans and Jonathan Ho. Progressive distillation for fast sampling of diffusion models. In International Confer-ence on Learning Representations (ICLR) , 2022. 20 [53] Petra Seibold, Adam Webb, Miguel E. Aguado-Barrera, David Azria, Celine Bourgier, Muriel Brengues, Erik Briers, Renee Bultijnck, Patricia Calvo-Crespo, Ana Carballo, et al. Requite: a prospective multicentre cohort study of patients undergoing radiotherapy for breast, lung or prostate cancer. 
+
+Radiotherapy and Oncology , 138:212–224, 2019. 2, 6, 15 [54] Oriane Sim ´eoni, Huy V Vo, Maximilian Seitzer, Federico Baldassarre, Maxime Oquab, Cijo Jose, Vasil Khalidov, Marc Szafraniec, Seungeun Yi, Micha ¨el Ramamonjisoa, et al. Di-nov3. arXiv preprint arXiv:2508.10104 , 2025. 8 [55] Xinrui Song, Xuanang Xu, and Pingkun Yan. Dino-reg: Gen-eral purpose image encoder for training-free multi-modal deformable medical image registration. In International Con-ference on Medical Image Computing and Computer-Assisted Intervention , pages 608–617. Springer, 2024. 1 [56] Mumtaz Hussain Soomro, Victor Gabriel, Leandro Alves, Hamidreza Nourzadeh, and Jeffrey V. Siebers. Deepdosenet: A deep learning model for 3d dose prediction in radiation therapy. arXiv preprint arXiv:2111.00077 , 2021. 2 [57] Zineng Tang et al. Any-to-any generation via composable diffusion. arXiv preprint arXiv:2305.11846 , 2023. 2 [58] Varian Medical Affairs. Bilateral head&neck 70/63/56gy (hn-sib-bpi) [rapidplan]. https://medicalaffairs. varian . com / hn - sib - bpi - rapidplan - vmat2 ,2024. Accessed: 2024-10-19. 3, 5, 6 [59] Varian Medical Affairs. Lung – conventional 60gy (nrg lu-004 / atkins km 2021). https://medicalaffairs. varian.com/lung- conventional- vmat2 , 2024. Accessed: 2024-10-19. 3, 5, 6 [60] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszko-reit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in Neural Information Processing Systems , 2017. 14 [61] Bram Wallace, Meihua Dang, Rafael Rafailov, Linqi Zhou, Aaron Lou, Senthil Purushwalkam, Stefano Ermon, Caiming Xiong, Shafiq Joty, and Nikhil Naik. Diffusion model align-ment using direct preference optimization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 8228–8238, 2024. 2 [62] Team Wan, Ang Wang, Baole Ai, Bin Wen, Chaojie Mao, Chen-Wei Xie, Di Chen, Feiwu Yu, Haiming Zhao, Jianxiao Yang, et al. Wan: Open and advanced large-scale video gener-ative models. arXiv preprint arXiv:2503.20314 , 2025. 2, 14, 15, 21 [63] Bin Wang, Lin Teng, Lanzhuju Mei, Zhiming Cui, Xuanang Xu, Qianjin Feng, and Dinggang Shen. Deep learning-based head and neck radiotherapy planning dose prediction via beam-wise dose decomposition. In International Confer-ence on Medical Image Computing and Computer-Assisted Intervention , pages 575–584. Springer, 2022. 2 [64] Wentao Wang, Yang Sheng, Chunhao Wang, Jiahan Zhang, Xinyi Li, Manisha Palta, Brian Czito, Christopher G Willett, Qiuwen Wu, Yaorong Ge, et al. Fluence map prediction using deep learning models–direct plan generation for pancreas stereotactic body radiation therapy. Frontiers in artificial intelligence , 3:68, 2020. 1 [65] Junde Wu, Wei Ji, Yuanpei Liu, Huazhu Fu, Min Xu, Yanwu Xu, and Yueming Jin. Medical SAM adapter: Adapting seg-ment anything model for medical image segmentation. arXiv preprint arXiv:2304.12620 , 2023. 1 [66] Xiaoshi Wu, Keqiang Sun, Feng Zhu, Rui Zhao, and Hong-sheng Li. Human preference score: Better aligning text-to-image models with human preference. arXiv preprint arXiv:2303.14420 , 2023. 3 [67] Shitao Xiao, Yueze Wang, Junjie Zhou, Zhenbang Yang, Chao Shen, Wenrui Dai, Jiarui Gan, Yu Liu, Ke Shang, Zhifeng Chen, and Qingshan Liu. Omnigen: Unified image generation. 
+
+arXiv preprint arXiv:2409.11340 , 2024. 2 [68] Jun Xu, Siyao Ren, Zeqiang Lin, Jiaming Zhu, Zhi Zhang, Yixiao Jiang, Wenwang Ye, Jianzhuang Wang, Tong Lu, Ji-Rong Gu, Xiaoyang Wang, and Shuai Yang. Learning and evaluating human preferences for text-to-image generation. In Advances in Neural Information Processing Systems , 2023. 2, 3 [69] Xingqian Xu et al. Versatile diffusion: Text, images and variations all in one diffusion model. arXiv preprint arXiv:2211.08332 , 2022. 2 [70] Yifeng Xu, Zhenliang He, Meina Kan, Shiguang Shan, and Xilin Chen. Jodi: Unification of visual generation and under-standing via joint modeling. arXiv preprint arXiv:2505.19084 ,2025. 2 [71] Kai Yang, Jian Tao, Jiafei Lyu, Chunjiang Ge, Jiaxin Chen, Qimai Li, Weihan Shen, Xiaolong Zhu, and Xiu Li. Using human feedback to fine-tune diffusion models without any reward model. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2024. 2[72] Jingjing Zhang, Shuolin Liu, Hui Yan, Teng Li, Ronghu Mao, and Jianfei Liu. Predicting voxel-level dose distributions for esophageal radiotherapy using densely connected network with dilated convolutions. Physics in Medicine & Biology , 65 (20):205013, 2020. 2 
+
+11 [73] Lvmin Zhang, Anyi Rao, and Maneesh Agrawala. Adding conditional control to text-to-image diffusion models. arXiv preprint arXiv:2302.05543 , 2023. 2, 19 [74] Sheng Zhang, Yanbo Xu, Naoto Usuyama, Hanwen Xu, Jaspreet Bagga, Robert Tinn, Sam Preston, Rajesh Rao, Mu Wei, Naveen Valluri, et al. Biomedclip: a multimodal biomedi-cal foundation model pretrained from fifteen million scientific image-text pairs. arXiv preprint arXiv:2303.00915 , 2023. 1 [75] Sixian Zhang, Bohan Wang, Junqiang Wu, Yan Li, Tingt-ing Gao, Di Zhang, and Zhongyuan Wang. Learning multi-dimensional human preference for text-to-image generation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 8018–8027, 2024. 3 [76] Yiwen Zhang et al. Dosediff: Distance-aware diffusion model for dose prediction in radiotherapy. arXiv preprint arXiv:2306.16324 , 2023. 1, 2 [77] Can Zhao, Pengfei Guo, Dong Yang, Yucheng Tang, Yu-fan He, Benjamin Simon, Mason Belue, Stephanie Harmon, Baris Turkbey, and Daguang Xu. MAISI-v2: Accelerated 3d high-resolution medical image synthesis with rectified flow and region-specific contrastive loss. arXiv preprint arXiv:2508.05772 , 2025. 2 [78] Kaiwen Zheng, Huayu Chen, Haotian Ye, Haoxiang Wang, Qinsheng Zhang, Kai Jiang, Hang Su, Stefano Ermon, Jun Zhu, and Ming-Yu Liu. Diffusionnft: Online diffusion rein-forcement with forward process. In International Conference on Learning Representations (ICLR) , 2026. 2, 5, 16 
+
+12 Supplementary Contents 
+
+A. Detailed Model Structures 14 B. Training Details 15 
+
+B.1. Data Sources . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15 B.2. Conditioning Modalities and Structure Selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15 B.3. Backbone Adaptation and Supervised Training . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15 B.4. Baselines and Fairness Protocol . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15 B.5. RL Post-training (ScardNFT) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16 B.6. Optimization and Hyperparameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16 
+
+C. More Visual Results 17 D. Additional Baseline Comparisons 19 E. Extended Ablation Studies 20 
+
+E.1. Noise Prediction Parameterization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20 E.2. VAE Adaptation Strategies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20 E.3. Discussion on MAISI Diffusion Prior . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21 
+
+F. Statistical Significance Analysis 22 
+
+13 A. Detailed Model Structures 
+
+As shown in Figure 6, our DiffKT3D adopts a VAE–DiT hybrid architecture [ 29 , 45 , 62 ]. For illustration we depict three volumetric inputs Xa, Xb, and Xg corresponding to CT, structure masks (PTV and OARs), and dose, respectively; the same pipeline applies to all available modalities. Each volume is first passed through a frozen 3D VAE encoder [ 29 ] to obtain compact latent representations. These latent grids are then patchified into token sequences and concatenated before being fed into a stack of DiT blocks [ 45 ]. The diffusion process operates entirely in this latent-token space. After denoising, the output tokens are reshaped back into latent feature maps Va, Vb, and Vg , which are decoded by the corresponding VAE decoders to recover volumetric predictions at the original spatial resolution. The right panel of Figure 6 details a single DiT block. Each block follows a transformer-style design [ 60 ] with self-attention and a feed-forward network (FFN), all wrapped by residual connections. In the original Wan 2.1 backbone [ 62 ], each block also contains a cross-attention layer that lets vision tokens attend to text tokens. DiffKT3D does not use any language or text conditioning, so we remove this cross-attention module and let all tokens from all volumetric modalities (CT, masks, dose, and other channels) jointly interact through the shared self-attention layers. A shared timestep–role embedding (encoding the diffusion step and whether a token is a target or a conditioning token) is processed by a small MLP to produce modulation vectors. These vectors drive FiLM-like layers [ 46 ]: we apply scale-and-shift operations to the normalized tokens before the self-attention and FFN modules, and Scale -only gates on the residual outputs of self-attention and FFN. This modulation allows each DiT block to dynamically control feature amplification or suppression across timesteps and roles while keeping the overall architecture lightweight and stable to train. DiT Blocks 
+
+> VAE
+> Encoder
+> VAE
+> Encoder
+> VAE
+> Encoder
+
+# …
+
+# …  
+
+> Patchify Patchify Patchify
+
+# …
+
+> Timestep
+> Role
+
+CT  Masks  Dose 
+
+𝑋 𝑎  𝑋 𝑏  𝑋 𝑔 
+
+> VAE
+> Decoder
+> VAE
+> Decoder
+> VAE
+> Decoder
+
+# …
+
+# …
+
+𝑉 𝑎  𝑉 b 𝑉 𝑔   
+
+> Input token Timestep
+> Role
+> Scale, Shift MLP
+> Self -Attn
+> Scale
+> Scale, Shift
+> FFN
+> Scale
+> Cross -Attn
+
+# × 𝑁 
+
+Figure 6. Architecture of the proposed VAE–DiT-based conditional diffusion model DiffKT3D. Left: multi-branch VAE–DiT pipeline for CT (Xa), structure masks ( Xb), and dose ( Xg ) with their corresponding latent outputs {Va, V b, V g }. Right: structure of a single DiT block with timestep–role modulation using FiLM-style ( Scale, Shift ) layers and residual gates ( Scale ). The Any2Any gating and noisy latent are not shown for simplification. We remove cross-attention layers from original Wan DiT blocks because DiffKT3D does not use language tokens. 
+
+14 B. Training Details 
+
+B.1. Data Sources 
+
+We train and evaluate DiffKT3D on the official GDP–HMM Grand Challenge dataset [ 16 ] for head-and-neck and lung cancer and on the REQUITE prostate cohort [ 53 ], strictly following the organizers’ definition of the voxel grid (spacing, orientation, and cropping box) and the body mask. The REQUITE cohort plans were re-optimized in Varian Eclipse ESAPI under multiple planning configurations, yielding multiple plans per patient. CT images have been clipped to [−1000 , 1000] 
+
+HU, and normalized on a per-patient basis before loading into AI model; all structure masks, beam plates, and angle plates are rasterized onto the same grid as the reference dose. To obtain a fixed field-of-view compatible with the Wan 2.1 VAE, we crop a 97 × 128 × 160 3D region of interest around the PTV isocenter for every case. The in-plane size 128 × 160 matches the challenge bounding box, while the depth of 97 voxels is chosen as 4d + 1 so that the downsampled latent depth satisfies the causal attention constraint in the Wan 2.1 VAE. After cropping, all modalities are linearly scaled to the range [−1, 1] before being passed into the frozen VAE encoder, matching the expected input range of the pretrained backbone. 
+
+B.2. Conditioning Modalities and Structure Selection 
+
+Each patient is represented by up to seven modalities (see the modality visualization in the appendix of [16]): 
+
+{ CT , PTV , OAR masks , body mask , dose , beam plate , angle plate }.
+
+The “PTV” channel encodes the optimized planning target volumes after any site-specific post-processing. Beam and angle plates follow the official GDP–HMM implementation and provide beam geometry and gantry angle information on the same voxel grid as the dose. To make supervision consistent across disease sites, we standardize the set of OARs used during training. As in the challenge data, we retain up to about 30 OARs for head-and-neck, and 7 OARs for lung plans. For prostate plans, we retain four OARs: bladder, rectum, femoral head (left), and femoral head (right). All masks are stored as floating-point channels and normalized jointly with the other modalities to [−1, 1] before patch embedding. 
+
+B.3. Backbone Adaptation and Supervised Training 
+
+We initialize DiffKT3D from the public Wan 2.1 DiT+VAE checkpoint [ 62 ], whose DiT backbone follows the scalable diffusion transformer design of Peebles and Xie [ 45 ], and keep the VAE completely frozen throughout all experiments. On top of Wan’s 3D patch embedding, we introduce seven modality-specific 3D patch-embedding heads, one per modality in the set above. Each head has the same architecture as the original Wan patch embed but uses separate parameters, mapping the latent grids (or their noised versions for target modalities) into tokens of hidden dimension D.To support Any2Any training, we augment the backbone with: (i) a learnable binary role embedding that tags each token as either target or condition and is injected via the shared AdaLayerNorm modulator by adding it to the timestep embedding, and (ii) a 4D RoPE positional encoding that assigns rotary phases along a slot axis (modality ID) and the three spatial axes 
+
+(H, W, D ). These additions are lightweight and leave the Wan DiT block structure unchanged; only the DiT blocks and the new embedding layers are fine-tuned on RT data. 
+
+B.4. Baselines and Fairness Protocol 
+
+In GDP–HMM challenge, regression baselines are the top challenge entries built on MedNeXt [ 51 ], nnU-Net [ 24 ], and latent diffusion backbones [ 49 ], and we evaluate them using the official model weights released by the organizers. Diffusion baselines include an MAISI-based conditional U-Net [ 20 ] and a conditional DiT variant that concatenates all conditioning modalities with the dose channel [ 45 ]. All methods operate on exactly the same cropped 97 × 128 × 160 volumes and use the same set of modalities and OAR selection as DiffKT3D. For the REQUITE prostate experiments, where no challenge leaderboard is available, we initialize all baselines from their GDP–HMM-trained checkpoints 1 and fine-tune them on prostate data under the same schedule as our model: identical preprocessing, crop size, effective batch size, and number of epochs. Our internal regression and diffusion variants are also trained with the same protocol. This setup ensures that performance differences come from the model design (Any2Any conditioning, role embeddings, 4D RoPE, and post-training) rather than from data handling or compute budget. 
+
+> 1https://huggingface.co/Jungle15/GDP-HMM_baseline/tree/main/participants_solutions
+
+15 B.5. RL Post-training (ScardNFT) 
+
+After supervised training we perform a lightweight RL-style post-training stage using the ScardNFT objective, which instantiates the DiffusionNFT formulation [ 78 ] on our clinical scorecard. For each patient, we generate candidate dose predictions with a 10-step deterministic sampler from the Flow-Matching/DPM-Solver family [ 36 , 38 ], starting from multiple initial noises and evaluate each candidate using the clinically informed Scorecard together with a voxel-wise mean absolute error (MAE) anchor. Based on these scores, we construct four positive/negative sample pairs per case and optimize the DiffusionNFT-style loss described in the main text. To keep this stage efficient and stable, we avoid full-parameter fine-tuning. Instead, we insert rank-64 LoRA adapters into all self-attention and feed-forward layers of the DiT backbone and update only these adapters together with the small modulation networks, keeping the original Wan weights frozen [ 22 ]. This post-training is only a small fraction of overall training cost but yields improved clinical preference alignment reported in the main paper without sacrificing voxel-level accuracy. 
+
+B.6. Optimization and Hyperparameters 
+
+The base DiffKT3D models (before ScardNFT post-training) are obtained from a single Flow-Matching training run with a 
+
+v-prediction objective in the latent space. We train for 100 epochs on eight B200 GPUs with data parallelism, using a per-GPU batch size of 1 (effective batch size 8). The model is optimized with Adam ( β1 = 0 .9, β2 = 0 .999 , ϵ = 10 −8, no weight decay) and a constant learning rate of 1 × 10 −4 after a linear warm-up of 500 steps. We use 1,000 training timesteps with a flow-shift parameter of 3.0, and enable timestep embedding with an additional σ-embedding. Training is performed in bfloat16 mixed precision with gradient accumulation disabled and gradient clipping at a global norm of 0.1. We do not use classifier-free guidance or dropout in the conditioning pathways (CFG dropout probability set to 0). The subsequent ScardNFT post-training stage uses the same optimizer but only updates the LoRA adapters and modulation MLPs described in Sec. B.5. 16 C. More Visual Results 
+
+We provide additional qualitative examples in Figure 7 to complement the quantitative results in the main paper. For three representative patients from the head-and-neck, lung, and prostate cohorts, we display the CT slice with contoured PTV and OARs, followed by the ground-truth dose distribution, the prediction from DiffKT3D, and the prediction from the challenge top-1 baseline. Below each row we plot the DVHs of the target and selected OARs, and we also show voxel-wise absolute error maps between the predictions and the ground-truth dose. These examples illustrate that, across disease sites, DiffKT3D better preserves PTV coverage while reducing hot spots in nearby OARs and body compared with the top-1 baseline. For data sample visualization, you may refer to the work of challenge data preparation [16]. 17 CT/PTV Reference Ours Top1 -solution    
+
+> Head Neck
+> Lung
+> Prostate
+> Ours DVH Top1 DVH Ours Diff Top1 Diff
+
+Figure 7. Qualitative comparison on representative head-and-neck, lung, and prostate cases. For each case we show CT with delineated PTV/OARs, ground-truth dose, DiffKT3D prediction, and the challenge top-1 baseline, together with DVHs and voxel-wise absolute error maps. Color bars are in Gy. 
+
+18 D. Additional Baseline Comparisons 
+
+To provide a broader assessment of DiffKT3D against alternative diffusion-based conditioning strategies, we evaluate three additional baselines on the GDP–HMM dataset: (i) a 3D ControlNet [ 73 ] that applies ControlNet-style conditioning branches to the Wan 2.1 DiT backbone, (ii) a 2D slice-wise diffusion model following prior RT dose prediction works [ 13 ] that processes each axial slice independently with a 2D diffusion backbone, and (iii) a LoRA-only variant that replaces full DiT fine-tuning with rank-64 LoRA adapters under the same Any2Any paradigm. Table 6 reports performance alongside the main models from the paper, together with per-case inference time and peak GPU memory on a single H100.                                     
+
+> Table 6. Extended comparison on GDP–HMM (validation set). All diffusion models use 10-step sampling. Inference time and peak GPU memory are measured per case on a single H100 GPU. Data loading time is included. Method MAE ↓Score ↑Time (s) ↓Mem (GB) ↓
+> Challenge Top-1 (regression) 2.03 134.26 3.19 3.08 Ours (MAISI, CT pretrain) 1.89 135.89 3.16 2.68 Ours (Conditional DiT) 2.07 135.41 8.35 6.67 Ours (Any2Any, full fine-tuning) 1.90 136.22 16.04 8.48 Ours (Any2Any + ScardNFT) 1.91 138.17 16.42 8.70 3D ControlNet 2.42 125.79 17.65 10.24 2D slice-wise diffusion 2.14 132.90 17.95 32.40 LoRA on Wan DiT + Any2Any 2.26 132.44 16.42 8.70
+
+Analysis. The 3D ControlNet approach, while effective in natural image domains, performs substantially worse (MAE 2.42, Score 125.79) when applied to heterogeneous RT modalities. We attribute this to the fundamental mismatch between the ControlNet design—which assumes a single conditioning modality of the same domain as the generation target—and the RT setting where multiple structurally diverse modalities (CT, binary masks, beam plates, angle encodings) must jointly guide generation. The ControlNet copy-branch architecture cannot flexibly distinguish between these heterogeneous inputs, and its additional parameters increase memory overhead without compensating performance gains. The 2D slice-wise diffusion baseline achieves reasonable voxelwise accuracy (MAE 2.14) but suffers from inter-slice inconsistency and significantly worse clinical Scorecard alignment (132.90). Processing each axial slice independently discards 3D spatial context that is crucial for dose conformality, particularly in complex head-and-neck geometries where dose gradients span many slices. Additionally, this approach requires substantially more GPU memory (32.40 GB vs. 8.70 GB for our full model) due to the need to process all slices sequentially and stitch results. The LoRA-only variant (MAE 2.26, Score 132.44) demonstrates that parameter-efficient fine-tuning alone is insufficient to fully adapt the pretrained Wan backbone for the RT domain when used throughout the entire training pipeline. Full fine-tuning of the DiT blocks during the main supervised training stage remains essential for closing the large domain gap between natural video and medical dose data. However, as discussed in Section B.5, LoRA proves effective for the lightweight ScardNFT post-training stage, where it stabilizes RL updates without degrading the well-trained base model. 
+
+Computational context. In a clinical RT planning workflow, optimization-based planning typically requires 5–30 minutes per case depending on complexity and beam arrangement. In this context, the inference time of DiffKT3D, even with 10-step sampling, can be well within practical deployment thresholds. Dose prediction may serve as an initialization or quality-assurance tool rather than the final deliverability, and faster single-step inference at second-level can be used for interactive exploration when speed is preferred over peak accuracy. We note that further runtime reductions are achievable through CUDA/C++ deployment optimization and model distillation, which we leave for future work. 19 E. Extended Ablation Studies 
+
+We present two additional ablation studies that complement the analyses in the main paper: (i) the effect of noise-prediction (ϵ-prediction) parameterization, and (ii) the impact of VAE adaptation strategies. 
+
+E.1. Noise Prediction Parameterization 
+
+Table 2 in the main paper compares x0-prediction and v-prediction under the Any2Any framework. Here we additionally evaluate ϵ-prediction (noise prediction), which is the most common parameterization in standard diffusion literature [ 21 ], to provide a complete picture of prediction-type choices.                     
+
+> Table 7. Comparison of prediction parameterizations on GDP–HMM (validation). Results for x0-pred and v-pred are reproduced from Table 2 in the main paper for convenience. Prediction Type Steps MAE ↓Score ↑
+> x0-pred 12.45 117.64
+> ϵ-pred 12.16 133.09
+> v-pred 12.12 133.59
+> ϵ-pred 10 1.93 137.82
+> v-pred 10 1.91 138.17
+
+Analysis. Both ϵ-pred and v-pred substantially outperform x0-pred in the single-step regime, confirming that direct signal regression is suboptimal for the flow-matching framework adopted by DiffKT3D. Between ϵ-pred and v-pred, the gap is modest at 1 step (MAE: 2.16 vs. 2.12; Score: 133.09 vs. 133.59) and narrows further at 10 steps (MAE: 1.93 vs. 1.91; Score: 137.82 vs. 138.17). The consistent advantage of v-pred aligns with observations in the video generation literature [ 52 ], where 
+
+v-parameterization improves training stability and sample quality under flow-matching objectives. We therefore adopt v-pred as the default for all main experiments. 
+
+E.2. VAE Adaptation Strategies 
+
+DiffKT3D keeps the pretrained Wan 2.1 VAE entirely frozen during training. Here we evaluate whether adapting the VAE decoder—via LoRA or full fine-tuning—could reduce the reconstruction gap introduced by the domain shift from natural video to medical dose distributions.            
+
+> Table 8. Effect of VAE adaptation on GDP–HMM (validation). All variants use the same Any2Any DiT with v-pred and 10-step sampling. VAE Strategy MAE ↓Score ↑
+> Frozen VAE (default) 1.91 138.17 VAE Decoder LoRA 1.90 138.24 VAE Decoder fine-tuning 1.89 138.39 Full VAE fine-tuning 2.54 121.76
+
+Analysis. Decoder-only adaptation yields marginal improvements: LoRA on the decoder reduces MAE by 0.01 Gy, and full decoder fine-tuning reduces it by 0.02 Gy while slightly improving the clinical Score. These gains are modest because the Wan VAE’s latent space already provides a sufficiently expressive representation, and the DiT backbone compensates for residual distributional differences through its fine-tuned generation process. In contrast, full VAE fine-tuning (encoder + decoder) dramatically degrades performance (MAE 2.54, Score 121.76). This failure occurs because modifying the encoder destroys the pretrained latent space structure that the DiT backbone relies on, effectively negating the benefit of transfer learning. The encoder-side perturbation causes a distribution mismatch between the latent codes produced during training and those expected by the frozen DiT weights from pretraining. Based on these results, we adopt the frozen-VAE strategy as the default. It preserves the pretrained latent space, avoids the risk of catastrophic drift from encoder adaptation, and adds no additional training cost. In settings where marginal gains are desired, decoder-only LoRA offers a safe middle ground with negligible overhead. 20 Table 9. GDP–HMM head-and-neck results on the MAISI backbone with different output parameterizations. MAE is reported in Gy. Infer time is only reported on deep learning backbone forward without data loading. Method Valid MAE Test MAE Infer time (H100) Train time (H100) Challenge Winner 2.03 2.07 <1 s 144 h Ours (MAISI, x0-pred, 1 step) 1.89 1.95 <1 s 12 h Ours (MAISI, noise-pred, 5 steps) 10.475 11.945 1.2 s 12 h Ours (MAISI, noise-pred, 50 steps) 10.636 11.969 5.7 s 12 h 
+
+E.3. Discussion on MAISI Diffusion Prior 
+
+MAISI [ 20 ] is originally trained to generate CT images, which is fundamentally different from the task of generating dose. To evaluate whether MAISI can serve as a viable backbone for dose prediction, we ported our training pipeline to the public MAISI latent diffusion model, replacing the Wan VAE+DiT with the MAISI VAE+UNet backbone while keeping the same data preprocessing and optimization schedule as DiffKT3D. Table 9 reports performance on the official validation and test sets. With an x0-prediction objective and joint fine-tuning of MAISI VAE decoder, our re-implementation improves MAE over challenge top1 model while using substantially less training time and without task-specific model crafting. This provides independent evidence beyond main Wan-based experiments that diffusion priors learned from a large-gap source domain can transfer effectively to a target domain. 
+
+However, we find that switching the same MAISI backbone to a noise-prediction objective while freezing the VAE decoder causes performance to collapse: both validation and test MAE degrade by over 5×, Increasing the number of sampling steps from 5 to 50 does not recover performance (Table 9). Our closer look indicates that the failure is driven by precision rather than optimization. After standardizing doses, the ground-truth dose maps are normalized to a fixed [0 , 1] range and then linearly rescaled to [0 , 70] Gy. In contrast, the decoded dose from noise-predicted MAISI latents often occupies a wider and case-dependent range, roughly [0 , 1.05] –[0 , 1.2] ,corresponding to [0 , 74] –[0 , 84] Gy after rescaling. In other words, the maximum of the decoded range is no longer pinned at 1 but drifts between about 1.05 and 1.2 across patients. This drifting dynamic range makes it difficult for a single regression head to align voxel intensities across patients, especially near the clinically important 60–70 Gy region, and explains why MAISI behaves well for x0-prediction with a jointly trained decoder but degrades sharply for v- or noise-parameterizations under a frozen-decoder regime. Since DiffKT3D is explicitly designed around a frozen VAE and Any2Any conditioning, we therefore adopt the Wan 2.1 VAE and DiT backbone [45, 62] rather than MAISI, and we included MAISI-based model as a baseline for DiffKT3D. 21 F. Statistical Significance Analysis 
+
+To quantify whether the performance improvements of DiffKT3D over the challenge top-1 baseline are statistically significant, we conduct paired t-tests on per-patient MAE and Scorecard values across the GDP–HMM test set. 
+
+Setup. For each of the 498 test patients, we compute: (i) the voxelwise MAE within the body mask, and (ii) the clinical Scorecard value aggregating PTV coverage and OAR sparing metrics. We then perform two-sided paired t-tests comparing our final model (Any2Any + ScardNFT) against the challenge top-1 regression baseline. 
+
+Results. Both tests yield p < 10 −3, confirming that the improvements in MAE (2.07 → 1.93 Gy) and Scorecard (134.81 → 137.55) are statistically significant and not attributable to random variation across patients. 
+
+Discussion on single-step vs. multi-step inference. While the aggregated Scorecard difference between single-step v-pred (133.59) and 10-step v-pred (138.17) may appear moderate in absolute terms, the Scorecard aggregates metrics across 30+ regions of interest (ROIs). Many organs distant from the tumor contribute similar scores regardless of sampling depth, which can mask substantial local improvements. For clinically critical structures near the target—where precise dose gradients directly impact treatment quality—the per-organ score differences can be substantial (e.g., differences of 0–12 points for individual OARs). This observation supports the use of multi-step refinement in clinical deployment, where localized dosimetric accuracy in high-gradient regions is paramount. 22

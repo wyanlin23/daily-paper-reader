@@ -1,0 +1,257 @@
+Title: ScribbleDose: Scribble-Guided Dose Prediction in Radiotherapy
+
+URL Source: https://arxiv.org/pdf/2605.11555v1
+
+Published Time: Wed, 13 May 2026 00:41:23 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# ScribbleDose: Scribble-Guided Dose Prediction in Radiotherapy 
+
+Zhenxi Zhang 1⋆, Yitao Zhuang 1⋆, Yao Pu 1⋆, Peixin Yu 1⋆, Zirong Li 3, Yan Xia 3, Hui Li 1, Bin Li 4, Fuchen Zheng 5, and Ge Ren 1,2B 
+
+> 1
+
+Department of Health Technology and Informatics, The Hong Kong Polytechnic University, Hong Kong SAR  
+
+> 2
+
+The Hong Kong Polytechnic University Shenzhen Research Institute, The Hong Kong Polytechnic University, China  
+
+> 3
+
+Department of Orthodontics and Orofacial Orthopedics, Friedrich-Alexander-University Erlangen-Nuremberg, Germany  
+
+> 4
+
+Institute of Scientific Instrumentation, Shenzhen Institutes of Advanced Technology, Chinese Academy of Sciences, China  
+
+> 5
+
+Department of Computer and Information Science, University of Macau, Macau SAR 
+
+Abstract. Anatomical structure masks are widely adopted in radiother-apy dose prediction, as they provide explicit geometric constraints that facilitate structure-dose coupling. However, conventional manual delin-eation of these masks requires precise annotation of structure boundaries relevant to radiotherapy, which is time-consuming and labor-intensive. To address these limitations, we propose a scribble-guided dose predic-tion framework that relies solely on anatomical structures annotated with sparse scribbles. Specifically, we design a Scribble Completion Module (SCM) to generate dense anatomical masks by propagating sparse scrib-ble labels to semantically similar voxels. During the propagation pro-cess, a supervoxel-based regularization is introduced to preserve geomet-ric boundary consistency to ensure anatomical plausibility. Furthermore, we propose a Structure-Guided Dose Generation Module (SGDGM) to strengthen the correspondence between sparse structural cues and dose distribution. The completed dense masks derived from scribbles serve as structural guidance to condition dose prediction, forming a scribble-mask-dose learning pipeline under sparse annotation. Experiments on the GDP-HMM dataset demonstrate that ScribbleDose achieves competitive dose prediction performance using only sparse structural annotations. The source code and reannotated scribble annotations are publicly avail-able at https://github.com/iCherishxixixi/ScribbleDose. 
+
+Keywords: Radiotherapy Dose Prediction · Scribble Annotation · Struc-ture Guided Modeling.  
+
+> ⋆
+
+Equal contribution.  
+
+> B
+
+Corresponding author. E-mail: gary-ge.ren@polyu.edu.hk. 
+
+> arXiv:2605.11555v1 [cs.CV] 12 May 2026
+
+2 Zhang et al. CT OAR mask PTV mask Dose     
+
+> Lightw eight
+> network
+> (a) Conventional approach with mask prompt
+> CT Dose
+> Lightw eight
+> network
+> (b) Dose prediction without structural prompt
+> OAR mask PTV mask CT PTV frame OAR frame
+> Foundation
+> network
+> Dose
+> Lightw eight
+> network
+> (c) Two -stage dose prediction with point/box prompt
+> (d) End -to -end dose prediction with
+
+scribble prompt ( Proposed )   
+
+> OAR mask PTV mask CT
+> Lightw eight
+> semantic
+> propagation
+> Dose
+> Lightw eight
+> network
+> PTV scribble OAR scribble
+> Supervoxel
+> Forward Backward
+> Trainable Frozen
+
+Fig. 1. Comparison of existing dose prediction paradigms and the proposed scribble-guided framework. (a) represents the conventional mask-based paradigm that relies on densely delineated structural masks. (b) and (c) aim to reduce annotation burden through CT-only modeling and two-stage foundation-model-based pipelines with box prompts, respectively. (d) presents the proposed unified scribble-guided framework. 
+
+## 1 Introduction 
+
+Radiotherapy planning plays a central role in modern cancer treatment, as treatment outcomes largely depend on the delivered dose distribution [4]. A high-quality plan requires sufficient coverage of the Planning Target Volume (PTV) while minimizing irradiation to surrounding Organs-at-Risk (OAR) [11]. Traditional treatment planning relies on manual iterative optimization guided by expert-defined objectives, which is time-consuming and may lead to inter-planner variability [21]. Recently, deep learning-based approaches built upon CNN [20,12], Transformers [5,18], Mamba [27], and diffusion model [25] have been widely adopted for automated dose prediction. These models significantly shorten planning time while achieving accuracy comparable to manual plans, positioning deep learning-based dose prediction as a promising approach for ra-diotherapy planning [13]. Most deep learning-based dose prediction models rely on fully delineated anatomical masks as explicit geometric priors for structure-dose modeling, as illustrated in Fig. 1(a). However, obtaining high-quality masks requires precise manual delineation, which is labor-intensive and highly dependent on clinical expertise. To alleviate this burden, Wllems et al. first proposed predicting dose distributions directly from CT images, as shown in Fig. 1(b), without requiring explicit PTV or OAR masks [19]. Subsequently, Jiao et al. introduced a CT-dose framework that incorporates supervoxel-based representations to enrich anatom-ical information while still avoiding manual contour inputs [6]. While such mask-free approaches alleviate the need for manual delineation, the absence of explicit ScribbleDose: Scribble-Guided Dose Prediction in Radiotherapy 3
+
+structural guidance may compromise the modeling of fine-grained geometric con-straints that are critical for clinically plausible dose allocation. To incorporate ex-plicit structural constraints while reducing manual contouring, subsequent stud-ies have adopted a two-stage framework based on foundation models [23,24]. In this framework, foundation models are first employed to extract dense PTV and OAR masks from CT images, often guided by sparse prompts such as points and boxes, as illustrated in Fig. 1(c). The generated masks are subsequently used as inputs for downstream dose prediction. Although this approach alleviates man-ual contouring during deployment, the two-stage design optimizes anatomical structure extraction and dose prediction separately, which may limit their joint adaptation for structure-aware dose modeling. To address these limitations, we explore the sparse scribble as a lightweight al-ternative to fully delineated masks. Compared to dense mask annotations, scrib-ble substantially reduces annotation cost by avoiding precise boundary delin-eation of PTVs and OARs while retaining essential structural cues [7,22]. Recent scribble-supervised medical image segmentation studies have further improved dense mask reconstruction through knowledge distillation, contrastive regular-ization, and foreground-background feature discrimination [8,14]. Different from these segmentation-oriented methods, our goal is not to develop a standalone scribble-supervised segmentation model, but to use scribbles as lightweight struc-tural guidance for dose prediction. To this end, we design a scribble-guided dose prediction framework (Fig. 1(d)) that completes sparse scribble annotations into dense anatomical priors and jointly integrates them into dose modeling. Specif-ically, the Scribble Completion Module (SCM) propagates scribble labels to se-mantically correlated voxels, while supervoxel-derived boundary priors regularize the propagated masks toward anatomical boundaries. The completed masks are then incorporated by the Structure-Guided Dose Generation Module (SGDGM) through mask-guided attention, enabling continuous scribble-mask-dose learn-ing. During training, dose prediction losses are further propagated back to the scribble completion stage, allowing structural completion and dose generation to be optimized jointly. Experiments on the benchmark dataset validate the feasibility of accurate dose prediction under sparse structural annotation. Our contributions are summarized as follows: 1. We reannotate and publicly release scribble-level structural labels on the GDP-HMM dataset, and propose a unified scribble-guided dose predic-tion framework that reduces the dependence on fully delineated structural masks. 2. We introduce a Scribble Completion Module that reconstructs anatomi-cally consistent dense masks from sparse scribbles with supervoxel boundary constraints. 3. We develop a Structure-Guided Dose Generation Module that utilizes mask-guided attention to couple reconstructed masks with dose, enabling continuous scribble-mask-dose learning. 4 Zhang et al. CT     
+
+> Transformer Encoder
+> Patch Partition
+> SGDGM
+> Down -sampling
+> Down -sampling
+> SGDGM
+> Down -sampling
+> DWConv
+> LN  ＝
+> Decomposed retentive attention
+> LN
+> FFN
+> (b) Structure -Guided Dose Generation Module
+> PTV scribble
+> OAR scribble
+> Background
+> scribble
+> Semantic
+> extraction
+> (a) Scribble Completion Module
+> Coarse
+> PTV mask
+> Coarse OAR
+> mask Supervoxel Boundary
+> distance map
+> Edge filtering
+> Euclidean
+> distance
+> transform
+> Coarse masks
+> CNN Decoder
+> Semantic
+> features
+> Label
+> refinement
+> Unlabeled
+> Dose
+> Matrix multiply Matrix addition Matrix subtraction Loss
+> Semantic
+> clustering
+
+Fig. 2. Overview of the proposed scribble-guided dose prediction framework. The framework includes two main components: (a) the Scribble Completion Module (SCM) and (b) the Structure-Guided Dose Generation Module (SGDGM). 
+
+## 2 Method 
+
+In this section, we present the proposed scribble-guided dose prediction frame-work (Fig. 2), which reformulates structure-aware dose modeling under sparse structural supervision. Rather than relying on fully delineated masks, the pro-posed framework establishes a continuous scribble-mask-dose learning pipeline that incorporates geometric constraints under sparse annotation and jointly op-timizes structural reconstruction and dose generation. The framework is built around two principal modules. The Scribble Completion Module (SCM, Fig. 2(a)) reconstructs dense structural masks from sparse scribbles under supervoxel-based geometric constraints. The Structure-Guided Dose Generation Module (SGDGM, Fig. 2(b)) then integrates the reconstructed masks into dose modeling via mask-aware attention. This design allows structural cues and dose supervi-sion to mutually reinforce each other during training. 
+
+2.1 Scribble Completion Module 
+
+The Scribble Completion Module aims to reconstruct dense structural masks from sparse scribble annotations. To achieve this, SCM consists of two com-plementary components: (1) a scribble-guided semantic clustering strategy to propagate sparse labels in feature space, and (2) a supervoxel-based boundary constraint to enforce anatomical consistency in the spatial domain. 
+
+Scribble-Guided Semantic Clustering aims to propagate sparse scribble annotations to unlabeled voxels in feature space and generate dense structural masks. Inspired by prototype-based feature clustering in semantic segmenta-tion [17] and semantic feature aggregation in medical structure segmentation [26], we perform centroid-based semantic clustering by computing class-wise feature ScribbleDose: Scribble-Guided Dose Prediction in Radiotherapy 5
+
+centroids from scribble-labeled voxels and propagating sparse labels in the fea-ture space. Specifically, given a CT volume X ∈ RD×H×W , we extract volu-metric features F ∈ RC×D×H×W utilizing a lightweight 3D encoder, where C is the feature dimension. For each semantic class k ∈ { PTV , OARs , Background },we compute a class-wise feature centroid from scribble-labeled voxels. Let Ωk
+
+denote the voxel set annotated by scribbles of class k, and Nk its cardinality. The centroid is defined as: 
+
+ck = 1
+
+Nk
+
+X
+
+> i∈Ωk
+
+Fi
+
+∥Fi∥ , (1) where feature vectors are ℓ2-normalized to stabilize similarity computation. We then measure the similarity between each voxel feature and the class centroids using cosine similarity: 
+
+sk,i = c⊤ 
+
+> k
+
+Fi
+
+τ , (2) where τ is a temperature parameter. The similarity scores sk,i are computed for unlabeled voxels and serve as coarse class logits. These logits are subsequently refined by a lightweight decoder to obtain dense mask predictions. To encourage intra-class compactness and inter-class separability in feature space, we introduce two regularization terms. The compactness loss reduces fea-ture variance within scribble regions: 
+
+Lcompact = X
+
+> k
+
+1
+
+Nk
+
+X
+
+> i∈Ωk
+
+∥Fi − ck∥2, (3) while the separation loss penalizes similarity between different class centroids: 
+
+Lsep = X 
+
+> k̸=j
+
+exp  −∥ ck − cj ∥2 . (4) Through this centroid-driven semantic propagation, sparse scribble annotations are progressively expanded into coarse structural masks in feature space. 
+
+Supervoxel-Based Boundary Constraint introduces geometry-aware spa-tial regularization into mask reconstruction. In particular, supervoxels partition the CT volume into locally homogeneous intensity regions, preserving intrinsic anatomical boundaries. By leveraging supervoxel-derived boundary cues, the re-constructed masks are encouraged to align with anatomically consistent spatial structures. Direct alignment with hard boundary maps treats all non-boundary devi-ations uniformly, without distinguishing between small and large spatial dis-crepancies. To provide distance-sensitive geometric supervision, we construct a distance-based boundary representation derived from supervoxel boundaries. Specifically, we apply Euclidean Distance Transform (EDT) to the supervoxel boundary map to compute a distance field Dsv , where each voxel encodes its min-imal distance to the nearest supervoxel boundary. The resulting distance map 6 Zhang et al. 
+
+satisfies the Eikonal property |∇ Dsv | = 1 almost everywhere, yielding a spa-tially continuous geometric supervision signal. In practice, Gaussian smoothing is employed as an efficient approximation of distance-based weighting to obtain a differentiable soft boundary representation ˜Dsv . The boundary constraint is formulated as: 
+
+Lboundary = Bpred − ˜Dsv (5) where Bpred denotes the predicted boundary map. This distance-based regu-larization stabilizes boundary refinement and promotes anatomically plausible mask reconstruction beyond scribble-labeled regions. 
+
+2.2 Structure-Guided Dose Generation Module 
+
+The Structure-Guided Dose Generation Module aims to explicitly couple anatom-ical structures with dose modeling while preserving spatial continuity of dose distributions. To model such spatial coherence, SGDGM is implemented using Retentive Transformers (RMT) [2]. Specifically, RMT adopts decomposed reten-tive attention with distance-aware decay along spatial directions. This distance-decay mechanism encourages each patch to focus on neighboring regions while attenuating distant interactions, introducing an inductive bias aligned with the smoothness of dose distributions. Building upon the RMT backbone, we introduce a structure-guided attention mechanism based on the reconstructed coarse masks. Specifically, let MPTV and 
+
+MOAR denote the coarse masks of PTV and OAR regions, respectively. The structure-guided modulation map G is defined as: 
+
+G = 2 · σ(1 + αM PTV − βM OAR ) , (6) where α and β are learnable positive coefficients and σ(·) denotes the sigmoid function. The modulation map is applied multiplicatively to the multi-scale re-tentive attention maps: Attn ′ 
+
+> l
+
+= Attn l ⊙ Gl, (7) where Gl is resized to match the spatial resolution of Attn l. This modulation enhances attention responses within PTV regions while suppressing responses in OAR regions, thereby establishing explicit structure-dose coupling. Moreover, to further reinforce structural consistency in dose allocation, we introduce a ranking-based regularization term: 
+
+Lrank = max  0, ¯DOAR − ¯DPTV 
+
+ , (8) where ¯DPTV and ¯DOAR denote the average predicted dose within PTV and OAR regions, respectively. This auxiliary constraint provides a coarse global preference for higher average dose in target volumes than in OAR regions, serving as a supplementary regularization rather than a replacement for clinically specified dose-volume constraints. ScribbleDose: Scribble-Guided Dose Prediction in Radiotherapy 7
+
+Table 1. Performance comparison under different structure prompt types on the GDP-HMM dataset. * denotes a two-stage framework where segmentation is first performed to generate dense structural masks, followed by MedNeXt for dose prediction. Values are reported as mean (standard deviation).                                                             
+
+> Method Prompt Dose Score ↓DVH Score ↓HI ↓CI ↓D95 ↓
+> 3D UNet [19] None 3.275(1.295) 5.778(2.070) 0.082(0.049) 0.340(0.185) 5.136(3.053) RMT [2] 3.516(1.368) 7.085(3.215) 0.157(0.158) 0.526(0.223) 6.709(7.324) MedNeXt [15] 3.152(1.651) 6.425(2.294) 0.100(0.076) 0.393(0.185) 5.142(3.662) MedSAM2*[10] Box 2.670(1.356) 5.382(2.099) 0.157(0.064) 0.587(0.236) 7.537(4.521) SAMMed3D*[16] Point 2.732(1.275) 5.219(1.784) 0.143(0.061) 0.576(0.248) 6.558(3.957) C3D [9] Mask 1.993(1.139) 2.642(1.766) 0.040(0.091) 0.557(0.285) 2.398(1.980) C3D [9] Scribble 2.348(1.232) 6.716(2.280) 0.274(0.186) 0.361(0.253) 4.332(3.994) RMT [2] 2.557(1.263) 4.600(2.504) 0.109(0.073) 0.515(0.288) 6.138(4.914) MedNeXt [15] 2.268(1.245) 4.082(2.331) 0.100(0.076) 0.434(0.247) 5.675(4.517) ScribbleDose 1.974(1.149) 2.471(1.641) 0.046(0 .043) 0.171(0.188) 2.350(2.137)
+
+## 3 Experiments 
+
+3.1 Dataset and Implementation 
+
+Experiments were conducted on the dataset released by the GDP-HMM 2025 challenge [3], which contains 3231 radiotherapy plans. Following the official parti-tion, 2627 cases were used for training, 148 for validation, and 356 for testing. For each case, the dataset provides CT volumes together with PTV and OAR masks, as well as the corresponding clinical dose distributions. Additionally, scribbles were generated slice-wise from manual masks following [1], ensuring they remain strictly inside the original contours. Model training was conducted using PyTorch 2.6 on four NVIDIA A6000 GPUs. Optimization was performed with Adam for 300 epochs. The learning rate was initialized at 1 × 10 −4 and gradually annealed to 1 × 10 −6.
+
+3.2 Experimental Results 
+
+We evaluate different structure prompt types using Dose score, Dose Volume His-togram (DVH) score, Homogeneity Index (HI), Conformity Index (CI), and D95 .Here, D95 represents the dose received by 95 % of the volume of PTV. As shown in Table 1, refining coarse prompts with foundation models in a two-stage pipeline noticeably improves performance. Specifically, MedSAM2 and SAMMed3D re-duce the Dose score of MedNeXt without structural prompts from 3.152 to 2.670 and 2.732, respectively, indicating that transforming weak prompts into dense masks provides more effective geometric constraints for dose estimation. Further-more, under the evaluated prompt settings, the scribble-based unified framework achieves lower Dose and DVH scores than the evaluated point/box-based two-stage approaches. In particular, ScribbleDose achieves the lowest Dose Score and DVH Score among the evaluated sparse-prompt methods. Notably, ScribbleDose 8 Zhang et al. 
+
+Table 2. Ablation study on the Semantic Guidance (SG) and Morphological Guidance (MG). Values are reported as mean (standard deviation). 
+
+SG MG Dose Score ↓ DVH Score ↓ HI ↓ CI ↓ D95 ↓× × 2.557(1.263) 4.600(2.504) 0.109(0.073) 0.515(0.288) 6.138(4.914) 
+
+✓ × 2.209(1.202) 3.329(2.049) 0.078(0.057) 0.268(0.228) 3.913(3.476) 
+
+× ✓ 2.287(1.299) 4.774(1.626) 0.051(0.041) 0.487(0.209) 5.212(2.300) 
+
+✓ ✓ 1.974(1.149) 2.471(1.641) 0.046(0.043) 0.171(0.188) 2.350(2.137) MedNeXt (None) C3D (Mask) ScribbleDose (Scribble) MedSAM2* (Box) MedNeXt (Scribble) SAMMed3D* (Point)           
+
+> PTVHigh PTVLow SpinalCord Larynx Posterior Neck
+> Groundtruth MedNeXt (None) SAMMed3D* (Point) MedSAM2* (Box) MedNeXt (Scribble) C3D (Mask) ScribbleDose (Scribble)
+
+Fig. 3. Qualitative comparison of predicted dose distributions. Top: DVH of PTVs and OARs. Solid lines represent the reference dose distributions, while dashed lines denote the predicted dose distributions. Bottom: The axial dose maps. 
+
+achieves performance comparable to the mask-based C3D baseline, suggesting that sparse scribble guidance can recover effective structural cues for dose pre-diction while substantially reducing annotation requirements. 
+
+Ablation Study: Table 2 evaluates the contributions of Semantic Guidance (SG) and Morphological Guidance (MG). SG corresponds to the semantic prop-agation mechanism in the Scribble Completion Module, while MG enforces supervoxel-based boundary constraints for anatomical plausibility. Introducing SG substantially reduces the Dose and DVH scores, indicating that seman-tic propagation effectively reconstructs structure-dose relationships from sparse scribbles. Incorporating MG further improves geometric consistency. The combi-nation of SG and MG achieves the best overall performance, demonstrating that semantic and morphological guidance are complementary for accurate scribble-guided dose prediction. 
+
+Visualization: Qualitative results in Fig. 3 further demonstrate the effective-ness of the proposed scribble-guided framework. DVH comparisons show that ScribbleDose produces curves closer to the reference distribution for both PTVs and OARs. The axial dose maps show more concentrated and anatomically con-sistent high-dose regions (highlighted by the white box), suggesting that sparse ScribbleDose: Scribble-Guided Dose Prediction in Radiotherapy 9
+
+scribble can effectively recover meaningful geometric constraints for dose predic-tion. 
+
+## 4 Conclusion 
+
+In this work, we propose ScribbleDose, a scribble-guided dose prediction frame-work for radiotherapy under sparse structural annotation. The proposed method reconstructs dense anatomical priors from sparse scribbles through SCM and in-corporates them into dose modeling via SGDGM, enabling joint scribble-mask-dose optimization. Experiments on the GDP-HMM dataset demonstrate the fea-sibility of reducing dense mask dependence while maintaining competitive dose prediction performance. As an initial step toward scribble-guided dose predic-tion, this study uses scribbles simulated from manual masks, and future work will further investigate real clinical scribbles with potential positional shifts, missing slices, and inconsistent stroke patterns. Future work will also explore more clini-cally interpretable dose objectives and the robustness of supervoxel-based priors under ambiguous anatomical boundaries. 
+
+Acknowledgments. This research was partly supported by the Shenzhen Medical Re-search Fund (A2503079), Health and Medical Research Fund (11222456, 10240147) of the Health Bureau, Guangdong Basic and Applied Basic Research Foundation (2025A15 15012926), and Shenzhen Science and Technology Program (JCYJ20230807140403007). 
+
+Disclosure of Interests. The authors have no competing interests to declare that are relevant to the content of this article. 
+
+## References 
+
+1. Boettcher, W., Hoyer, L., Unal, O., Lenssen, J.E., Schiele, B.: Scribbles for all: Benchmarking scribble supervised segmentation across datasets. In: Advances in Neural Information Processing Systems. vol. 37, pp. 46002–46024 (2024) 2. Fan, Q., Huang, H., Chen, M., Liu, H., He, R.: Rmt: Retentive networks meet vision transformers. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 5641–5651 (2024) 3. Gao, R., Diallo, M., Liu, H., Magliari, A., Sackett, J., Verbakel, W., Meyers, S., Zarepisheh, M., Mcbeth, R., Arberet, S., et al.: Automating high quality rt plan-ning at scale. arXiv e-prints pp. arXiv–2501 (2025) 4. Hernandez, V., Hansen, C.R., Widesott, L., Bäck, A., Canters, R., Fusella, M., Götstedt, J., Jurado-Bruggeman, D., Mukumoto, N., Kaplan, L.P., et al.: What is plan quality in radiotherapy? the importance of evaluating dose metrics, complex-ity, and robustness of treatment plans. Radiotherapy and Oncology 153 , 26–33 (2020) 5. Hu, C., Wang, H., Zhang, W., Xie, Y., Jiao, L., Cui, S.: Trdosepred: A deep learn-ing dose prediction algorithm based on transformers for head and neck cancer radiotherapy. Journal of Applied Clinical Medical Physics 24 (7), e13942 (2023) 10 Zhang et al. 6. Jiao, Z., Peng, X., Wang, Y., Xiao, J., Nie, D., Wu, X., Wang, X., Zhou, J., Shen, D.: Transdose: Transformer-based radiotherapy dose prediction from ct images guided by super-pixel-level gcn classification. Medical Image Analysis 89 , 102902 (2023) 7. Lin, D., Dai, J., Jia, J., He, K., Sun, J.: Scribblesup: Scribble-supervised convolu-tional networks for semantic segmentation. In: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. pp. 3159–3167 (2016) 8. Liu, J., Tan, S.Y., Yang, X., Xu, Y., Yeo, S.Y.: Effdnet: A scribble-supervised med-ical image segmentation method with enhanced foreground feature discrimination. In: International Conference on Medical Image Computing and Computer-Assisted Intervention. pp. 194–204. Springer (2025) 9. Liu, S., Zhang, J., Li, T., Yan, H., Liu, J.: A cascade 3d u-net for dose prediction in radiotherapy. Medical Physics 48 (9), 5574–5582 (2021) 10. Ma, J., Yang, Z., Kim, S., Chen, B., Baharoon, M., Fallahpour, A., Asakereh, R., Lyu, H., Wang, B.: Medsam2: Segment anything in 3d medical images and videos. arXiv preprint arXiv:2504.03600 (2025) 11. Monshouwer, R., Hoffmann, A.L., Kunze-Busch, M., Bussink, J., Kaanders, J.H., Huizenga, H.: A practical approach to assess clinical planning tradeoffs in the design of individualized imrt treatment plans. Radiotherapy and Oncology 97 (3), 561–566 (2010) 12. Nguyen, D., Long, T., Jia, X., Lu, W., Gu, X., Iqbal, Z., Jiang, S.: A feasibility study for predicting optimal radiation therapy dose distributions of prostate cancer patients from patient anatomy using deep learning. Scientific Reports 9(1), 1076 (2019) 13. Nijkamp, J., Knäusl, B., Aznar, M., Georg, D., Thorwarth, D., Thwaites, D., Muren, L.P., van der Heide, U.A.: Current advances in automation in radiotherapy. Radiotherapy and Oncology 205 (2025) 14. Qu, Y., Lu, T., Zhang, S., Wang, G.: Scribsd+: Scribble-supervised medical image segmentation based on simultaneous multi-scale knowledge distillation and class-wise contrastive regularization. Computerized Medical Imaging and Graphics 116 ,102416 (2024) 15. Roy, S., Koehler, G., Ulrich, C., Baumgartner, M., Petersen, J., Isensee, F., Jaeger, P.F., Maier-Hein, K.H.: Mednext: Transformer-driven scaling of convnets for medi-cal image segmentation. In: International Conference on Medical Image Computing and Computer-Assisted Intervention. pp. 405–415. Springer (2023) 16. Wang, H., Guo, S., Ye, J., Deng, Z., Cheng, J., Li, T., Chen, J., Su, Y., Huang, Z., Shen, Y., et al.: Sam-med3d: A vision foundation model for general-purpose seg-mentation on volumetric medical images. IEEE Transactions on Neural Networks and Learning Systems (2025) 17. Wang, K., Liew, J.H., Zou, Y., Zhou, D., Feng, J.: Panet: Few-shot image semantic segmentation with prototype alignment. In: Proceedings of the IEEE/CVF Inter-national Conference on Computer Vision. pp. 9197–9206 (2019) 18. Wen, L., Xiao, J., Tan, S., Wu, X., Zhou, J., Peng, X., Wang, Y.: A transformer-embedded multi-task model for dose distribution prediction. International Journal of Neural Systems 33 (08), 2350043 (2023) 19. Willems, S., Crijns, W., Sterpin, E., Haustermans, K., Maes, F.: Feasibility of ct-only 3d dose prediction for vmat prostate plans using deep learning. In: Workshop on Artificial Intelligence in Radiation Therapy. pp. 10–17. Springer (2019) 20. Xiong, T., Ren, G., Chen, Z., Huang, Y.H., Ma, Z., Li, Z., Sheng, Y., Wu, Q.J., Cai, J.: A generalizable dose prediction model for automatic radiotherapy planning ScribbleDose: Scribble-Guided Dose Prediction in Radiotherapy 11 based on physics-informed priors and large-kernel convolutions. Medical Physics 
+
+53 (1), e70272 (2026) 21. Xiong, T., Zeng, G., Chen, Z., Huang, Y.H., Li, B., Zhou, D., Liu, X., Sheng, Y., Ren, G., Wu, Q.J., et al.: Automatic planning for functional lung avoidance radiotherapy based on function-guided beam angle selection and plan optimization. Physics in Medicine & Biology 69 (15), 155007 (2024) 22. Zhang, K., Zhuang, X.: Cyclemix: A holistic strategy for medical image segmen-tation from scribble supervision. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 11656–11665 (2022) 23. Zhang, L., Liu, Z., Zhang, L., Wu, Z., Yu, X., Holmes, J., Feng, H., Dai, H., Li, X., Li, Q.: Generalizable and promptable artificial intelligence model to augment clinical delineation in radiation oncology. Medical Physics 51 (3), 2187–2199 (2024) 24. Zhang, L., Liu, Z., Zhang, L., Wu, Z., Yu, X., Holmes, J., Feng, H., Dai, H., Li, X., Li, Q., et al.: Segment anything model (sam) for radiation oncology. arXiv preprint arXiv:2306.11730 (2023) 25. Zhang, Y., Li, C., Zhong, L., Chen, Z., Yang, W., Wang, X.: Dosediff: Distance-aware diffusion model for dose prediction in radiotherapy. IEEE Transactions on Medical Imaging 43 (10), 3621–3633 (2024) 26. Zhang, Z., Zheng, F., Iltaf, A., Han, Y., Cheng, Z., Du, Y., Li, B., Liu, T., Zhou, S.: Adaptive morph-patch transformer for aortic vessel segmentation. In: Proceedings of the AAAI Conference on Artificial Intelligence. vol. 40, pp. 13015–13024 (2026) 27. Zhou, P., Peng, Q., Li, Y., Li, C.: A novel mamba-based 3d dose prediction model with channel-aware scan for nasopharyngeal carcinoma radiotherapy. International Journal of Radiation Oncology, Biology, Physics 123 (1), e134 (2025)

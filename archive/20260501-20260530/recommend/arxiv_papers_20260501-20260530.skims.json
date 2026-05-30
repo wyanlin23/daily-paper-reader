@@ -1,16 +1,16 @@
 {
   "mode": "skims",
-  "generated_at": "2026-05-30T04:33:15.484617+00:00",
+  "generated_at": "2026-05-30T05:12:56.508924+00:00",
   "stats": {
     "mode": "skims",
     "forced_all_quick": true,
     "min_score": 8.0,
-    "deep_divecandidates": 1,
+    "deep_divecandidates": 4,
     "deep_cap": null,
     "deep_selected": 0,
-    "quick_candidates": 1,
+    "quick_candidates": 4,
     "quick_skim_target": null,
-    "quick_selected": 1
+    "quick_selected": 4
   },
   "deep_dive": [],
   "quick_skim": [
@@ -33,20 +33,146 @@
         "keyword:ad",
         "query:ad"
       ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "TOPAS-nBio simulation of DNA damage topology with LET and oxygen effects",
-      "llm_evidence_cn": "使用TOPAS-nBio模拟DNA损伤拓扑结构，关联LET和氧效应",
-      "llm_evidence": "使用TOPAS-nBio模拟DNA损伤拓扑结构，关联LET和氧效应",
-      "canonical_evidence": "使用TOPAS-nBio模拟DNA损伤拓扑结构，关联LET和氧效应",
-      "llm_tldr_en": "This paper uses TOPAS-nBio Monte Carlo simulations to model DNA damage topology across particle types and oxygen levels, employing persistent homology and Random Forest to decode LET-oxygen signatures. The approach demonstrates that DSB topology encodes particle identity and SOBP position with high accuracy, offering a new biophysical dosimetry method.",
-      "llm_tldr_cn": "针对辐射诱导DNA损伤的拓扑结构如何受LET和氧影响的问题，本文使用TOPAS-nBio蒙特卡罗模拟生成了涵盖不同粒子类型和氧水平的细胞核数据集，并采用持续性同调和随机森林分析DNA双链断裂的空间分布。结果显示，DNA损伤拓扑结构能精确解码粒子身份和扩展布拉格峰位置，且分类准确率几乎完美。该工作揭示了DNA损伤拓扑作为生物剂量计的潜力，为微剂量学建模提供了新视角。",
-      "llm_tldr": "针对辐射诱导DNA损伤的拓扑结构如何受LET和氧影响的问题，本文使用TOPAS-nBio蒙特卡罗模拟生成了涵盖不同粒子类型和氧水平的细胞核数据集，并采用持续性同调和随机森林分析DNA双链断裂的空间分布。结果显示，DNA损伤拓扑结构能精确解码粒子身份和扩展布拉格峰位置，且分类准确率几乎完美。该工作揭示了DNA损伤拓扑作为生物剂量计的潜力，为微剂量学建模提供了新视角。",
+      "llm_score": 9.0,
+      "llm_evidence_en": "uses TOPAS-nBio (Geant4-DNA) to simulate DNA damage topology, correlating LET and oxygen for alpha particles in cell nuclei",
+      "llm_evidence_cn": "使用TOPAS-nBio（Geant4-DNA）模拟DNA损伤拓扑结构，关联LET和氧效应，适用于阿尔法粒子细胞核尺度",
+      "llm_evidence": "使用TOPAS-nBio（Geant4-DNA）模拟DNA损伤拓扑结构，关联LET和氧效应，适用于阿尔法粒子细胞核尺度",
+      "canonical_evidence": "使用TOPAS-nBio（Geant4-DNA）模拟DNA损伤拓扑结构，关联LET和氧效应，适用于阿尔法粒子细胞核尺度",
+      "llm_tldr_en": "This paper applies TOPAS-nBio simulations and persistent homology to analyze DNA double-strand break topology induced by particles across LET and oxygen conditions, revealing encoded signatures decodable by Random Forest.",
+      "llm_tldr_cn": "该文利用TOPAS-nBio模拟和持续同调分析，系统研究了不同LET和氧条件下粒子诱导DNA双链断裂的拓扑结构，发现损伤拓扑编码粒子身份、SOBP位置和氧张力，随机森林可精确解码，为粒子治疗中LET和氧效应提供新视角。",
+      "llm_tldr": "该文利用TOPAS-nBio模拟和持续同调分析，系统研究了不同LET和氧条件下粒子诱导DNA双链断裂的拓扑结构，发现损伤拓扑编码粒子身份、SOBP位置和氧张力，随机森林可精确解码，为粒子治疗中LET和氧效应提供新视角。",
       "llm_tags": [
+        "query:ad:composite"
+      ],
+      "matched_query_tag": "query:ad:composite",
+      "matched_query_text": "Papers central to 查找利用剂量学软件模拟阿尔法放射性药物在人体内的剂量分布，考虑细胞建模、微剂量学、药代动力学等的论文，使用软件包括GATE、Geant4-DNA等, especially work that connects or combines: G; microdosimetric calculations for alpha particles in cellular and subcellular scales; Geant4-DNA simulation of alpha particle track structure and energy deposition in biological matter; Actinium-225; absorbed dose distribution calculation using Monte Carlo software for alpha emitters; pharmacokinetic modeling for alpha radiopharmaceutical distribution in human organs; simulate alpha radiopharmaceutical dose distribution in human body with microdosimetry and pharmacokinetics using GATE and Geant4 DNA; cell scale dosimetry modeling for alpha particle therapy including Monte Carlo simulations; Monte Carlo based dosimetry for targeted alpha therapy with cellular and subcellular resolution.",
+      "matched_requirement_id": "req-composite-ad",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.02552v1",
+      "source": "arxiv",
+      "title": "Recurrent Deep Reinforcement Learning for Chemotherapy Control under Partial Observability",
+      "abstract": "Chemotherapy dose optimization can be formulated as a dynamic treatment regime, requiring sequential decisions under uncertainty that must balance tumor suppression against toxicity. However, most reinforcement learning approaches assume full observability of the patient state, a condition rarely met in clinical practice. We investigate whether memory-augmented policies can improve chemotherapy control under partial observability. To this end, we employ a recurrent TD3-based approach with separate LSTM actor-critic networks and evaluate it on the AhnChemoEnv benchmark from DTR-Bench, considering both off-policy and on-policy recurrent architectures against feed-forward TD3 and Soft Actor-Critic. Pharmacokinetic and pharmacodynamic variability are held fixed to isolate hidden-state uncertainty and observation noise and to avoid confounding effects from inter-patient variability. Across ten random seeds, recurrence yields modest benefit under full observability but substantially stronger and more stable performance under partial observability, with more consistent tumor suppression and improved normal-cell preservation. These findings indicate that memory-based policies are particularly beneficial when clinically relevant state information is incomplete or noisy.",
+      "authors": [
+        "Firas Mohamed Elamine Kiram",
+        "Imane Youkana",
+        "Rachida Saouli",
+        "Gian Antonio Susto",
+        "Laid Kahloul"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-04T13:00:55+00:00",
+      "link": "https://arxiv.org/pdf/2605.02552v1",
+      "tags": [
+        "keyword:ad",
         "query:ad"
       ],
-      "matched_query_tag": "query:ad",
-      "matched_query_text": "Geant4-DNA simulation of alpha particle track structure and energy deposition in biological matter",
-      "matched_requirement_id": "req-3",
+      "llm_score": 8.0,
+      "llm_evidence_en": "uses deep reinforcement learning for chemotherapy control",
+      "llm_evidence_cn": "使用深度强化学习进行化疗控制",
+      "llm_evidence": "使用深度强化学习进行化疗控制",
+      "canonical_evidence": "使用深度强化学习进行化疗控制",
+      "llm_tldr_en": "Investigates recurrent deep reinforcement learning for chemotherapy dose optimization under partial observability, using LSTM actor-critic networks on the AhnChemoEnv benchmark.",
+      "llm_tldr_cn": "化疗剂量优化需要在不确定下平衡疗效与毒性，但大多数强化学习假设状态完全可观测。本文提出基于循环TD3的方法，采用分离的LSTM演员-评论家网络处理部分可观测性。在AhnChemoEnv基准上评估，对比前馈TD3和SAC，结果表明循环架构能更好地应对部分观察，提高累积奖励和安全性。",
+      "llm_tldr": "化疗剂量优化需要在不确定下平衡疗效与毒性，但大多数强化学习假设状态完全可观测。本文提出基于循环TD3的方法，采用分离的LSTM演员-评论家网络处理部分可观测性。在AhnChemoEnv基准上评估，对比前馈TD3和SAC，结果表明循环架构能更好地应对部分观察，提高累积奖励和安全性。",
+      "llm_tags": [
+        "query:dl:composite"
+      ],
+      "matched_query_tag": "query:dl:composite",
+      "matched_query_text": "Papers central to 请帮我查找深度学习相关论文, especially work that connects or combines: deep learning architectures for classification tasks; convolutional neural networks for image processing; transformer models for sequence transduction; find papers on deep learning methods.",
+      "matched_requirement_id": "req-composite-dl",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.09622v1",
+      "source": "arxiv",
+      "title": "Any2Any 3D Diffusion Models with Knowledge Transfer: A Radiotherapy Planning Study",
+      "abstract": "Voxel-wise dose prediction is a critical yet challenging task in practical radiotherapy (RT) planning, as bespoke models trained from scratch often struggle to generalize across diverse clinical settings. Meanwhile, generative models trained on billion-scale datasets from vision domains have achieved impressive performance. Herein, we propose DiffKT3D, a unified Any2Any 3D diffusion framework that leverages prior knowledge from pretrained video diffusion models for efficient and clinically meaningful dose prediction. To enable flexible conditioning across multiple clinical modalities (CT, anatomical structures, body, beam settings, etc.), we introduce an Any2Any conditional paradigm utilizing modality-specific embeddings without cross-attention overhead. Further, we design a novel reinforcement learning (RL) post-training mechanism guided by a clinically-informed Scorecard explicitly tailored to institutional treatment preferences. Compared with winner of GDP-HMM challenge, DiffKT3D sets a new state-of-the-art in dose prediction by reducing voxel-level MAE from 2.07 to 1.93. In addition, DiffKT3D achieves superior image quality and preference match. These results demonstrate that transferring diffusion priors via modality-aware conditioning and clinically aligned RL post-training can provide a robust and generalizable solution for RT planning across various clinical scenarios.",
+      "authors": [
+        "Yuhan Wang",
+        "Zihan Li",
+        "Han Liu",
+        "Simon Arberet",
+        "Martin Kraus",
+        "Yuyin Zhou",
+        "Florin-Cristian Ghesu",
+        "Dorin Comaniciu",
+        "Ali Kamen",
+        "Riqiang Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-10T16:08:36+00:00",
+      "link": "https://arxiv.org/pdf/2605.09622v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "uses deep learning (diffusion models) for dose prediction",
+      "llm_evidence_cn": "使用深度学习（扩散模型）进行剂量预测",
+      "llm_evidence": "使用深度学习（扩散模型）进行剂量预测",
+      "canonical_evidence": "使用深度学习（扩散模型）进行剂量预测",
+      "llm_tldr_en": "Proposes DiffKT3D, a unified 3D diffusion framework for radiotherapy dose prediction that leverages pretrained video diffusion models and supports multiple conditioning modalities via Any2Any conditional paradigm.",
+      "llm_tldr_cn": "放射治疗剂量预测通常需要针对特定临床场景从头训练模型，泛化性差。本文提出DiffKT3D，利用预训练视频扩散模型中的先验知识，通过Any2Any条件范式支持CT、解剖结构、身体轮廓等多模态条件输入，实现灵活高效的3D剂量预测。实验表明，该方法在多个数据集上优于传统方法，且通过知识迁移减少了训练时间和数据需求。",
+      "llm_tldr": "放射治疗剂量预测通常需要针对特定临床场景从头训练模型，泛化性差。本文提出DiffKT3D，利用预训练视频扩散模型中的先验知识，通过Any2Any条件范式支持CT、解剖结构、身体轮廓等多模态条件输入，实现灵活高效的3D剂量预测。实验表明，该方法在多个数据集上优于传统方法，且通过知识迁移减少了训练时间和数据需求。",
+      "llm_tags": [
+        "query:dl:composite"
+      ],
+      "matched_query_tag": "query:dl:composite",
+      "matched_query_text": "Papers central to 请帮我查找深度学习相关论文, especially work that connects or combines: deep learning architectures for classification tasks; convolutional neural networks for image processing; transformer models for sequence transduction; find papers on deep learning methods.",
+      "matched_requirement_id": "req-composite-dl",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.11555v1",
+      "source": "arxiv",
+      "title": "ScribbleDose: Scribble-Guided Dose Prediction in Radiotherapy",
+      "abstract": "Anatomical structure masks are widely adopted in radiotherapy dose prediction, as they provide explicit geometric constraints that facilitate structure-dose coupling. However, conventional manual delineation of these masks requires precise annotation of structure boundaries relevant to radiotherapy, which is time-consuming and labor-intensive. To address these limitations, we propose a scribble-guided dose prediction framework that relies solely on anatomical structures annotated with sparse scribbles. Specifically, we design a Scribble Completion Module (SCM) to generate dense anatomical masks by propagating sparse scribble labels to semantically similar voxels. During the propagation process, a supervoxel-based regularization is introduced to preserve geometric boundary consistency to ensure anatomical plausibility. Furthermore, we propose a Structure-Guided Dose Generation Module (SGDGM) to strengthen the correspondence between sparse structural cues and dose distribution. The completed dense masks derived from scribbles serve as structural guidance to condition dose prediction, forming a scribble-mask-dose learning pipeline under sparse annotation. Experiments on the GDP-HMM dataset demonstrate that ScribbleDose achieves competitive dose prediction performance using only sparse structural annotations. The source code and reannotated scribble annotations are publicly available at https://github.com/iCherishxixixi/ScribbleDose.",
+      "authors": [
+        "Zhenxi Zhang",
+        "Yitao Zhuang",
+        "Yao Pu",
+        "Peixin Yu",
+        "Zirong Li",
+        "Yan Xia",
+        "Hui Li",
+        "Bin Li",
+        "Fuchen Zheng",
+        "Ge Ren"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-12T05:38:50+00:00",
+      "link": "https://arxiv.org/pdf/2605.11555v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "uses deep learning (Scribble Completion Module) for dose prediction",
+      "llm_evidence_cn": "使用深度学习（涂鸦补全模块）进行剂量预测",
+      "llm_evidence": "使用深度学习（涂鸦补全模块）进行剂量预测",
+      "canonical_evidence": "使用深度学习（涂鸦补全模块）进行剂量预测",
+      "llm_tldr_en": "Proposes a scribble-guided dose prediction framework for radiotherapy using a Scribble Completion Module to generate dense anatomical masks from sparse scribbles, reducing annotation burden.",
+      "llm_tldr_cn": "传统放疗剂量预测依赖精确解剖结构掩膜，手动勾画耗时耗力。本文提出ScribbleDose框架，仅需稀疏涂鸦标注即可通过涂鸦补全模块生成密集解剖掩膜，并利用超体素正则化保持几何边缘。在临床数据集上验证，该方法在减少标注工作量的同时达到了与全监督方法相当的剂量预测精度，为临床部署提供了高效方案。",
+      "llm_tldr": "传统放疗剂量预测依赖精确解剖结构掩膜，手动勾画耗时耗力。本文提出ScribbleDose框架，仅需稀疏涂鸦标注即可通过涂鸦补全模块生成密集解剖掩膜，并利用超体素正则化保持几何边缘。在临床数据集上验证，该方法在减少标注工作量的同时达到了与全监督方法相当的剂量预测精度，为临床部署提供了高效方案。",
+      "llm_tags": [
+        "query:dl:composite"
+      ],
+      "matched_query_tag": "query:dl:composite",
+      "matched_query_text": "Papers central to 请帮我查找深度学习相关论文, especially work that connects or combines: deep learning architectures for classification tasks; convolutional neural networks for image processing; transformer models for sequence transduction; find papers on deep learning methods.",
+      "matched_requirement_id": "req-composite-dl",
       "selection_source": "fresh_fetch"
     }
   ]

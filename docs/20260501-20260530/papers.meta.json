@@ -1,8 +1,8 @@
 {
   "label": "2026-05-01 ~ 2026-05-30",
   "date": "2026-05-01 ~ 2026-05-30",
-  "generated_at": "2026-05-30T04:34:14",
-  "count": 1,
+  "generated_at": "2026-05-30T05:14:30",
+  "count": 4,
   "papers": [
     {
       "paper_id": "20260501-20260530/2605.16759v1-topological-structure-of-radiation-induced-dna-damage-encodes-coupled-let-oxygen-signatures",
@@ -16,6 +16,51 @@
       "tldr": "本研究首次将持久同调与随机森林结合，分析放疗诱导DNA双链断裂拓扑结构，覆盖临床粒子LET范围和氧水平。通过TOPAS-nBio模拟生成2450个细胞核，提取107维特征矩阵，发现DSB拓扑可精确解码粒子身份和SOBP位置，而氧水平分类受LET和原子序数共同影响。关键贡献是提出持久熵和景观积分作为新型放射生物学指标，能分离计数依赖与形状依赖的氧编码通道，为缺氧肿瘤治疗计划表征氧损伤拓扑提供计算基础。",
       "tags": "query:ad",
       "abstract_en": "We present the first nuclear-scale persistent homology and Random Forest classification analysis of radiation-induced DNA double-strand break (DSB) topology across the clinical particle therapy range. Using TOPAS-nBio and the Voxel-Aware Oxygen model, we generated 2,450 simulated nuclei across 49 conditions (seven particle configurations, 0.2--70.7~keV/\\textmu{}m; seven oxygen levels, 0.005--21\\%~O$_2$) and extracted a 107-feature matrix across seven modalities. DSB topology encodes particle identity, Spread-Out Bragg Peak (SOBP) position, and oxygen tension in a three-tier hierarchy, with fidelity at each tier governed by the physical mechanism controlling it. Particle identity and SOBP position are exactly decodable (balanced accuracy = 1.000). Oxygen-level classification degrades monotonically with LET from 0.517 (electrons) to 0.189 (carbon distal SOBP), with a charge-driven non-monotonicity at the helium-to-carbon transition confirming that atomic number, not LET alone, governs topological discriminability. The joint 49-class task achieves balanced accuracy 0.346, seventeen times above chance. Per-class recall peaks universally at 0.5\\%~O$_2$ (0.788--0.976 across all configurations), which is consistent with the OER curve inflection. Topological Summaries (persistent entropy, landscape integrals) dominate oxygen encoding at all LET ($η^2_{O_2} =\\,$0.300--0.622). A partial-out test reveals two mechanistically separable channels: a count-mediated scale signal ($η^2_{O_2}$ survival ratio 0.062) and a count-independent shape signal preserved or enhanced in five of seven configurations (balanced accuracy survival ratio 1.011). Persistent entropy and landscape integrals, as novel radiobiological observables, provide a computational basis for characterizing oxygen-dependent damage topology in hypoxic tumor treatment planning.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "20260501-20260530/2605.02552v1-recurrent-deep-reinforcement-learning-for-chemotherapy-control-under-partial-observability",
+      "section": "quick",
+      "title_en": "Recurrent Deep Reinforcement Learning for Chemotherapy Control under Partial Observability",
+      "authors": "Firas Mohamed Elamine Kiram, Imane Youkana, Rachida Saouli, Gian Antonio Susto, Laid Kahloul",
+      "date": "2026-05-04",
+      "pdf": "https://arxiv.org/pdf/2605.02552v1",
+      "score": "8.0",
+      "evidence": "使用深度强化学习进行化疗控制",
+      "tldr": "化疗剂量优化需序贯决策平衡疗效与毒性，但临床状态常部分可观测。本文提出基于循环TD3的记忆增强策略，采用LSTM网络建模隐藏状态。在AhnChemoEnv基准上，部分可观测下肿瘤抑制更稳定且正常细胞保存优于前馈方法。证实记忆机制能有效提升临床不确定环境下的化疗控制性能。",
+      "tags": "query:dl",
+      "abstract_en": "Chemotherapy dose optimization can be formulated as a dynamic treatment regime, requiring sequential decisions under uncertainty that must balance tumor suppression against toxicity. However, most reinforcement learning approaches assume full observability of the patient state, a condition rarely met in clinical practice. We investigate whether memory-augmented policies can improve chemotherapy control under partial observability. To this end, we employ a recurrent TD3-based approach with separate LSTM actor-critic networks and evaluate it on the AhnChemoEnv benchmark from DTR-Bench, considering both off-policy and on-policy recurrent architectures against feed-forward TD3 and Soft Actor-Critic. Pharmacokinetic and pharmacodynamic variability are held fixed to isolate hidden-state uncertainty and observation noise and to avoid confounding effects from inter-patient variability. Across ten random seeds, recurrence yields modest benefit under full observability but substantially stronger and more stable performance under partial observability, with more consistent tumor suppression and improved normal-cell preservation. These findings indicate that memory-based policies are particularly beneficial when clinically relevant state information is incomplete or noisy.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "20260501-20260530/2605.09622v1-any2any-3d-diffusion-models-with-knowledge-transfer-a-radiotherapy-planning-study",
+      "section": "quick",
+      "title_en": "Any2Any 3D Diffusion Models with Knowledge Transfer: A Radiotherapy Planning Study",
+      "authors": "Yuhan Wang, Zihan Li, Han Liu, Simon Arberet, Martin Kraus, Yuyin Zhou, Florin-Cristian Ghesu, Dorin Comaniciu, Ali Kamen, Riqiang Gao",
+      "date": "2026-05-10",
+      "pdf": "https://arxiv.org/pdf/2605.09622v1",
+      "score": "8.0",
+      "evidence": "使用深度学习（扩散模型）进行剂量预测",
+      "tldr": "放疗计划中体素级剂量预测面临泛化难题。本文提出DiffKT3D，利用预训练视频扩散模型知识，通过Any2Any条件范式实现多模态灵活条件控制。进一步设计基于强化学习的临床评分卡后训练机制，在GDP-HMM挑战中以1.93的MAE刷新纪录。该方法为跨场景放疗计划提供鲁棒且泛化的解决方案。",
+      "tags": "query:dl",
+      "abstract_en": "Voxel-wise dose prediction is a critical yet challenging task in practical radiotherapy (RT) planning, as bespoke models trained from scratch often struggle to generalize across diverse clinical settings. Meanwhile, generative models trained on billion-scale datasets from vision domains have achieved impressive performance. Herein, we propose DiffKT3D, a unified Any2Any 3D diffusion framework that leverages prior knowledge from pretrained video diffusion models for efficient and clinically meaningful dose prediction. To enable flexible conditioning across multiple clinical modalities (CT, anatomical structures, body, beam settings, etc.), we introduce an Any2Any conditional paradigm utilizing modality-specific embeddings without cross-attention overhead. Further, we design a novel reinforcement learning (RL) post-training mechanism guided by a clinically-informed Scorecard explicitly tailored to institutional treatment preferences. Compared with winner of GDP-HMM challenge, DiffKT3D sets a new state-of-the-art in dose prediction by reducing voxel-level MAE from 2.07 to 1.93. In addition, DiffKT3D achieves superior image quality and preference match. These results demonstrate that transferring diffusion priors via modality-aware conditioning and clinically aligned RL post-training can provide a robust and generalizable solution for RT planning across various clinical scenarios.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "20260501-20260530/2605.11555v1-scribbledose-scribble-guided-dose-prediction-in-radiotherapy",
+      "section": "quick",
+      "title_en": "ScribbleDose: Scribble-Guided Dose Prediction in Radiotherapy",
+      "authors": "Zhenxi Zhang, Yitao Zhuang, Yao Pu, Peixin Yu, Zirong Li, Yan Xia, Hui Li, Bin Li, Fuchen Zheng, Ge Ren",
+      "date": "2026-05-12",
+      "pdf": "https://arxiv.org/pdf/2605.11555v1",
+      "score": "8.0",
+      "evidence": "使用深度学习（涂鸦补全模块）进行剂量预测",
+      "tldr": "放射治疗剂量预测常依赖精确解剖结构掩模，但手动标注费时费力。本文提出ScribbleDose，仅需稀疏涂鸦标注即可预测剂量。设计涂鸦补全模块(SCM)将稀疏标签传播至相似体素，并引入超体素正则化保持几何边界一致性；再通过结构引导剂量生成模块(SGDGM)强化结构-剂量关联。在GDP-HMM数据集上，使用稀疏标注的性能与全标注方法相当，大幅降低标注成本。",
+      "tags": "query:dl",
+      "abstract_en": "Anatomical structure masks are widely adopted in radiotherapy dose prediction, as they provide explicit geometric constraints that facilitate structure-dose coupling. However, conventional manual delineation of these masks requires precise annotation of structure boundaries relevant to radiotherapy, which is time-consuming and labor-intensive. To address these limitations, we propose a scribble-guided dose prediction framework that relies solely on anatomical structures annotated with sparse scribbles. Specifically, we design a Scribble Completion Module (SCM) to generate dense anatomical masks by propagating sparse scribble labels to semantically similar voxels. During the propagation process, a supervoxel-based regularization is introduced to preserve geometric boundary consistency to ensure anatomical plausibility. Furthermore, we propose a Structure-Guided Dose Generation Module (SGDGM) to strengthen the correspondence between sparse structural cues and dose distribution. The completed dense masks derived from scribbles serve as structural guidance to condition dose prediction, forming a scribble-mask-dose learning pipeline under sparse annotation. Experiments on the GDP-HMM dataset demonstrate that ScribbleDose achieves competitive dose prediction performance using only sparse structural annotations. The source code and reannotated scribble annotations are publicly available at https://github.com/iCherishxixixi/ScribbleDose.",
       "source": "arxiv",
       "selection_source": "fresh_fetch"
     }
