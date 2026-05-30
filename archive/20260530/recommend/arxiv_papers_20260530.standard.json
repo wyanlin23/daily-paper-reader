@@ -1,0 +1,95 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-30T20:18:30.110868+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "biorxiv-10-64898-2026-05-23-727373-v1",
+      "source": "biorxiv",
+      "title": "An AI-agent-orchestrated grey-box Transformer framework for sparse pharmacokinetic curve reconstruction and pharmacometric model initialization",
+      "abstract": "Clinical pharmacokinetic (PK) modelling is constrained by sparse sampling, limited general-isability of single-drug models, and labour-intensive workflows, making it difficult to infer complete drug exposure from limited concentration observations. We present the Pharmacokinetic Foundation Model (PKFM), a grey-box Transformer framework pre-trained across 32 drugs that reconstructs concentration-time profiles from sparse concentration observations, dosing events, molecular descriptors, and physiological covariates while preserving output interpretability. In representative oral PK curves, three sparse input points recovered the principal absorption-elimination trajectory, achieving coefficient of determination (R2) = 0.992 for Midazolam oral and R2 = 0.990 for Verapamil oral. Using reconstructed curves in NONMEM (nonlinear mixed-effects modelling) improved covariance stability and individual prediction accuracy. Contrastive-learning embeddings supported Top-10 physiologically based pharmacokinetic (PBPK) candidate retrieval, with 75.6% of observations within the 2-fold range. A pharmacometrics-informed AI Agent (PM Agent) outperformed general-purpose programming tools in stability and pairwise win rate on a standardised modelling benchmark, with each run requiring human pharmaco-metrician confirmation before downstream use. These results support cross-drug pre-trained PK models as an information-completion layer for sparse PK evidence and a structured scaffold for the modelling workflow; clinical or regulatory use requires prospective validation, broader external benchmarking, and independent expert assessment.",
+      "authors": [
+        "Chen, J.",
+        "Wang, J.",
+        "Du, S.",
+        "Chen, Y.",
+        "Li, K.",
+        "Song, J.",
+        "Liu, D."
+      ],
+      "primary_category": "pharmacology and toxicology",
+      "categories": [
+        "pharmacology and toxicology"
+      ],
+      "published": "2026-05-27T00:00:00+00:00",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.05.23.727373v1.full.pdf",
+      "tags": [
+        "keyword:ad"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "pharmacokinetic modeling framework for general drugs, can be applied to alpha radiopharmaceutical distribution",
+      "llm_evidence_cn": "药代动力学建模框架适用于一般药物，可用于阿尔法放射性药物分布建模",
+      "llm_evidence": "药代动力学建模框架适用于一般药物，可用于阿尔法放射性药物分布建模",
+      "canonical_evidence": "药代动力学建模框架适用于一般药物，可用于阿尔法放射性药物分布建模",
+      "llm_tldr_en": "Proposes PKFM, a grey-box Transformer pre-trained on 32 drugs to reconstruct PK curves from sparse data, enabling pharmacometric model initialization. The method is directly applicable to modeling alpha radiopharmaceutical distribution in human organs.",
+      "llm_tldr_cn": "针对临床药代动力学建模中采样稀疏、模型泛化性差和工作流繁琐的问题，提出了Pharmacokinetic Foundation Model (PKFM)，一种灰盒Transformer框架。该框架在32种药物上预训练，能够从稀疏浓度观测、给药事件、分子描述符和生理协变量中重建浓度-时间曲线，同时保持输出可解释性。实验表明，仅用三个稀疏输入点即可恢复主要吸收-消除轨迹。该方法为通用药代动力学建模提供了基础模型，可直接应用于阿尔法放射性药物在人体器官中的分布建模。",
+      "llm_tldr": "针对临床药代动力学建模中采样稀疏、模型泛化性差和工作流繁琐的问题，提出了Pharmacokinetic Foundation Model (PKFM)，一种灰盒Transformer框架。该框架在32种药物上预训练，能够从稀疏浓度观测、给药事件、分子描述符和生理协变量中重建浓度-时间曲线，同时保持输出可解释性。实验表明，仅用三个稀疏输入点即可恢复主要吸收-消除轨迹。该方法为通用药代动力学建模提供了基础模型，可直接应用于阿尔法放射性药物在人体器官中的分布建模。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "pharmacokinetic modeling for alpha radiopharmaceutical distribution in human organs",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.29593v1",
+      "source": "arxiv",
+      "title": "CT Imaging with Helium and Carbon Ions for Hadron Therapy",
+      "abstract": "Objective: To perform a comprehensive comparative analysis of proton, helium-ion, and carbon-ion computed tomography (CT) as direct imaging modalities for hadron therapy treatment planning, focusing on Relative Stopping Power (RSP) reconstruction accuracy and patient radiation dose.   Approach: High-fidelity Monte Carlo simulations were conducted using the GATE/Geant4 platform to model a standard CTP404 phantom. RSP maps were reconstructed using an iterative Richardson-Lucy deconvolution algorithm. Imaging performance was evaluated by comparing reconstructed RSP values against ground truth data for various tissue-equivalent inserts, while integral doses were estimated for a human head geometry.   Main results: All investigated particle modalities demonstrated a significant dose reduction compared to conventional X-ray CT protocols (which are approximately 40 mGy). The estimated imaging doses were 1.6 mGy for protons, 3.9 mGy for helium ions, and 22.7 mGy for carbon ions. In terms of accuracy, carbon-ion imaging achieved the highest fidelity for soft-tissue materials (mean absolute error <0.5\\%). Helium ions offered a balanced performance with sub-1\\% errors for most materials and a dose burden significantly lower than carbon ions. Protons exhibited the widest range of RSP deviations (-1.8\\% to +3.1\\%).   Significance: Direct particle imaging eliminates the systematic uncertainties inherent in photon-to-hadron conversion. While carbon ions provide superior RSP reconstruction precision essential for complex treatment plans in heterogeneous anatomy, helium and proton imaging offer exceptional dose sparing, making them particularly advantageous for pediatric patients and frequent adaptive replanning scenarios.",
+      "authors": [
+        "Zsófia Jólesz",
+        "Gábor Bíró",
+        "Gábor Papp",
+        "Gergely Gábor Barnaföldi"
+      ],
+      "primary_category": "physics.med-ph",
+      "categories": [
+        "physics.med-ph"
+      ],
+      "published": "2026-05-28T08:34:29+00:00",
+      "link": "https://arxiv.org/pdf/2605.29593v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Uses GATE/Geant4 Monte Carlo for particle imaging and dose estimation, relevant to composite requirement on Monte Carlo dosimetry",
+      "llm_evidence_cn": "使用GATE/Geant4蒙特卡洛进行粒子成像与剂量估计，与复合需求中蒙特卡洛剂量学相关",
+      "llm_evidence": "使用GATE/Geant4蒙特卡洛进行粒子成像与剂量估计，与复合需求中蒙特卡洛剂量学相关",
+      "canonical_evidence": "使用GATE/Geant4蒙特卡洛进行粒子成像与剂量估计，与复合需求中蒙特卡洛剂量学相关",
+      "llm_tldr_en": "This paper uses GATE/Geant4 to simulate helium and carbon ion CT for hadron therapy, comparing RSP accuracy and patient dose. The method is directly applicable to Monte Carlo based dosimetry for particle therapy, supporting the composite requirement on dose distribution calculation using tools like GATE.",
+      "llm_tldr_cn": "强子治疗中，精确的离子CT成像对治疗计划至关重要。本文利用GATE/Geant4平台模拟了质子、氦离子和碳离子CT，通过Richardson-Lucy反卷积重建相对阻止本领图，并评估了组织等效插入物的重建误差和头部剂量。结果显示所有离子均能高精度重建RSP，但碳离子剂量最高，氦离子在精度和剂量间取得平衡。该工作为强子治疗中的直接成像模态提供了重要参考，其使用的GATE/Geant4蒙特卡洛方法可直接迁移到alpha粒子剂量分布计算等任务。",
+      "llm_tldr": "强子治疗中，精确的离子CT成像对治疗计划至关重要。本文利用GATE/Geant4平台模拟了质子、氦离子和碳离子CT，通过Richardson-Lucy反卷积重建相对阻止本领图，并评估了组织等效插入物的重建误差和头部剂量。结果显示所有离子均能高精度重建RSP，但碳离子剂量最高，氦离子在精度和剂量间取得平衡。该工作为强子治疗中的直接成像模态提供了重要参考，其使用的GATE/Geant4蒙特卡洛方法可直接迁移到alpha粒子剂量分布计算等任务。",
+      "llm_tags": [
+        "query:ad:composite"
+      ],
+      "matched_query_tag": "query:ad:composite",
+      "matched_query_text": "Papers central to 查找利用剂量学软件模拟阿尔法放射性药物在人体内的剂量分布，考虑细胞建模、微剂量学、药代动力学等的论文，使用软件包括GATE、Geant4-DNA等, especially work that connects or combines: radionuclide therapy; microdosimetric calculations for alpha particles in cellular and subcellular scales; Geant4-DNA simulation of alpha particle track structure and energy deposition in biological matter; Actinium-225; absorbed dose distribution calculation using Monte Carlo software for alpha emitters; pharmacokinetic modeling for alpha radiopharmaceutical distribution in human organs; cell scale dosimetry modeling for alpha particle therapy including Monte Carlo simulations.",
+      "matched_requirement_id": "req-composite-ad",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
