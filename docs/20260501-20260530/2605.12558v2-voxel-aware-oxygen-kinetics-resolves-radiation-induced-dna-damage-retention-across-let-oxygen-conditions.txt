@@ -1,0 +1,785 @@
+Title: Voxel-aware oxygen kinetics resolves radiation-induced DNA damage retention across LET-oxygen conditions
+
+URL Source: https://arxiv.org/pdf/2605.12558v2
+
+Published Time: Fri, 15 May 2026 01:37:50 GMT
+
+Number of Pages: 39
+
+Markdown Content:
+# Voxel-aware oxygen kinetics resolves radiation-induced DNA damage retention across LET–oxygen conditions 
+
+Renato III Fernan Bolo 1,* , Ramon Jose C. Bagunu 1 
+
+> 1Department of Physical Sciences and Mathematics, University of the Philippines Manila, Philippines *Corresponding Author Email: rfbolo@up.edu.ph
+> Keywords: oxygen enhancement ratio, linear energy transfer, voxel-aware modeling, DNA double-strand break, Monte Carlo track structure, hypoxia
+
+Abstract 
+
+Objective. Hypoxic tumor subvolumes resist radiation through elevated oxygen enhance-ment ratios (OER), yet no computational OER model is simultaneously particle-specific, mechanistically grounded, and fast enough for voxel-scale treatment planning across the linear energy transfer (LET) spectrum. We present the VOxel-Aware Oxygen Model (VOxA) to address all three requirements. 
+
+Approach. An Oxygen Model (OM) encodes particle-specific LET–OER dependence through dual sigmoidal transitions constrained to increase monotonically with atomic number Z, combined with Michaelis–Menten oxygen kinetics. A Voxel-Aware (VA) extension resolves per-double-strand-break (DSB) local energy heterogeneity via a particle-specific sensitivity parameter δf modulating the per-DSB direct damage fraction. The OM was calibrated on 233 OER observations from 29 sources spanning 10 particle types (LET = 0 .2–654 keV μm−1), while DSB coordinates for VA were drawn from TOPAS-nBio track-structure simulations. 
+
+Main results. The OM achieves R2 = 0 .719 and MAE = 0 .300 retention OER (OER ret ) units; theoretical OER maximum 3.32 (2.4% from measurement), bootstrap median 3.37 , with lower bound at 3.18 and upper bound at 4.09 . The oxygen kinetics composite Kfix + Krepair = 2 .82 mmHg is tightly constrained despite high collinearity (r = 0 .935 ). On the Furusawa heavy-ion subset, VOxA achieves 28 .4% lower survival OER ( OER surv ) MAE than the clinical standard ( 63 .1% improvement on helium, 24 .0% 
+
+on carbon) and reproduces He < C < Ne Z-ordering that universal models cannot capture. The VA extension passes 18 tests confirming sample-size-invariant within-nucleus CV of 
+
+p(i)DSB , the per-DSB retention probability. VOxA evaluates in under 10 −3 ms per voxel, more than 10 6 times faster than Monte Carlo chemistry. 
+
+Significance. VOxA is the first particle-specific OER model to reproduce Z-ordering analytically at clinical planning speed, validated on the largest OER calibration dataset for this model class. Committed-break coordinates at whole-nuclear scale provide the input for inter-break topological analysis and hypoxic LET painting.  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 1 | 39
+> arXiv:2605.12558v2 [physics.med-ph] 14 May 2026
+
+# 1 Introduction 
+
+Among the most consequential and, in a sense, most unseemly discoveries of radiation biology is that molecular oxygen, which is the very substance that sustains aerobic life, is also a potent agent of radiosensitization. In the 1950s, Gray and colleagues demonstrated that cells deprived of oxygen are considerably more resistant to ionizing radiation than their well-oxygenated counterparts, a phenomenon subsequently formalized by Alper and Howard-Flanders (1956). Hypoxic cells require 2.5–3.5 times the absorbed dose of well-oxygenated cells to achieve an isoeffect. This quantity, the oxygen enhancement ratio (OER), defined as the ratio of hypoxic to normoxic isoeffect doses, takes values of 2.5–3.0 for conventional low-LET photon irradiation at severe hypoxia (Grimes and Partridge 2015). About 50–60% of solid tumors harbour significant hypoxic regions (pO2 < 10 mmHg); these are radiation-resistant and independently predictive of local failure (Grimes and Partridge 2015). Charged particle therapy, particularly with carbon-12 ions, offers a physics-based approach to this predicament. Furusawa et al . (2000) demonstrated that OER diminishes systematically with increasing linear energy transfer (LET), approaching unity at very high LET ( ≳ 200 keV μm−1). Two mechanisms drive this suppression: at high LET, a substantial fraction of DNA double-strand breaks (DSBs) arise through direct ionization of the sugar-phosphate backbone, a process inherently independent of oxygen tension. Concurrently, intense radical production within the track core drives radical-radical recombination, depleting the •OH pool available for oxygen-mediated damage fixation. It is this OER–LET relationship that is the physical foundation of LET painting, which is the deliberate spatial modulation of beam quality so that hypoxic tumor subvolumes receive high-LET irradiation (Bassler et al . 2014; Tinganelli et al . 2015). The clinical logic is unambiguous: if OER falls toward unity in the Bragg-peak regime, weighting dose delivery toward high-LET components in a hypoxic subvolume partially recovers the biological effect that oxygen depletion has cost. However, LET painting at clinical scale demands three things of a computational model simultaneously. It must be particle-specific among beam species that produce identical absorbed dose and LET, mechanistically grounded so that predictions extend reliably beyond the calibration set, and computationally tractable 
+
+in under a millisecond per voxel across the ∼ 10 6-voxel treatment volume. No existing model satisfies all three. The dominant clinical OER frameworks (Grimes 2020; Scifoni et al . 2013) fail the first requirement by architectural decision: OER is expressed as a function of LET alone, which makes ion identity irrelevant by construction. The measurements of Furusawa et al . (2000) make the consequence concrete: at ≈ 80 keV μm−1 in HSG cells, helium, carbon, and neon ions produce measurably different survival OER values in the ordering He < C < Ne at matched LET. A universal model assigns identical OER to all three simultaneously. This is not an approximation that better calibration could close, but a structural impossibility because the particle-type dependence is absent from the functional form, not from the dataset. This inter-ion hierarchy, which we term Z-ordering , arises from Bethe–Bloch track-core physics: at matched LET, a lighter ion is slower, produces a narrower track core, concentrates ionization more densely, and drives greater radical–radical recombination, which depletes the •OH pool available for oxygen-mediated fixation. Universal models fail Z-ordering not by miscalibration but by construction.  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 2 | 39
+
+The closest existing model to address Z-ordering mechanistically is Strigari et al . (2018), who demonstrated through a Microdosimetric Kinetic Model (MKM) with amorphous track structure that ion-specific OER behaviour on the Furusawa benchmark is a predictable consequence of track-core geometry rather than empirical coincidence. This was a decisive mechanistic advance. Yet the MKM framework produces scalar biological effect parameters, namely α, β, and RBE estimates per voxel, from stochastic micrometric integration. Strigari et al . (2018) resolved the question of whether Z-ordering is mechanistically derivable from track structure. However, it did not resolve how to deploy Z-ordering at clinical speed, nor could it produce the three-dimensional committed-break coordinate set that downstream geometric and topological characterization of the damage field requires. Full Monte Carlo track-structure codes (PARTRAC, KURBUC) can in principle capture Z-ordering, but require minutes to hours per individual track, rendering voxel-scale clinical planning intractable. The gap is therefore precise and three-part: no existing framework simultaneously achieves particle-specific Z-ordering , clinical evaluation speed ,and coordinate-level committed-break output . We used TOPAS-nBio (Schuemann et al .2019a) for DSB spatial coordinates but treat the chemical stage analytically, which preserves the spatial output while eliminating the computational bottleneck. Resolving all three requirements within a single analytically tractable model is the central design objective of our formulated model. We present VOxA (Voxel-Aware Oxygen model), a two-tier mechanistic model of radiation-induced DSB retention. At its first tier, the Oxygen Model (OM) predicts population-level DSB retention probability and OER for a given combination of particle type, LET, and oxygen partial pressure, encoding Z-ordering through particle-specific sigmoidal LET-transition parameters constrained to increase monotonically with Z. The case fraction framework underlying VOxA was introduced by Hu et al . (2025a,b). VOxA’s specific contribution is an analytical, hard-constrained implementation of that framework with calibrated Z-ordered sigmoid midpoints and Michaelis–Menten oxygen kinetics, coupled to a VA extension and validated on the largest OER calibration dataset assembled to date for this class of analytical, clinically tractable model. At its second tier, the Voxel-Aware (VA) extension resolves within-nucleus local energy heterogeneity to produce, for the first time, a per-DSB retention distribution grounded in particle-specific track-structure physics. Alongside it, VA outputs a set of oxygen-fixation-filtered committed-break coordinates at whole-nuclear scale, which is the biological input that downstream topological and geometric analyses require. VOxA is calibrated on 233 OER observations from 29 independent sources spanning 10 particle types, and evaluates in under 10 −3 ms per voxel; more than 10 6 times faster than a comparable full MC track-structure simulation, at the cost of an analytical rather than explicit treatment of the chemical stage. Captured after sub-millisecond chemical equilibration but before loop extrusion has reorganized chromatin architecture (Arnould et al . 2021), VOxA’s output is what we term precursor nanodomains : the spatial template of probabilistically filtered retention coordinates, where each coordinate’s position comes from track-structure geometry and its probability of being retained as a committed break comes from the analytical chemistry model. TOPAS-nBio and other Monte Carlo track-structure codes already produce DSB coordinates in the Standard DNA Damage format (Schuemann et al . 2019b). VOxA’s specific contribution is the probabilistic filtering of those coordinates by  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 3 | 39
+
+the oxygen-fixation competition, creating a committed-break subset appropriate for downstream topological analysis. This state is distinct from the assembled irradiation-induced focus (IRIF) observable by SMLM at minutes post-irradiation (Küntzelmann et al .2026; Lei et al . 2022; Schäfer et al . 2024); the distinction is consequential for interpretation of downstream analyses. These committed-break coordinates serve as the biological input to a downstream computational arc encompassing topological characterization, graph-theoretic formalization, and experimental bridge validation, studies of which this paper is the first. 
+
+# 2 Methods 
+
+2.1 TOPAS-nBio track-structure simulations 
+
+All simulations were performed using TOPAS-nBio (Schuemann et al . 2019a), an MC particle transport and radiobiology framework built upon Geant4. The nuclear geometry was implemented as a Hilbert-curve chromatin model in which the nucleus is partitioned into a grid of subdomains by a space-filling Hilbert curve of iteration 1. This yields a chromatin voxel side-length of 0.309 μm and a nuclear container of 9.28 μm per axis, with a matched scoring grid resolving voxel-level local energy and dose. HilbertPointDistance 
+
+= 0 .16 μm, so the effective sub-voxel coordinate resolution is ∼ 160 nm .For the physics constructor, we used TsEmDNAPhysics . We emphasize that TOPAS-nBio was operated without the chemistry module: no explicit radical transport or radical–DNA reaction simulation was performed. This is justified because radical chemistry governs the 
+
+probability of a committed DSB, not its spatial location , which is set at ionization; VOxA models the probability analytically (Section 2.3). The approximation and its quantitative coordinate-bias bound are examined in Section 4.2. DSB coordinates are assigned at continuous positions (not snapped to voxel centroids), retaining sub-voxel positional variation at the ∼ 160 nm scale relevant to downstream topo-logical filtrations. Simulations were generated for three particle configurations representa-tive of the particle therapy clinical range: monoenergetic electrons (LET = 0 .2 keV μm−1), proximal spread-out Bragg peak ( SOBP ) protons (LET = 4 .6 keV μm−1), and proximal SOBP carbon ions (LET = 40 .9 keV μm−1). A single high-statistics simulation per configu-ration yielded ∼2500 DSBs (calibration arm) and ∼400 DSBs (validation arm). 
+
+2.2 Theoretical framework: Z-ordering and the case fraction model 
+
+The central physical phenomenon that any particle-specific OER model must capture is Z-ordering: at matched LET, lower-Z ions exhibit lower OER than higher-Z ions; the empirical ordering He < C < Ne is established by Furusawa et al . (2000) and documented across multiple cell lines (Strigari et al . 2018). This means lower-Z ions are more effective at overcoming hypoxic radioresistance at equivalent radiation quality, a consequence that has direct bearing on particle selection in LET painting (Dahle et al . 2020). The origin of this ordering is traceable directly to Bethe–Bloch stopping-power physics. For a particle of charge Ze and velocity βc , the linear energy transfer scales approximately as LET ∝ Z2/β 2; two ions with different Z but the same LET must therefore satisfy 
+
+βA/β B ≈ ZA/Z B (Strigari et al . 2018). The lower-Z ion therefore travels slower at  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 4 | 39
+
+matched LET, which produces a narrower track core: the core radius scales as Rc ∝ βγ ,so Rc, He < R c, C < R c, Ne at matched LET (Mavragani et al . 2019; Strigari et al . 2018). Even at the relativistic limit of therapeutic carbon beams ( ≈ 400 MeV u −1, β ≈ 0.7,
+
+γ ≈ 1.4), the product βγ remains strictly monotonic with β, preserving the Z-ordering of track-core widths at all therapeutic energies. A narrower core concentrates the same integrated energy deposition into a smaller radial volume, raising the local ionization density. At these elevated densities, radiolytic products undergo mutual recombination (•OH + •OH → H2O2) before they can diffuse outward to reach DNA (Friedland et al . 2017; LaVerne 2000; Sakata et al . 2019), depleting the •OH pool available for indirect attack. Since indirect damage is the oxygen-sensitive component of the DSB yield, this depletion 
+
+reduces the oxygen-dependent damage fraction for lower-Z ions relative to higher-Z ions at the same LET, lowering their OER toward unity. The hierarchy He < C < Ne therefore follows as an inescapable physical consequence: at matched LET, a lower-Z ion is in a more direct-damage-dominant regime and thus less dependent on oxygen fixation (Furusawa 
+
+et al . 2000; Strigari et al . 2018). It is important to note that while the direction of Z-ordering is derived from this Bethe–Bloch track-core physics, the absolute magnitude of the OER shift for each ion is an empirically identified quantity. The calibrated midpoints 
+
+xdir 50 (Z) and xind 50 (Z) in Equation (2) encode the quantitative scale of radical depletion for each particle type from the 233-point calibration dataset. To encode this mechanism analytically, we adopt the case fraction framework of Hu et al .(2025a,b). A DSB requires two single-strand breaks (SSBs) in close proximity on opposing strands; each SSB may arise either through direct ionization of the sugar-phosphate backbone (fraction d) or through indirect •OH attack (fraction i = 1 − d). Treating these as independent events, DSBs are partitioned into three mechanistic cases (Table 1). 
+
+Table 1. Case fraction taxonomy for DSB formation. Indirect damage is oxygen-sensitive; direct damage is not. Low-LET anchor d = 0 .20 (i = 0 .80 ) represents the upper bound of Monte Carlo indirect-action estimates (Nikjoo et al . 2001; Zhu et al . 2021) and is corroborated by DMSO scavenging experiments (Hirayama et al . 2009) and hydroxyl radical reaction-site distributions (Bertolet et al . 2022); binomial SSB independence from Bertolet et al . (2022). High-LET asymptote p1 → 0.64 from 56 Fe DMSO protection experiments (Hirayama et al . 2009); radical recombination mechanism from Sakata et al . (2019) and Friedland et al . (2017). Note : at LET > 300 keV μm−1, the binomial case fraction derivation represents a conservative lower bound on p1 because inter-strand SSB correlations begin to raise the effective direct-hit contribution above the independent prediction (Bertolet et al . 2022). Case SSB origins Fraction at low LET O2-dependence 
+
+p1 Both direct d2 = 0 .04 None (zeroth-order) 
+
+p2 One each 2di = 0 .32 First-order 
+
+p3 Both indirect i2 = 0 .64 Second-order 
+
+The anchor d = 0 .20 (i = 0 .80 ) is the upper bound of MC indirect-action estimates for normally oxygenated cells (Zhu et al . 2021), corroborated by DMSO scavenging (71–76% indirect fraction at limiting concentration; Hirayama et al . 2009; Roots and Okada 1972)  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 5 | 39
+
+Figure 1. Case fraction evolution with LET for four representative particle types (photon, proton, carbon, neon; four panels). Colored curves show the LET-dependent case fractions 
+
+p1 (direct, red), p2 (hybrid, blue), and p3 (indirect, green) computed from Equations (3)–(5). Dotted horizontals: low-LET anchors p1 = 0 .04 , p2 = 0 .32 , p3 = 0 .64 . The progressive transfer of damage agency from indirect to direct mechanisms with increasing LET is the primary driver of OER suppression. Because p1 and p3 are driven by independent sigmoids ( fdir and find 
+
+respectively) with different transition midpoints ( xdir 50 ≪ xind 50 ), the residual p2 = 1 − p1 − p3
+
+can become negative in the intermediate-LET regime where fdir has risen substantially but find 
+
+has not yet responded. This is handled numerically by clamping p2 to zero and renormalizing the triplet (p1, p 2, p 3) to unity; the renormalization also modestly draws p1 and p3 below their raw sigmoid values in this regime, so the p1 = 0 .64 ceiling is approached gradually rather than abruptly. The partial recovery of p2 visible at the right edge of the carbon and neon panels reflects sequential sigmoid saturation: once fdir saturates, p3 continues to fall as find catches up, and p2 = 1 − p1 − p3 rises toward 0.36 in a regime where clamping is no longer needed and the normalization is trivial. 
+
+and hydroxyl radical reaction-site distributions (Bertolet et al . 2022). The widely cited two-thirds approximation (Chan et al . 2022) is inconsistent with these limiting-concentration data and is not adopted. We treat the two SSB events as independent, which is justified by their spatial separation  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 6 | 39
+
+on opposing strands (Bertolet et al . 2022). The same paper also shows that inter-strand SSB correlations begin to rise at the highest simulated LET; the independence assumption is therefore conservative at LET ≳ 300 keV μm−1, which is noted as a limitation in Section 4.5. The low-LET anchors p1 = d2 = 0 .04 , p2 = 2 di = 0 .32 , and p3 = i2 = 0 .64 
+
+follow directly. The negligible magnitude of p1 at low LET is consistent with MC calculations reporting a combined purely-direct strand-break contribution below 0.32% for very low LET regimes (D-Kondo et al . 2024). As LET rises, p1 approaches 0.64 . Hirayama et al . (2009) showed via 56 Fe DMSO experiments at 2106 keV μm−1 that indirect action falls to 32%, driving the structural inversion d ↔ i. This asymptote is from a single Fe-56/cell-line experiment and is adopted as the best available constraint. The LET-dependence is illustrated in Figure 1 and governed by the sigmoidal functions in Section 2.3. VOxA predicts the retained DSB population: breaks that survive the sub-millisecond oxygen-fixation/thiol-restitution competition and are thereby committed to the repair pathway (Grimes and Partridge 2015). This state corresponds to the residual DSBs at the first assay timepoint ( ∼ 15 min; Hirayama et al . 2009), which we call retained DSBs, thus corresponding to the retention OER ( OER ret ). A conversion factor fc = 1 .20 (Hirayama 
+
+et al . 2005) relates OER ret (model output) to the OER surv of clonogenic datasets; this scalar approximation is discussed further in Section 4.5. Fixed parameters are in Table 2. 
+
+Table 2. Fixed (literature-derived) parameters of the VOxA Oxygen Model. These quantities enter as constraints, not calibrated quantities. Parameter Value Source 
+
+dlow 0.20 Zhu et al . 2021; Hirayama et al .2009; Bertolet et al . 2022 
+
+p1,low = d2low 0.04 Derived 
+
+p3,low = i2low 0.64 Derived 
+
+p1,high 
+
+(high-LET asymptote) 
+
+0.64 Hirayama et al . 2009; Sakata 
+
+et al . 2019; Friedland et al . 2017 
+
+fc (retention-to-survival) 1.20 Hirayama et al . 2005 
+
+[O 2]ref 21% Standard atmosphere 
+
+2.3 The Oxygen Model: population-level formulation 
+
+The OM accepts three inputs: LET (dose-averaged, in water), oxygen partial pressure 
+
+pO2, and particle identity (Z, A ); it returns the mean DSB retention probability pDSB 
+
+together with the corresponding OER at retention and survival endpoints. 
+
+Radiation quality parameter. Raw LET is first mapped to a dimensionless radiation quality parameter: 
+
+x = 2 .5
+
+LET L0
+
+1.1
+
+, L0 = 1 keV μm−1, (1) where L0 = 1 keV μm−1 renders x dimensionless. The prefactor 2.5 is a dimensionless  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 7 | 39
+
+numerical scaling choice that normalizes the function to a convenient low-LET operating range; it carries no implicit units and does not represent a physical constant. The exponent 1.1 > 1 is an empirically fitted value that captures the supralinear scaling of ionization density with LET; it is not derived from Bethe–Bloch stopping-power theory but was selected to provide the best low-LET numerical stability as input to the sigmoidal transition functions below. All calibrated midpoints xdir 50 and xind 50 were fitted against x
+
+values computed by this formula; the normalization is a bookkeeping label that does not alter any numerical prediction. 
+
+Dual sigmoidal transitions. The LET-dependent evolution of the direct and indirect damage fractions is governed by two independent logistic functions: 
+
+fdir (x) = 11 +  xdir 50 /x sdir , find (x) = 11 +  xind 50 /x sind , (2) where xdir 50 and xind 50 are particle-specific midpoint parameters and sdir , sind are steepness parameters. Two hard constraints are imposed. First, xdir 50 and xind 50 must increase monotonically with Z across the heavy-ion sequence (He, C, Ne, Ar): the He < C < Ne Z-ordering (Furusawa et al . 2000; Strigari et al . 2018) is enforced as a structural inequality rather than left to emerge from fitting. Protons and deuterons ( Z = 1 ) are calibrated independently and are exempt from the heavy-ion monotonicity; the chain ordering applies only to ions with distinct nuclear charge ( Z = 2 , 6, 10 , 18 ). The near-tie xdir 50 (proton ) = 153 .0 vs xdir 50 (He ) = 151 .8 is within overlapping bootstrap confidence intervals and does not constitute a constraint violation. Second, xdir 50 < x ind 50 universally, reflecting the physical sequence in which direct-damage clustering ( ∼ 10 –30 keV μm−1) precedes radical depletion (∼ 50 –200 keV μm−1). 
+
+Case fractions as functions of LET. The three case fractions evolve with radiation quality as: 
+
+p1(x) = 0 .04 + 0 .60 fdir (x), (3) 
+
+p3(x) = 0 .64 1 − find (x), (4) 
+
+p2(x) = 1 − p1(x) − p3(x), (5) recovering the low-LET anchors ( p1 = 0 .04 , p3 = 0 .64 ) and the high-LET asymptote (p1 → 0.64 , p3 → 0) by construction from the fixed parameters of Table 2. Because 
+
+xdir 50 < x ind 50 , fdir saturates first; at high LET, p3 continues to fall while p1 is already fixed, so p2 recovers toward its asymptotic value of 0.36 (visible in Figure 1, carbon and neon panels). In the intermediate LET regime, where fdir is elevated but find has not yet responded, the residual p2 = 1 − p1 − p3 can become negative before renormalization, a consequence of the two sigmoid transitions being parameterized independently. This is handled numerically by clamping p2 to zero and renormalizing the triplet (p1, p 2, p 3) to unity; the renormalization also modestly draws p1 and p3 below their raw sigmoid values in this regime. After renormalization, pDSB ∈ [0 , 1] and OER predictions remain physically well-posed across the full calibrated range for all ten particle types. 
+
+Oxygen fixation probability. Indirect damage is subject to competitive kinetics between irreversible oxygen-mediated fixation (the formation of a peroxyl radical at the damage site) and thiol-mediated chemical restitution (Grimes and Partridge 2015). Follow-ing the competitive Michaelis–Menten kinetics of Howard-Flanders (1960), representing  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 8 | 39
+
+the steady-state competition approximation valid when radical concentrations remain small relative to the scavengable oxygen pool: 
+
+Pfix (pO2) = pO2 + Kfix 
+
+pO2 + Kfix + Krepair 
+
+, (6) where Kfix and Krepair are calibrated constants representing basal fixation and thiol restitu-tion capacity, respectively. This rational saturation form is an alternative parameterization of the same competitive kinetics that Grimes and Partridge (2015) represent as an ex-ponential 1 − e−φp , where p is the oxygen partial pressure and φ is the rate constant derived from the thermal velocity of oxygen molecules in water, the mean-free path of oxygen molecules, and the probability of an interaction between an oxygen molecule and ionized DNA. Both arise from the same two-state competition and are numerically equivalent over the clinical oxygen range. 1 As demonstrated in Section 3.1, the individ-ual parameters Kfix and Krepair are poorly identified by the calibration data (bootstrap coefficients of variation of 71% and 96% ; bivariate collinearity r = 0 .935 ), while their sum Kfix + Krepair = 0 .371% O 2 = 2 .82 mmHg (MLE value) is tightly constrained and governs the saturation behavior of Pfix . All K values and oxygen concentrations are standardized to % O 2 (Ω = 7 .6 mmHg per % O 2 at 37 ◦C for reference). This composite is the inflection point of Pfix in log-oxygen space ( d2Pfix /d(log pO2)2 = 0 ): the tension of maximum radiobiological sensitivity to incremental oxygen changes. Note that Ksum is 
+
+not the enzymological half-maximal concentration; because Pfix at anoxia is ≈ 0.43 rather than zero, the true half-range point is Krepair − Kfix ≈ 0.053% O 2.
+
+Mean retention probability. Combining the case fractions and oxygen fixation probability, the population-level mean DSB retention probability is: 
+
+pDSB (pO2, x ) = p1(x) + p2(x) Pfix + p3(x) P 2fix . (7) The quadratic structure of Equation (7) reflects the independence of the two SSB formation events: a Case 3 DSB requires both SSBs to be oxygen-fixed ( P 2fix ); a Case 2 break requires one ( P 1fix ); and a Case 1 break contributes to retention regardless of oxygen (P 0fix = 1 ). Normalizing to the reference aerobic condition: 
+
+pnorm DSB (pO2, x ) = pDSB (pO2, x )
+
+pDSB (21% O 2, x ), (8) so that pnorm DSB = 1 by construction at normoxia. 
+
+OER derivation. The OER ret follows from the isoeffect assumption: that equal committed DSB counts under normoxia and hypoxia produce equal biological effect (here, clonogenic survival). This is the standard basis for mechanistic OER modeling (Grimes and Partridge 2015; Hirayama et al . 2005) and gives: 
+
+OER ret = 1
+
+pnorm DSB 
+
+, (9)    
+
+> 1The rational form is preferred here becauseit maintains algebraic consistency with the quadratic DSB retention expansion in Equation (7), where individual Pfix terms can be substituted and combined without approximation.
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 9 | 39
+
+and the OER surv , appropriate for comparison with clonogenic assay data (Hirayama et al .2005), is: 
+
+OER surv = 1 + OER ret − 1
+
+fc
+
+, (10) where fc = 1 .20 is the empirical retention-to-survival conversion factor (Hirayama et al .2005); its theoretical LET and pO2 dependence is bounded in Section 4.5. Two parameter-free consistency checks pass: OER max (ret ) = 3 .32 vs Hirayama et al . (2009)’s 3.4 ± 0.2
+
+(2.4% error), and OER max (surv ) = 2 .93 vs Hirayama et al . (2005)’s 2.8 ± 0.2 (4.6% error). The full OM evaluation pipeline at the population level, from inputs to both OER endpoints, is summarized in the following box for quick reference and implementation. 
+
+VOxA Oxygen Model — Population Level 
+
+Inputs: LET (keV μm−1), pO2 (% O 2), particle identity Z
+
+Step 1 — Radiation quality: 
+
+x = 2 .5
+
+ LET L0
+
+1.1
+
+, L0 = 1 keV μm−1
+
+Step 2 — Direct/indirect fractions (particle-specific xdir 50 , xind 50 , s): 
+
+fdir (x) = 11 + ( xdir 50 /x )sdir 
+
+, find (x) = 11 + ( xind 50 /x )sind 
+
+Step 3 — Case fractions (clamp p2 ≥ 0, then renormalize): 
+
+p1 = 0 .04 + 0 .60 fdir , p3 = 0 .64 (1 − find ), p2 = max(0 , 1 − p1 − p3); (p1, p 2, p 3) ← (p1, p 2, p 3) / (p1 + p2 + p3)
+
+Step 4 — Oxygen fixation probability (calibrated Kfix , Krepair ): 
+
+Pfix (pO2) = pO2 + Kfix 
+
+pO2 + Kfix + Krepair 
+
+Step 5 — Mean DSB retention: 
+
+pDSB = p1 + p2 Pfix + p3 P 2fix 
+
+.
+
+pDSB 21% 
+
+Step 6 — OER outputs: 
+
+OER ret = 1
+
+pnorm DSB 
+
+, OER surv = 1 + OER ret − 1
+
+fc
+
+, fc = 1 .20 
+
+The OM has 26 calibrated parameters: oxygen kinetics ( Kfix , Krepair ), particle-specific midpoints and steepness for seven types, and four cell-line correction factors. Midpoints are in Table 4. 
+
+High-LET overkill saturation. Near the Bragg peak, excessive local ionization density produces more lethal lesions than required for cell killing, causing macroscopic 
+
+OER ret to fall below the prediction of Equation (9). This is biologically distinct from the  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 10 | 39
+
+sigmoidal saturation of p1 → 0.64 (exhaustion of the indirect chemistry channel): overkill is a saturation of the dose–response curve itself. The overkill correction is fitted as one of the 26 calibrated parameters during model optimization and is therefore active in the calibration loss function ; the reported overall MAE ( 0.300 OER ret units) and R2 = 0 .719 
+
+reflect the full model with overkill enabled. For the MAE comparisons against Scifoni and Grimes, overkill is disabled (observations with LET > 0.7 LET max excluded) to ensure a like-for-like comparison with models that have no such correction; the comparison MAE of 
+
+0.346 OER surv units applies to this overkill-free window. The correction equation, applied when LET > 0.7×LET (particle) max , is: 
+
+OER ok ret = 1 + (OER ret − 1) ·
+
+"
+
+1 + κ
+
+LET /LET max − 0.70.3
+
+2#−1
+
+, (11) where κ is a calibrated saturation strength (bootstrap MLE: κ = 0 .023 , 95% CI [0 .022 , 0.024] )and LET max is the particle-specific Bragg-peak cutoff. To ensure reproducibility, the LET max values used in Equation (11) are listed in Table 3. 
+
+Table 3. Particle-specific Bragg-peak cutoff values LET max used in the overkill correction (Equation 11). These are representative therapeutic energies at which the Bragg peak occurs for each ion species under typical treatment-beam conditions; exact values depend on beam energy and target material. Equation (11) is active only for LET > 0.7 LET max .Particle Z LET max 
+
+(keV μm−1)Photon/Electron 0 ∞ (no Bragg peak) Proton 1 30 Helium 2 80 Carbon 6 200 Neon 10 500 Argon 18 800 
+
+2.4 Voxel-Aware extension 
+
+The OM furnishes a population-level mean over all DSBs within a nucleus irradiated at a given LET and oxygen tension. Within any real nucleus, however, DSBs do not all experience identical local radiation quality. The spatial heterogeneity of particle tracks (unequal energy depositions along primary ion paths, delta-electron trajectories, and secondary fragment showers) means that breaks in the track core receive substantially higher local energy than those in the penumbra. The VA extension promotes the OM from this mean-field description to a per-DSB one, at a cost of < 0.005 ms per break. For each DSB i, the energy deposited in the 2 × 2 × 2 chromatin voxel neighborhood centered on the break (a ∼ 620 nm cube capturing the track-core-to-penumbra transition at therapeutically relevant LET values, since track-core radii range from ∼ 10 nm (proton) to ∼ 100 nm (carbon) at SOBP LET values and penumbrae extend to micrometers) is  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 11 | 39
+
+extracted from the TOPAS-nBio energy-deposit grid and denoted E(i)local . This quantity is standardized within each particle condition: 
+
+E(i)zscore = E(i)local − EσE
+
+, (12) where E and σE are the mean and standard deviation of Elocal over all DSBs in that particle condition. The population-level case-1 fraction pOM 1 = p1(x) from Equation (3) serves as the per-DSB baseline. It is perturbed locally as: 
+
+p(i)1 = pOM 1 + δf · E(i)zscore , (13) where δf is a particle-specific energy sensitivity parameter, fitted to the calibration simulation dataset (Section 2.5), with p(i)1 clamped to the physically admissible range 
+
+[0 .02 , 0.64] . Across the calibration dataset, fewer than 0.1% of electron/proton DSBs and 
+
+< 2% of carbon DSBs reach the clamp boundary. The remaining probability mass 1 − p(i)1
+
+is redistributed between the hybrid and purely-indirect cases in the same ratio as the OM base values: 
+
+p(i)2 =  1 − p(i)1
+
+ pOM 2
+
+pOM 2 + pOM 3
+
+, (14) 
+
+p(i)3 =  1 − p(i)1
+
+ pOM 3
+
+pOM 2 + pOM 3
+
+, (15) so that p(i)1 + p(i)2 + p(i)3 = 1 by construction. Applying Equation (7) per break yields a per-DSB retention probability p(i)DSB distributed around the population mean: 
+
+p(i)DSB = p(i)1 + p(i)2 Pfix + p(i)3 P 2fix , (16) which reduces exactly to Equation (7) when δf → 0 (since p(i) 
+
+> k
+
+→ pOM  
+
+> k
+
+for all k), confirming zero population-level bias. Hence, the VA evaluation pipeline that we can append to the Population Level pipeline is summarized below for quick reference and implementation. 
+
+VOxA Oxygen Model — Voxel Level 
+
+VA extension (per-DSB, replaces population mean): 
+
+p(i)1 = pOM 1 + δf E(i)zscore , p(i)2,3 rescaled proportionally , p(i)DSB = p(i)1 + p(i)2 Pfix + p(i)3 P 2fix 
+
+Since the z-score transformation satisfies P 
+
+> i
+
+E(i)zscore = 0 exactly, a scaling correction— specifically, a linear normalization to the OM population mean—ensures that the VA population mean matches the OM prediction to better than 0.01% . The VA extension introduces no population-level bias. Its substantive output is the variance, where the coefficient of variation (CV) of the p(i)DSB distribution, 
+
+CV = σpDSB 
+
+⟨pDSB ⟩ × 100% , (17)  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 12 | 39
+
+quantifies within-nucleus heterogeneity in retention probability driven by genuine track-structure fluctuations. The central modeling claim of the VA extension, namely that this CV is an invariant physical property of the particle’s track structure independent of the number of DSBs sampled, is tested by the scaling battery described in Section 2.6. CV invariance, if confirmed, licenses the VA CV as a compact, particle-specific descriptor of within-population damage heterogeneity and constitutes the mechanistic bridge between VOxA and the downstream topological characterization of committed-break point clouds at whole-nuclear scale. 
+
+2.5 Calibration dataset and optimization Dataset. The OM was calibrated on 233 experimental OER observations compiled from 29 independent published sources (see Appendix C) that contribute OER observations, spanning 10 particle types: photon, proton, deuteron, helium, carbon, nitrogen, oxygen, neon, silicon, and argon; the LET range covered is 0.2–654 keV μm−1. To our knowledge this is the largest OER calibration dataset for this class of analytically fast, particle-specific clinical model (peer models used smaller subsets: Grimes 2020; Scifoni et al . 2013). The primary publications were identified through the comprehensive literature survey of Wenzl and Wilkens (2011) (their Tables 1 and 2), from which a quality-controlled subset was drawn: observations were restricted to the 10% clonogenic survival endpoint, in vitro conditions, and standard cell lines, with in vivo, non-standard-endpoint, and conference-abstract entries excluded. Twenty-three additional observations from Tinganelli et al .(2015) were incorporated to extend oxygen-level coverage at intermediate pO2 (0.15–2% O2)with CHO cells for carbon, nitrogen, oxygen, and silicon ions, none of which appear in the Wenzl and Wilkens (2011) compilation. The Furusawa et al . (2000) dataset (helium, carbon, and neon ions across a range of matched LET values for V79 and HSG cells) is included in the calibration set; its matched-LET triples constitute the primary in-sample Z-ordering assessment, described in Section 3.2. All data are from clonogenic survival assays; OER surv values were converted to OER ret via fc = 1 .20 (Hirayama et al . 2005). Four cell lines are represented: V79 (reference), HSG, T1, and CHO; correction factors enter as multiplicative scalars on pDSB and do not alter any mechanistic parameter. 
+
+Optimization. Parameters were estimated by minimizing a Huber loss function, a robust estimator that mitigates the impact of outliers by treating small errors quadratically and large errors linearly. This minimization used a threshold δ = 0 .5–0.8 and a composite weighting scheme proportional to clinical relevance, physical plausibility, and experimental reliability. Optimization was implemented in R using the optim() solver ( stats package) and proceeded in two sequential phases: Phase 1 optimizes the oxygen kinetics constants 
+
+Kfix and Krepair from the photon arm of the dataset; Phase 2 optimizes the particle-specific transition parameters with the Z-ordering monotonicity constraints on xdir 50 and 
+
+xind 50 enforced as linear inequalities. Both phases used a multi-start L-BFGS-B descent (to escape shallow local optima) followed by a Nelder-Mead simplex polish as a final refinement step, with the global minimum retained across starting points. This sequential phasing prevents joint overfitting and respects the physical hierarchy between universal oxygen chemistry and particle-specific track structure. Five hundred bootstrap replicates were performed with a fixed random seed ( set.seed(42) , R base); all 500 converged. 
+
+VA calibration. For each of the three particles fitted for VA parameters (electron,  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 13 | 39
+
+proton, carbon), a dedicated TOPAS-nBio simulation arm of 3 independent nuclei provided the calibration dataset ( ∼ 2 500 DSBs in total per particle). Each nucleus was simulated as a high-statistics run of 2–3 hours, yielding sufficient DSB density for stable δf estimation within a single nucleus. An independent validation arm of 3 nuclei ( ∼ 400 DSBs per particle), not used in fitting, was generated for the scaling battery. The particle-specific energy sensitivity parameter δf is fitted per particle; for uncalibrated species, δf is estimated by logarithmic interpolation in Z-space between the two nearest calibrated particle types. 
+
+Neon hold-out run. To validate the Z-interpolation procedure for the OM midpoint parameters, all neon observations were excluded from calibration and neon OER predictions were recovered by Z-interpolation of xdir 50 and xind 50 between calibrated carbon ( Z = 6 ) and argon ( Z = 18 ) parameters. Results are reported in Section 3.2. 
+
+2.6 Validation protocol 
+
+Z-ordering performance was assessed in-sample on the Furusawa et al . (2000) subset and compared against the Scifoni et al . (2013) clinical standard. External validation was conducted on one genuinely withheld dataset. 
+
+Structural Fidelity Benchmark: Furusawa heavy-ion data. Furusawa et al .(2000) provides OER measurements for helium, carbon, and neon ions across a range of LET values, with all three ions measured at matched LET—the natural litmus test for Z-ordering. This comparison is explicitly in-sample: the Furusawa data are part of VOxA’s calibration set, and Scifoni et al . (2013) was likewise fitted to overlapping data. The purpose is not to test generalization but to establish whether each model’s architecture can encode the He < C < Ne ordering at all. The residuals of universal LET-only models (Grimes 2020; Scifoni et al . 2013) represent a structural floor on this benchmark. They cannot be reduced by additional calibration data, only by replacing the architecture with a particle-specific one. Performance is quantified by MAE in OER units; Z-ordering capability is assessed from Figure 7, since a universal model assigns identical OER to all ions at the same LET by construction. 
+
+External validation: Ling oxygen curve. RMSE on the Ling et al . (1981) photon curve (held out from calibration) is compared against the Grimes and Partridge (2015) analytical model. 
+
+VA scaling battery. CV invariance was tested with 18 statistical procedures across three particle types (6 tests each): F -test, Levene, Kolmogorov–Smirnov, TOST (null: means differ by > ±1% ), Feltz–Miller (null: CVs are unequal), and bootstrap CI overlap. The TOST and Feltz–Miller are the primary tests; a particle passes if both confirm equivalence. 
+
+# 3 Results 
+
+The performance of VOxA across the integrated calibration and validation datasets demonstrates that particle identity is an irreducible determinant of the oxygen effect. The model achieves an overall mean absolute error of 0.300 OER ret units while successfully recovering the He < C < Ne Z-ordering at matched linear energy transfer. This outcome confirms that the analytical sigmoidal framework successfully encapsulates the integrated  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 14 | 39
+
+effects of radical depletion without the computational burden of explicit kinetic tracking. 
+
+3.1 Oxygen Model calibration 
+
+Figure 2. OER ret versus dose-averaged LET at near-anoxia ( 0.001% O 2) for all seven calibrated particle types. Solid curves: VOxA Oxygen Model predictions; colored circles: 233 calibration observations. Particle-specific curves shift rightward with increasing atomic number Z, encoding Z-ordering by construction. LET axis is logarithmic; both axes are clipped to the calibrated range. 
+
+The OM was calibrated on 233 OER observations spanning 10 particle types from 29 independent sources. Overall goodness of fit was R2 = 0 .719 (unweighted) and 
+
+R2 = 0 .747 (clinically weighted), with MAE = 0 .300 OER units and RMSE = 0 .396 
+
+OER units (Figure 2, Figure 3). Leave-one-source-out cross-validation yielded MAE 
+
+= 0 .284 ± 0.142 OER units (mean ± SD over 29 source-folds), confirming that fit quality was not driven by any single dataset. All 500 bootstrap replicates converged ( 100% 
+
+acceptance rate). 
+
+OER maximum. The theoretical ceiling OER max (retention ) = 3 .32 emerged from the calibrated parameters with no additional degrees of freedom. The bootstrap distribution yielded a median of 3.37 (95% CI [3 .18 , 4.09] ), in close agreement with the values reported by Hirayama et al . (2005): OER max ( survival ) ≈ 2.8 ± 0.2 (model: 2.93 ; 4.6% error) and Hirayama et al . (2009): OER max (retention) ≈ 3.4 ± 0.2 (2.4% error). 
+
+Oxygen kinetics. The composite Kfix + Krepair = 0 .371% O 2 = 2 .82 mmHg is the only well-identified quantity from the oxygen kinetics phase: the individual parameters  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 15 | 39
+
+Figure 3. Predicted versus observed OER ret across all 233 calibrated-particle observations. Solid diagonal: perfect agreement; dashed lines: ±0.15 OER unit absolute tolerance bands. 65 .8% of observations fall within the tolerance bands. 
+
+Kfix = 0 .159% O 2 and Krepair = 0 .212% O 2 are poorly constrained, with bootstrap CVs of 71% and 96% respectively and bivariate collinearity r = 0 .935 (Figure 5). This is a fundamental consequence of the functional form of Pfix in Equation (6): the ratio depends on the composite sum but not on how it is partitioned between the two constants. The composite is therefore the physically meaningful oxygen kinetics parameter of this model, and governs the pO 2 region of maximum radiobiological sensitivity to changes in oxygen tension (Figure 4). 
+
+Calibrated transition midpoints. Table 4 lists the calibrated values of xdir 50 and 
+
+xind 50 for all seven directly calibrated particle types. The heavy-ion Z-ordering constraint is satisfied throughout: xdir 50 ( He ) < x dir 50 (C) < x dir 50 (Ne ) < x dir 50 (Ar ), and likewise for xind 50 .Proton and deuteron ( Z = 1 ) are exempt from this chain and calibrated independently; their xdir 50 values (153.0 and 142.9) are slightly above the helium value (151.8) within overlapping bootstrap confidence intervals. The monotonic progression encodes the track-structure mechanism described in Section 2.2: heavier ions possess wider track cores at matched LET, remain in an indirect-damage-dominant regime to higher LET, and consequently shift their transition midpoints upward on the LET axis. 
+
+Variance decomposition. Type III partitioning of the calibration variance attributes 
+
+61 .6% to LET, 29 .4% to particle type (independent of LET), 7.6% to their interaction, and  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 16 | 39
+
+Figure 4. Oxygen fixation probability Pfix versus oxygen partial pressure (log scale), computed from Equation (6) with calibrated Kfix = 0 .159% O 2 and Krepair = 0 .212% O 2. Red dashed vertical: composite Kfix + Krepair = 0 .371% O 2 = 2 .82 mmHg, the inflection point of the curve. Dotted horizontal: Pfix at normoxia ( 0.9901 ). 
+
+Table 4. Calibrated transition midpoints (MLE values) for the seven directly calibrated particle types, ordered by atomic number Z then mass. The Z-ordering constraint applies to the He–C– Ne–Ar heavy-ion progression; proton and deuteron ( Z = 1 ) are calibrated independently and their midpoints need not satisfy inter-Z monotonicity relative to helium. The near-equality of 
+
+xdir 50 for proton and helium ( 153 .0 vs. 151 .8) lies well within mutual bootstrap confidence intervals and does not constitute a constraint violation. Midpoints for Z-interpolated particles (N, O, Si) are not listed here but appear in Appendix A (Table 8), which reports full 95% bootstrap CIs and CVs for all particle types. Values are dimensionless x-parameters (not raw LET); apply Equation (1) to convert LET to x before use. Particle Z xdir 50 xind 50 
+
+Photon 0 124.7 2016.7 Proton 1 153.0 2448.5 Deuteron 1 142.9 2319.5 Helium 2 151.8 1838.9 Carbon 6 264.4 2434.2 Neon 10 463.9 3240.2 Argon 18 658.4 4010.4 
+
+2.2% to cell line. The 29 .4% particle-type term is best interpreted as an estimated variance ceiling : the upper bound on OER ret variance that a particle-specific model can recover relative to a perfect LET-only model, within this particular dataset. Because the dataset  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 17 | 39
+
+Figure 5. Bootstrap parameter ridge for the oxygen kinetics constants. Each point represents one of 500 bootstrap replicates. KDE density contours overlay the scatter. Red diamond: MLE operating point ( Kfix = 0 .159% O 2, Krepair = 0 .212% O 2). The ridge orientation (slope ≈ − 1)confirms that the composite sum Kfix + Krepair is the identifiable quantity; individual parameters are poorly constrained (Pearson r = 0 .935 ). The MLE operating point lies below the bootstrap cloud because bootstrap re-optimizations explore a different region of the flat likelihood surface. 
+
+is unbalanced (carbon-heavy, multiple cell lines, wide LET range), and the Shapiro–Wilk test formally rejects normality ( p = 7 .25 × 10 −3), this figure is a heuristic indicator rather than a statistically precise bound. It encompasses both genuine Z-ordering physics and any systematic experimental noise that varies by ion species (beam quality between facilities, cell-line handling). The Z-ordering constraint on the sigmoidal midpoints is designed to recover the physical component of this variance. 
+
+Residual diagnostics. Shapiro–Wilk on the 233 calibration residuals gives W = 0 .983 ,
+
+p = 7 .25 × 10 −3. Formal rejection of normality is entirely expected for a heterogeneous multi-decade dataset spanning 10 particle types and 29 OER sources; the bootstrap CIs reported throughout are the primary inferential tool and do not assume normality. The residual Q–Q plot (Figure 6) confirms that the departure is confined to the distribution tails. 
+
+3.2 Structural Fidelity Benchmark and external validation Structural Fidelity Benchmark: Furusawa heavy-ion data. The Furusawa et al .(2000) subset of the calibration data (90 clean observations across He, C, and Ne) tests whether VOxA’s particle-specific architecture correctly encodes Z-ordering and not merely  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 18 | 39
+
+Figure 6. Q–Q plot of standardized calibration residuals ( N = 233 ) against theoretical normal quantiles. Dashed line: normal reference. The bulk of the distribution follows the reference closely; departures are confined to the tails, consistent with a light-tailed heavy-ion OER dataset. Shapiro–Wilk W = 0 .983 , p = 7 .25 × 10 −3.
+
+fits marginal OER magnitude. Because this dataset is in-sample for both VOxA and Scifoni et al . (2013), it is a Structural Fidelity Benchmark, not a generalization test. The Z-ordering result is confirmed non-circularly by the neon hold-out (Section 3.2). When neon parameters are derived entirely by Z-interpolation from carbon and argon, the OER surv MAE changes by only −1.46% , demonstrating that the Z-ordering constraint predicts neon OER from bracketing ions without any direct neon calibration data. A full leave-one-particle-out validation across all seven particle types is identified as future work. VOxA achieved an overall survival-OER MAE of 0.346 versus 0.483 for Scifoni et al .(2013) ( 28 .4% lower; Figure 7). Per-particle: 63 .1% improvement for helium ( 0.324 vs 
+
+0.877 ), 24 .0% for carbon ( 0.351 vs 0.462 ). For neon, VOxA MAE ( 0.350 ) slightly exceeds Scifoni’s ( 0.292 ): VOxA’s Z-ordering monotonicity constraint shifts the neon transition curve rightward along the LET axis to preserve He < C < Ne ordering, at the cost of absolute neon accuracy. The Grimes (2020) universal model, also included for comparison, achieves lower overall MAE ( 0.297 ) than both VOxA and Scifoni by fitting carbon and neon well, yet shares their structural incapacity for Z-ordering. The key result is Z-ordering at matched LET: in the 70–82 keV μm−1 range, Furusawa HSG data confirm He < C < Ne. VOxA reproduces this; Scifoni and Grimes 2020, both LET-only, predict zero inter-ion difference by construction (Figure 7). 
+
+Oxygen response curve. On the Ling et al . (1981) low-LET photon data, VOxA  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 19 | 39
+
+Figure 7. Z-ordering validation on the Furusawa et al . (2000) heavy-ion dataset at near-anoxia (0.0013% O 2). Four panels: proton, helium, carbon, neon. Solid gold: VOxA; dashed blue: Scifoni 
+
+et al . (2013); dash-dot orange: Grimes (2020); filled circles: Furusawa data. The three particle-specific VOxA curves shift rightward with Z at matching LET reproducing the experimental Z-ordering. Both Scifoni et al. and Grimes are universal models that predict the same curve for all ions. The Scifoni et al. and Grimes residuals on this dataset represent a structural floor for any LET-only model, a systematic error that cannot be reduced by further calibration, only by architectural change. Structural Fidelity Benchmark : this tests VOxA’s architectural capacity to resolve Z-ordering; it uses in-sample data and is not an independent generalization validation. The neon hold-out (Figure 9) provides the non-circular confirmation. Note: VOxA curves shown with the overkill correction enabled (Equation 11); benchmark MAE values use overkill-free observations (LET < 0.7 LET max ). 
+
+achieved RMSE = 0 .175 OER surv units versus 0.160 for Grimes and Partridge (2015) using their beam-specific Ling et al. (b) parameters (Figure 8). 
+
+Neon hold-out. Excluding all neon observations from calibration and recovering neon predictions entirely by Z-interpolation of xdir 50 and xind 50 between calibrated carbon (Z = 6 ) and argon ( Z = 18 ) yielded an interpolated xdir 50 ( Ne ) = 404 .1 versus the calibrated value of 463 .9 (12 .9% difference) and xind 50 (Ne ) = 3070 .3 versus 3240 .2 (5.2% difference;  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 20 | 39
+
+Figure 8. Oxygen response curve validation against the Ling et al . (1981) low-LET photon dataset (Ling convention: reference = anoxia, OER increases with pO2). Solid gold: VOxA; dashed blue: Grimes and Partridge (2015) analytical model; filled circles: Ling et al. CHO data. VOxA RMSE = 0 .175 ; Grimes & Partridge (2015, Ling et al. b fit) RMSE = 0 .160 .
+
+Figure 9. Neon hold-out Z-interpolation validation using all 54 calibration neon observations from eight sources (Furusawa 2000, Blakely 1979, Katz 1974, Raju 1978, Curtis 1982, and others); data points colored by cell line (V79, HSG, T1, other). Panel A: OER surv versus LET. Solid gold: VOxA with calibrated neon parameters (fitted MAE = 0 .246 OER surv units); dashed green: VOxA with neon parameters recovered by Z-interpolation between calibrated carbon ( Z = 6 )and argon ( Z = 18 ) midpoints (interpolated MAE = 0 .243 OER surv units). Panel B: predicted versus observed OER surv scatter; dashed diagonal = identity; shaded band = ±20% . The MAE change of only −1.46% validates the Z-interpolation procedure.  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 21 | 39
+
+Figure 9). Across all 54 calibration neon observations from eight independent sources, the fitted OER surv MAE was 0.246 and the Z-interpolated MAE was 0.243 , a change of only 
+
+−1.46% ; the sigmoidal prediction surface absorbs parameter midpoint shifts at the OER prediction level. Z-interpolation is therefore a valid procedure for particles not present in the calibration set. 
+
+3.3 Voxel-Aware extension validation Scaling battery: 18/18 pass. The battery assesses whether the within-nucleus CV of 
+
+p(i)DSB is invariant to the number of DSBs sampled, the central validity claim of the VA extension. Across all three particle types and all six test procedures, equivalence was confirmed (Table 5). The two primary tests directly probing CV invariance—TOST (null: non-equivalence of means by > ±1% ) and Feltz–Miller (null: CVs are unequal)—both passed for all three particles (CV ratios (Figure 11): electron 1.000 [95% CI 0.893 , 1.115 ]; proton 1.000 [0 .869 , 1.125] ; carbon 0.998 [0 .885 , 1.115] ). Levene’s test returned significant 
+
+p-values for proton ( p = 0 .013 ) and carbon ( p < 0.001 ), but this tests distributional shape, not the CV equivalence hypothesis. The shape difference was expected, as the 
+
+p(i)DSB distribution narrows systematically with increasing sample size when the underlying distribution is non-normal. Mean preservation was confirmed to better than 0.011% for all three particles, validating the zero-bias property of the z-score normalization (Section 2.4). 
+
+Table 5. VA scaling battery results across the six test procedures (rows) and three particle types (columns). ✓ = equivalence confirmed; the primary tests (TOST and Feltz–Miller) are bolded. All CV ratios are calibration-to-validation. Test Electron Proton Carbon 
+
+F -test (CV equality) ✓ ✓ ✓
+
+Levene (variance shape) ✓ ×a ×a
+
+Kolmogorov–Smirnov (dist.) ✓ ✓ ✓
+
+TOST (mean, ±1% ) ✓ ✓ ✓
+
+Feltz–Miller (CV equality) ✓ ✓ ✓
+
+Bootstrap CI overlap ✓ ✓ ✓
+
+Overall pass pass pass 
+
+> aLevene tests distributional shape, not CV equivalence; passes by primary criteria.
+
+Calibrated δf parameters. The fitted energy sensitivity parameters are δf (electron ) = 0.00357 (95% CI [0 .00348 , 0.00486] ), δf (proton ) = 0 .02536 ([0 .02381 , 0.02689] ), and 
+
+δf (carbon ) = 0 .07785 ([0 .07253 , 0.08329] ). These increase monotonically with Z, re-flecting the growing track-structure energy heterogeneity as tracks become more laterally confined and spatially structured at higher ionization density. This monotonicity is not enforced as a constraint; it emerges from independent Pareto-frontier optimizations on particle-specific calibration arms, lending it physical interpretability. 
+
+CV across the oxygen gradient. Table 6 reports the within-nucleus CV of p(i)DSB at three representative oxygen levels. CV increases systematically from normoxia to anoxia for all three particles: at normoxia ( 21% O 2), Pfix ≈ 0.99 for all cases and the oxygen  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 22 | 39
+
+Figure 10. Voxel-Aware calibration diagnostics. Left : Pareto frontier for each of the three calibrated particles: within-nucleus CV of p(i)DSB (horizontal axis) versus mean population error (vertical axis, log scale). Each curve sweeps over candidate δf values; the filled circle marks the chosen operating point (maximum CV while keeping mean error < 1% ; dashed line). All operating points lie several orders of magnitude below the constraint, confirming negligible population-level bias. Right : Per-DSB retention probability p(i)DSB distributions at 0.21% O 2
+
+(violin plots, N ≈ 2500 DSBs per particle). Thick bar: IQR; white dot: median; dashed horizontal: OM population mean ( δf = 0 ). CV values are annotated above each violin. 
+
+modulation of pDSB is saturated, suppressing the expression of energy heterogeneity; at severe hypoxia and anoxia, Pfix drops into the sensitive range, and the spread in f (i)dir is amplified into a corresponding spread in p(i)DSB (Figure 10). 
+
+Table 6. Within-nucleus CV of p(i)DSB across the oxygen gradient for the three VA-calibrated particles. At normoxia ( 21% O 2), Pfix ≈ 0.99 for all DSBs regardless of local energy, so per-DSB variation in p(i)1 propagates negligibly into p(i)DSB and the CV collapses to zero. As oxygen tension falls, Pfix enters its sensitive range and track-structure heterogeneity is amplified into retention heterogeneity, producing the monotonic CV increase with decreasing pO2. CV is invariant to sample size (Table 5) and increases with Z at fixed pO2, reflecting the greater energy-deposition variance of heavier ion tracks. 
+
+pO2 (% O2) Electron Proton Carbon 
+
+21 .0 (normoxia) 0.00% 0.00% 0.00% 0.21 (moderate hyp.) 0.36% 2.53% 7.14% 0.001 (near-anoxia) 0.88% 5.72% 12 .54% 
+
+3.4 Clinical DSB retention predictions 
+
+VOxA’s committed-break outputs quantify the retained DSB population after sub-millisecond chemical equilibration: those breaks that have been irreversibly fixed by oxygen or have escaped thiol-mediated restitution and are therefore committed to the  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 23 | 39
+
+Figure 11. VA scaling battery: CV ratio (validation sample / calibration sample) for each of the three calibrated particle types. Diamond markers: observed CV ratios; error bars: 95% bootstrap confidence intervals; shaded band: ±20% equivalence tolerance. All three particles pass the primary TOST and Feltz–Miller equivalence tests, confirming that the within-nucleus CV of p(i)DSB is invariant to sample size. 
+
+biological repair cascade, but at which 53BP1 has not yet assembled and loop extrusion has not yet reorganized the chromatin. We use a reference dose of ∼10 Gy (carbon pSOBP), corresponding to ∼400 initial DSBs per nucleus at the proximal SOBP position. Table 7 and Figure 12 show the predicted retained DSB count across five oxygen conditions. At normoxia, the three particle types retain 389 (electron), 392 (proton), and 
+
+388 (carbon) DSBs; effectively equivalent, consistent with the expectation that oxygen is saturating at 21% and the oxygen advantage of carbon is negligible. At severe hypoxia (0.021% O 2), carbon retains 202 DSBs versus 127 for electrons and 140 for protons: a 
+
+59 .1% and 44 .3% advantage, respectively. At near-anoxia ( 0.001% O 2), carbon retains 
+
+196 DSBs versus 117 (electron) and 130 (proton), a carbon advantage of 67 .5% and 
+
+50 .8% respectively. These differences constitute the mechanistic basis for carbon’s hypoxic advantage in LET painting. The higher direct-damage fraction of carbon at clinical LET ( 40 .9 keV μm−1) translates directly into a larger pool of oxygen-independent retained breaks. 
+
+# 4 Discussion 
+
+VOxA resolves the long-standing tension between biophysical accuracy and clinical speed by encoding Z-ordering as a structural invariant of the model architecture. By treating precursor nanodomains as probabilistically filtered spatial templates, the model bridges the scale gap between sub-millisecond chemical equilibration and the reorganized chromatin landscapes observed in later repair foci. These findings provide the mechanistic foundation  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 24 | 39
+
+Figure 12. Committed DSB counts per nucleus across five oxygen conditions, starting from 400 initial DSBs ( ≈ 10 Gy carbon pSOBP). Three particle types (electron 0.2 keV μm−1; proton 
+
+4.6 keV μm−1; carbon 40 .9 keV μm−1) are shown with 95% Monte Carlo confidence interval error bars and a small horizontal offset for clarity. The carbon–electron gap widens substantially below mild hypoxia, reaching +67 .5% at anoxia. 
+
+Table 7. Committed DSB counts per nucleus from 400 initial breaks ( ≈10 Gy carbon pSOBP), with 95% Monte Carlo confidence intervals. Carbon advantage is computed relative to electron. Condition pO2 Electron Carbon C advantage Normoxia 21% 389 [389, 389] 388 [388, 388] −0.3% 
+
+Mild hypoxia 2.1% 343 [329, 355] 353 [342, 364] +2 .9% 
+
+Moderate hypoxia 0.21% 198 [178, 217] 249 [230, 267] +25 .8% 
+
+Severe hypoxia 0.021% 127 [109, 145] 202 [184, 220] +59 .1% 
+
+Anoxia 0.001% 117 [ 99, 135] 196 [177, 213] +67 .5% 
+
+for a new generation of hypoxic LET painting that is fundamentally aware of the within-nucleus heterogeneity of particle tracks. 
+
+4.1 Z-ordering as a litmus test for OER models 
+
+The failure of universal OER models to reproduce Z-ordering is not a calibration deficiency but a structural limitation. A model expressed entirely as a function of LET assigns a unique OER value to each LET, so two ions at the same LET must receive the same prediction regardless of how well calibrated the model is or how large its training dataset. The Furusawa measurements demonstrate that He, C, and Ne can differ by up to 20% in OER at matched LET, a gap that no amount of calibration data closes for a universal  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 25 | 39
+
+model. VOxA resolves this by carrying particle identity as a structural parameter through the sigmoidal midpoints xdir 50 and xind 50 , constrained to increase monotonically with Z via the physics of track-core width. This makes Z-ordering a structural property of the model rather than an optimization target. The lack of Z-ordering in any universal model (including Scifoni et al . 2013) is irreducible. Assigning identical OER to all ions at the same LET is not a calibration choice but an architectural one, and no volume of data can compensate for the missing particle-identity term. While the Microdosimetric Kinetic Model (MKM) reformulation by Strigari et al . (2018) successfully reproduces Z-ordering by integrating over explicit amorphous track structures, VOxA achieves this result through analytical sigmoidal transitions. This allows VOxA to enforce ion-ordering as an architectural invariant while maintaining a computational throughput suitable for real-time voxel-scale planning. The consequence is most acute in helium–carbon LET painting. VOxA predicts ∼ 9% 
+
+lower OER for helium than carbon at matched LET ( 20 –100 keV μm−1), consistent with Furusawa. A universal model assigns equal OER to both beams, causing systematic mis-prescription of beam weights in the hypoxic subvolumes where their radiobiological difference matters most. The DICOLDD model of Zhu et al . (2021) does incorporate mechanistic radical kinetics, but it operates as a computational kinetic framework that numerically integrates radical reaction equations, where execution times remain incompatible with voxel-scale planning. VOxA is an architecturally constrained analytical model: Z-ordering is enforced through structural monotonicity inequalities on xdir 50 and xind 50 , and the entire model evaluates analytically in under 10 −3 ms per voxel. The distinction is not merely speed; it is that VOxA’s Z-ordering property is guaranteed by its architecture, not by the specific solution of a kinetic system at each evaluation point. The Grimes (2020) model uses shared fit parameters ( χD, χI ) across all ions, an architectural choice that assigns one OER to each LET regardless of Z. VOxA replaces these with particle-specific xdir 50 (Z), xind 50 (Z) constrained by monotonicity. This distinction can be stated sharply: prior models apply empirical Z-labeling (fitting separate curves to each ion after the fact, if at all), whereas VOxA enforces structural Z-ordering via hard inequalities derived from Bethe–Bloch track-core physics, making correct ion ordering a model invariant rather than a fitting outcome. 
+
+4.2 The no-chemistry-module approximation 
+
+VOxA ran TOPAS-nBio without the chemistry module. The key distinction is that chemistry governs the probability of a committed DSB, not its location : radical chemistry determines whether an ionization event leads to a retained break, but the coordinate is fixed at ionization. VOxA models these probabilities analytically via Equations (6) and (7). The sub-nanometer radical correlation geometry is not captured, but is relevant to clustered DSB rates rather than nuclear-scale spatial distribution. 
+
+> •
+
+OH radicals travel ∼ 4–6 nm before scavenging (Roots and Okada 1972), introducing 
+
+≲ 5 nm root-mean-square (stochastic) coordinate displacement, which is approximately 
+
+30 × smaller than the 160 nm sub-voxel resolution. VOxA effectively treats indirect damage  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 26 | 39
+
+as point-like relative to the chromatin voxelization. The reaction probability is projected onto the primary ionization site. The advantage gained is decisive for planning applications: explicit radical chemistry requires ∼ 10 −1–10 0 ms per track (Grimes and Partridge 2015), while VOxA evaluates in under 10 −3 ms per voxel, a speedup exceeding 10 6. Within-track radical–radical recombi-nation ( •OH + •OH → H2O2) is captured analytically through the sigmoid midpoints xdir 50 
+
+and xind 50 , whose calibrated Z-dependent shifts encode the integrated depletion without explicit spatial tracking. Accuracy was confirmed on the Ling and Furusawa benchmarks (Section 3.2). 
+
+4.3 Precursor nanodomains and the damage-to-repair timeline 
+
+VOxA’s output sits at a specific point in the post-irradiation timeline. Radical chemistry equilibrates sub-millisecond, and Pfix captures that steady-state. Loop extrusion (Arnould 
+
+et al . 2021) and 53BP1 assembly then reorganize the chromatin on second-to-minute timescales. Focus formation is observed from ∼ 5 min post-irradiation in standard IRIF protocols (Lei et al . 2022), with the 5-minute mark representing a representative early observation timepoint rather than a sharp biological threshold. By the first practical SMLM imaging window ( ∼ 5–15 min), the chromatin landscape is already partially evolved from the committed-break geometry. VOxA outputs are the committed DSB template . Ionization events retained by the oxygen-fixation filter before chromatin reorganization, termed precursor nanodomains .Each nanodomain’s position is from TOPAS-nBio track geometry, and its retention probability is from the analytical chemistry model (Equations 6–10). “Post-equilibration” refers to chemical commitment, not radical migration. The temporal alignment is supported empirically, where VOxA’s OER max (retention ) = 3 .32 corresponds to the residual DSB population at the first post-irradiation timepoint ( ∼ 15 min), and the measured value of Hirayama et al . (2009) at this timepoint is 3.4 ± 0.2 (2.4% model error). This is the appropriate biological state for topological characterization at the whole-nuclear scale .Individual committed-break positions across the ∼ 9 μm nucleus, capturing inter-break spatial relationships. This scale is distinct from the SMLM-resolved nanoscale repair foci that Hausmann et al . (2020), which are assembled protein domains with ∼ 100 nm internal structure that VOxA does not model directly. The ∼ 2× length-scale expansion at the precursor-to-SMLM transition is a falsifiable prediction of the downstream arc, derived from the ∼ 50 nm characteristic DSB-precursor spacing and the ∼ 100 nm 53BP1 nanodomain diameter reported by Küntzelmann et al . (2026). It is not a quantity directly measured in those SMLM experiments. 
+
+4.4 Comparison with existing OER models 
+
+Existing OER models occupy two distinct positions on the accuracy–speed trade-off, with VOxA offering a route that improves on both. 
+
+Empirical photon-based models (Alper and Howard-Flanders 1956; Grimes and Partridge 2015) express OER as a function of oxygen tension only, without LET or particle dependence. Grimes and Partridge (2015) achieves RMSE = 0 .160 on the Ling dataset (beam-specific Ling et al. b fit) versus VOxA’s 0.175 , but Z-ordering is structurally inaccessible to these models. The mechanistic simulation of Lai et al . (2022) reproduces  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 27 | 39
+
+the Ling curve with reported mean absolute relative error of 2.7% , but requires stochastic Monte Carlo kinetics that preclude voxel-scale clinical evaluation. 
+
+Analytical damage models. Van den Heuvel et al . (2021) develop a framework for incorporating oxygenation into treatment planning that uses a rational polynomial expression for oxygen fixation, which is mathematically equivalent to VOxA’s Michaelis– Menten form and representative of the same two-state competition between oxygen-mediated fixation and chemical restitution. Their framework is validated against the Microdosimetric Monte Carlo Damage Simulation code (MCDS) to within 0.3% for complex damage across electrons and protons, and correctly identifies that the OER–LET spectrum shifts toward higher LET with increasing particle charge Z. However, this shift is captured as an empirical observation rather than enforced as a structural model invariant, which leaves Z-ordering dependent on the calibration data rather than guaranteed by the model architecture. The earlier geometric approach of Van den Heuvel (2014), which models the high-to-low LET damage transition using a cumulative Cauchy distribution, is structurally analogous to VOxA’s dual sigmoidal transitions, but fits particle parameters independently without monotonicity constraints. Both frameworks produce scalar damage yields per voxel; neither outputs the three-dimensional committed-break coordinates that downstream topological analysis requires. 
+
+Full MC codes (PARTRAC, KURBUC) can capture Z-ordering but require minutes to hours per track, precluding voxel-scale planning. VOxA exceeds their throughput by 
+
+> 10 6 at the cost of analytical rather than explicit chemistry. 
+
+Clinical phenomenological models. The current clinical standard achieves LET dependence through a three-parameter sigmoidal function calibrated to the Furusawa data. It is computationally efficient, but is universal across particle types. On the Furusawa benchmark, VOxA achieves 28 .4% lower overall OER surv MAE vs the clinical standard, with 63 .1% and 24 .0% per-ion improvements on helium and carbon respectively, and correctly captures Z-ordering. The Scifoni et al . (2013) model assigns identical OER to all ions at the same LET and therefore cannot reproduce He < C < Ne by construction. While Strigari et al . (2018) reproduces Z-ordering via mechanistic MKM track modeling, VOxA achieves this result analytically at planning speeds several orders of magnitude faster. Moreover, unlike the mean-field parameters provided by Strigari 2018, VOxA’s Voxel-Aware extension resolves sub-voxel energy heterogeneity to generate the per-DSB retention distributions necessary for downstream topological analysis. The Grimes (2020) universal model achieves lower overall OER surv MAE ( 0.297 ) than VOxA ( 0.346 ) on the Furusawa benchmark, fitting carbon and neon curves well. However, like Scifoni, it is architecturally incapable of Z-ordering. It assigns identical OER to He, C, and Ne at matched LET, so every predicted inter-ion difference is exactly zero regardless of calibration quality. VOxA’s neon OER surv MAE ( 0.350 ) exceeds that of both universal models because the Z-ordering monotonicity constraint shifts the neon sigmoid rightward along the LET axis to preserve He < C < Ne, which is the correct physical behavior. The absolute accuracy cost is concentrated on neon and is an irreducible consequence of enforcing the physics constraint. For helium and carbon, which are the primary clinical ions in LET painting, VOxA outperforms Scifoni by 63 .1% and 24 .0% respectively. VOxA thus occupies a deliberate position: better accuracy than the clinical standard on the primary clinical ions, correct Z-ordering at sub-millisecond speed. The MAE gap  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 28 | 39
+
+versus Grimes 2020 is the irreducible price of physically correct multi-ion ordering, not a calibration deficiency. Speed hierarchy: full MC ∼ 10 0–10 2 s; VOxA OM < 10 −3 ms; VOxA VA < 5 × 10 −3 ms per DSB. 
+
+4.5 Limitations and scope of validity 
+
+Several limitations define the boundary of VOxA’s applicability. 
+
+Case fraction independence. The binomial independence assumption (Section 2.2) becomes conservative at LET ≳ 300 keV μm−1, where inter-strand SSB correlation rises to 0.15 –0.25 (Bertolet et al . 2022), causing 8–12% underestimation of p1. The model’s accuracy claims apply to the clinical window LET ≤ 300 keV μm−1; users should treat VOxA predictions for ions with LET > 300 keV μm−1 as conservative lower bounds on direct damage and OER suppression, not as precise estimates. 
+
+High-LET asymptote sensitivity. The fixed p1,high = 0 .64 derives from a single Fe-56 experiment (Hirayama et al . 2009). A ±10% variation defines a high-LET uncertainty envelope of ±4–6% in OER ret above 200 keV μm−1 for neon and argon; the asymptote may additionally vary by cell line given its single-source derivation. In the 10 –100 keV μm−1
+
+clinical window the impact is < 2% .
+
+Michaelis–Menten approximation. The MM form is accurate over 0.001 –21% O 2
+
+but does not account for cooperative binding or radical-chain reactions at the near-anoxic extreme; it has not been validated below 0.001% O 2.
+
+Spatial resolution. The TOPAS-nBio voxel side-length of 309 nm (Hilbert iteration 1) is the coarsest spatial resolution at which VA energy heterogeneity can be meaningfully resolved. Sub-voxel DSB coordinate variation is retained at the ∼ 160 nm scale. Higher Hilbert iterations would reduce the voxel size and resolve finer-scale energy gradients, at proportionally higher computational cost. 
+
+Calibration coverage. Carbon contributes over 40% of calibration observations; deuteron, nitrogen, oxygen, and silicon contribute fewer than 10 observations each. Pre-dictions for sparsely represented particles rest partly on Z-interpolation, as confirmed by the neon hold-out, but the interpolation carries increasing uncertainty beyond Z = 18 .VOxA provides no validated extrapolation guarantee for ions heavier than argon. 
+
+Scope. The validated operating range is LET 0.2–654 keV μm−1,pO2 0–21% , Z = 0 –18 ,and dose rates relevant to conventional fractionation. VOxA has not been validated for FLASH irradiation ( > 40 Gy s −1), where dose-rate-dependent radical depletion would require additional kinetic terms. Oxygen tension is modelled as static, and dynamic reoxygenation during fractionated treatment is not captured. All calibration data are in vitro . In vivo microenvironmental effects, including stromal oxygenation gradients and vascular heterogeneity, are not represented. 
+
+Mixed-ion fields. VOxA evaluates OER for a single particle species and LET per voxel. Clinical treatment fields with carbon primary beams inevitably produce fragment showers containing lower-Z secondaries. A biologically weighted dose in such a mixed field requires a fluence- or dose-weighted averaging rule for the per-voxel case fractions  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 29 | 39
+
+(p1, p 2, p 3). The design specification for future implementation is: 
+
+pmix  
+
+> k
+
+=
+
+P 
+
+> j
+
+Dj · pk(Zj , LET j )
+
+P 
+
+> j
+
+Dj
+
+, k ∈ { 1, 2, 3}, (18) where the sum runs over all ion species j present in the voxel, Dj is the dose contribution of species j, and pk(Zj , LET j ) is the VOxA case fraction evaluated at that species’ Z
+
+and dose-averaged LET. The resulting mixed-field OER ret follows from Equations (7)–(9). Implementation requires per-species dose decomposition from the treatment planning system, not yet integrated with VOxA; this is the subject of ongoing work. 
+
+# 5 Conclusion 
+
+VOxA establishes that particle-specific, mechanistically grounded OER prediction at clinical planning speed is achievable within a closed-form analytical framework. It also shows that such a framework can, for the first time, produce the three-dimensional coordinates of committed DNA damage at whole-nuclear scale on which downstream topological and geometric analysis act. The Oxygen Model achieves this through Z-ordering-constrained dual sigmoidal transi-tions and Michaelis–Menten oxygen kinetics, calibrated on 233 OER observations from 29 independent sources spanning 10 particle types, which is the largest dataset assembled for this model class. Z-ordering is enforced as a structural model invariant via hard Bethe–Bloch-derived monotonicity constraints, not as a fitting outcome, which guarantees correct inter-ion predictions for species outside the calibration set. On the Furusawa heavy-ion benchmark, VOxA achieves 28 .4% lower MAE than the clinical standard, with per-ion improvements of 63 .1% on helium and 24 .0% on carbon, and correctly re-produces the He < C < Ne Z-ordering that universal models fail by construction. The Voxel-Aware extension resolves within-nucleus energy heterogeneity to a per-DSB retention probability distribution, the first such representation in the literature to be grounded in particle-specific track-structure physics and confirmed via an 18-test scaling battery for CV invariance across sample sizes. Both tiers evaluate in under 10 −3 ms per voxel, which exceeds the throughput of explicit Monte Carlo chemistry by more than 10 6, while retaining the mechanistic transparency necessary for clinical interpretation. The committed-break coordinates output by VOxA at whole-nuclear scale constitute the biological input for a downstream arc of topological characterization, sheaf-theoretic formalization, and experimental bridge validation against SMLM-resolved 53BP1 nan-odomains. As the first particle-specific OER model on the largest such calibration dataset to date, VOxA provides the computational foundation for hypoxic LET painting. The dose-weighted mixed-field averaging rule (Equation 18) is a theoretical design specification for multi-ion clinical fields. Validation against species-resolved fragment spectra is required before deployment in carbon-beam LET painting scenarios. 
+
+# Acknowledgements 
+
+Computations were performed on the authors’ local workstations; no dedicated HPC allocation was required.  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 30 | 39
+
+Author contributions (CRediT taxonomy). R.I.F.B.: Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Visualization, Writing – original draft, Writing – review & editing; R.J.C.B.: Conceptualization, Methodology, Investigation, Supervision, Project administration, Writing – review & editing. The authors declare no conflicts of interest. 
+
+# Data Availability Statement 
+
+The model-building R scripts, model parameter files, calibration data, Python imple-mentation of VOxA, and figure-generation scripts are available at https://doi.org/10. 5281/zenodo.20120676 .
+
+# References 
+
+Alper, T. and P. Howard-Flanders (1956) ‘Role of oxygen in modifying the radiosensitivity of E. coli B’, Nature , 178(4540), pp. 978–979. doi: https : / / doi . org / 10 . 1038 / 178978a0 .Ando, K. (1999) ‘Accelerated reoxygenation of a murine fibrosarcoma after carbon-ion radiation’, International Journal of Radiation Biology , 75(4), pp. 505–512. doi: https: //doi.org/10.1080/095530099140438 .Arnould, C., V. Rocher, A. - L. Finoux, et al . (2021) ‘Loop extrusion as a mechanism for formation of DNA damage repair foci’, Nature , 590(7847), pp. 660–665. doi: https: //doi.org/10.1038/s41586-021-03193-z .Barendsen, G. W., C. J. Koot, G. R. van Kersen, D. K. Bewley, S. B. Field and C. J. Parnell (1966) ‘The effect of oxygen on impairment of the proliferative capacity of human cells in culture by ionizing radiations of different LET’, International Journal of Radiation Biology , 10(4), pp. 317–327. doi: https://doi.org/10.1080/09553006614550421 .Bassler, N., J. Toftegaard, A. Lühr, B. S. Sørensen, E. Scifoni, M. Krämer, O. Jäkel, L. S. Mortensen, J. Overgaard and J. B. Petersen (2014) ‘LET-painting increases tumour control probability in hypoxic tumours’, Acta Oncologica , 53(1), pp. 25–32. doi: 
+
+https://doi.org/10.3109/0284186X.2013.832835 .Bertolet, A., J. Ramos-Méndez, A. McNamara, D. Yoo, S. Ingram, N. Henthorn, J. - W. Warmenhoven, B. Faddegon, M. Merchant, S. J. McMahon, H. Paganetti and J. Schuemann (2022) ‘Impact of DNA geometry and scoring on Monte Carlo track-structure simulations of initial radiation-induced damage’, Radiation Research , 198(3), pp. 207–220. doi: https://doi.org/10.1667/RADE-21-00179.1 .Blakely, E. A., C. A. Tobias, T. C. H. Yang, K. C. Smith and J. T. Lyman (1979) ‘Inactivation of human kidney cells by high-energy monoenergetic heavy-ion beams’, 
+
+Radiation Research , 80(1), pp. 122–160. doi: https://doi.org/10.2307/3575121 .Chan, C. - C., F. - H. Chen, K. - L. Hsueh and Y. - Y. Hsiao (2022) ‘The effect of hypoxia on relative biological effectiveness and oxygen enhancement ratio for cells irradiated with Grenz rays’, Cancers , 14(5), 1262. doi: https://doi.org/10.3390/cancers14051262 .Chapman, J. D., E. A. Blakely, K. C. Smith and R. C. Urtasun (1977) ‘Radiobiological characterization of the inactivating events produced in mammalian cells by helium and heavy ions’, International Journal of Radiation Oncology, Biology, Physics , 3, pp. 97–102. doi: https://doi.org/10.1016/0360-3016(77)90234-6 . 
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 31 | 39
+
+Curtis, S. B. (1976) ‘The OER of mixed high- and low-LET radiation’, Radiation Research ,65(3), pp. 566–572. doi: https://doi.org/10.2307/3574388 .Curtis, S. B., W. A. Schilling, T. S. Tenforde, K. E. Crabtree, S. D. Tenforde, J. Howard and J. T. Lyman (1982) ‘Survival of oxygenated and hypoxic tumor cells in the extended-peak regions of heavy charged-particle beams’, Radiation Research , 90(2), pp. 292–309. doi: https://doi.org/10.2307/3575707 .D-Kondo, N., T. A. M. Masilela, W. - G. Shin, B. Faddegon, J. LaVerne, J. Schuemann and J. Ramos-Mendez (2024) ‘Modeling the oxygen effect in DNA strand break induced by gamma-rays with TOPAS-nBio’, Physics in Medicine and Biology , 69(21), 215028. doi: 
+
+https://doi.org/10.1088/1361-6560/ad87a7 .Dahle, T. J., E. Rusten, C. H. Stokkevåg, A. Silvoniemi, A. Mairani, L. F. Fjæra, E. Rørvik, H. Henjum, P. Wright, C. G. Boer, S. Forsback, H. Minn, E. Malinen and K. S. Ytre-Hauge (2020) ‘The fluka monte carlo code coupled with an oer model for biologically weighted dose calculations in proton therapy of hypoxic tumors’, Physica Medica , 76, pp. 166–172. doi: https://doi.org/10.1016/j.ejmp.2020.07.003 .Feola, J. M., J. H. Lawrence and G. P. Welch (1969) ‘OER and RBE of helium ions on mouse lymphoma cells’, Radiation Research , 40(2), pp. 400–413. doi: https://doi. org/10.2307/3572828 .Freyer, J. P., K. Jarrett, S. Carpenter and M. R. Raju (1991) ‘Oxygen enhancement ratio as a function of dose and cell cycle phase for radiation-resistant and sensitive CHO cells’, 
+
+Radiation Research , 127(3), pp. 297–307. doi: https://doi.org/10.2307/3577945 .Friedland, W., E. Schmitt, P. Kundrát, M. Dingfelder, G. Baiocco, S. Barbieri and A. Ottolenghi (2017) ‘Comprehensive track-structure based evaluation of DNA damage by light ions from radiotherapy-relevant energies down to stopping’, Scientific Reports , 7, 45161. doi: https://doi.org/10.1038/srep45161 .Fu, K. K. and T. L. Phillips (1976) ‘The relative biological effectiveness (RBE) and oxygen enhancement ratio (OER) of neon ions for the EMT6 tumor system’, Radiology , 120(2), pp. 439–441. doi: https://doi.org/10.1148/120.2.439 .Furusawa, Y., K. Fukutsu, M. Aoki, H. Itsukaichi, K. Eguchi-Kasai, H. Ohara, F. Yatagai, T. Kanai and K. Ando (2000) ‘Inactivation of aerobic and hypoxic cells from three different cell lines by accelerated 3He-, 12C- and 20Ne-ion beams’, Radiation Research ,154(5), pp. 485–496. doi: https://doi.org/10.1667/0033-7587(2000)154[0485: IOAAHC]2.0.CO;2 .Grimes, D. R. (2020) ‘Estimation of the oxygen enhancement ratio for charged particle radiation’, Physics in Medicine and Biology , 65(15), 15NT01. doi: https://doi.org/ 10.1088/1361-6560/ab9371 .Grimes, D. R. and M. Partridge (2015) ‘A mechanistic investigation of the oxygen fixation hypothesis and oxygen enhancement ratio’, Biomedical Physics & Engineering Express ,1(4), 045209. doi: https://doi.org/10.1088/2057-1976/1/4/045209 .Guichard, M., B. Lachet and E. P. Malaise (1977) ‘Measurement of RBE, OER, and recovery of potentially lethal damage of a 645 MeV helium ion beam using EMT6 cells’, 
+
+Radiation Research , 71(2), pp. 413–429. doi: https://doi.org/10.2307/3574684 .Hall, E. J., R. P. Bird, H. H. Rossi, R. Coffey, J. Varga and Y. - M. Lam (1977) ‘Biophys-ical studies with high-energy argon ions ii. determinations of the relative biological effectiveness (RBE), the oxygen enhancement ratio (OER), and the cell cycle response’, 
+
+Radiation Research , 70(3), pp. 469–479. doi: https://doi.org/10.2307/3574638 . 
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 32 | 39
+
+Hall, E. J., J. S. Bedford and R. Oliver (1966) ‘Extreme hypoxia; its effect on the survival of mammalian cells irradiated at high and low dose-rates’, The British Journal of Radiology , 39(460), pp. 302–307. doi: https://doi.org/10.1259/0007-1285-39-460-302 .Hausmann, M., C. Neitzel, E. Bobkova, D. Nagel, A. Hofmann, T. Chramko and M. Falk (2020) ‘Single molecule localization microscopy analyses of DNA-repair foci and clusters detected along particle damage tracks’, Frontiers in Physics , 8, 578662. doi: 
+
+https://doi.org/10.3389/fphy.2020.578662 .Hill, M. A., D. L. Stevens, S. J. Marsden, R. Allott, I. C. E. Turcu and D. T. Goodhead (2002) ‘Is the increased relative biological effectiveness of high LET particles due to spatial or temporal effects? Characterization and OER in V79-4 cells’, Physics in Medicine and Biology , 47(19), pp. 3543–3555. doi: https://doi.org/10.1088/0031-9155/47/19/308 .Hirayama, R., Y. Furusawa, T. Fukawa and K. Ando (2005) ‘Repair kinetics of DNA-DSB induced by X-rays or carbon ions under oxic and hypoxic conditions’, Journal of Radiation Research , 46(3), pp. 325–332. doi: https://doi.org/10.1269/jrr.46.325 .Hirayama, R., A. Ito, M. Tomita, T. Tsukada, F. Yatagai, M. Noguchi, Y. Matsumoto, Y. Kase, K. Ando, R. Okayasu and Y. Furusawa (2009) ‘Contributions of direct and indirect actions in cell killing by high-LET radiations’, Radiation Research , 171(2), pp. 212–218. doi: https://doi.org/10.1667/RR1490.1 .Howard-Flanders, P. (1960) ‘Effect of oxygen on the radiosensitivity of bacteriophage in the presence of sulphydryl compounds’, Nature , 186, pp. 485–487. doi: https : //doi.org/10.1038/186485a0 .Hu, A., W. Zhou, X. Luo, R. Qiu and J. Li (2025a) ‘Correlation between DNA double-strand break distribution in 3D genome and ionizing radiation-induced cell death’, Radiation Research , 203(6), pp. 421–432. doi: https://doi.org/10.1667/RADE-24-00277.1 .Hu, A., W. Zhou, X. Luo, R. Qiu and J. Li (2025b) ‘Impact of oxygen on DNA damage distribution in 3D genome and its correlation to oxygen enhancement ratio after high-LET irradiation’, Radiation Research . doi: https://doi.org/10.1667/RADE- 25-00093.1 .Katz, R. and S. C. Sharma (1974) ‘Heavy particles in therapy: an application of track theory’, Physics in Medicine and Biology , 19(4), pp. 413–435. doi: https://doi.org/ 10.1088/0031-9155/19/4/001 .Küntzelmann, K. A., L. R. Pardo, M. Schäfer, J. Weidner, I. Falkova, J. Toufar, L. Toufarova, F. Bestvater, M. Hausmann and M. Falk (2026) ‘Nanoscale topology of 
+
+γH2AX and 53BP1 foci in U87 cancer cells and normal NHDF after high-LET radiation-induced DSB repair’, Nanoscale , 18(11), pp. 4399–4414. doi: https://doi.org/10. 1039/d5nr05100b .Lai, Y., Y. Chi and X. Jia (2022) ‘Mechanistic modelling of oxygen enhancement ratio of radiation via Monte Carlo simulation-based DNA damage calculation’, Physics in Medicine and Biology , 67(17), 175009. doi: https://doi.org/10.1088/1361-6560/ac8853 .LaVerne, J. A. (2000) ‘OH radicals and oxidizing products in the gamma radiolysis of water’, Radiation Research , 153(2), pp. 196–200. doi: https://doi.org/10.1667/0033-7587(2000)153[0196:oraopi]2.0.co;2 . 
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 33 | 39
+
+Lei, T., S. Du, Z. Peng and L. Chen (2022) ‘Multifaceted regulation and functions of 53BP1 in NHEJ-mediated DSB repair (review)’, International Journal of Molecular Medicine , 50(1), pp. 1–19. doi: https://doi.org/10.3892/ijmm.2022.5145 .Ling, C. C., H. B. Michaels, L. E. Gerweck, E. R. Epp and E. C. Peterson (1981) ‘Oxygen sensitization of mammalian cells under different irradiation conditions’, Radiation Research , 86(2), pp. 325–340. doi: https://doi.org/10.2307/3575509 .Mavragani, I. V., Z. Nikitaki, S. A. Kalospyros and A. G. Georgakilas (2019) ‘Ionizing radia-tion and complex dna damage: from prediction to detection challenges and biological sig-nificance’, Cancers , 11(11), 1789. doi: https://doi.org/10.3390/cancers11111789 .Nias, A. H. W., D. Greene, M. Fox and R. L. Thomas (1968) ‘Effect of 14 MeV monoener-getic neutrons on HeLa and P388F cells in vitro’, International Journal of Radiation Biology , 13(5), pp. 449–456. doi: https://doi.org/10.1080/09553006814550471 .Nikjoo, H., P. O’Neill, W. E. Wilson and D. T. Goodhead (2001) ‘Computational approach for determining the spectrum of DNA damage induced by ionizing radiation’, Radiation Research , 156(5), pp. 577–583. doi: https://doi.org/10.1667/0033-7587(2001) 156[0577:CAFDTS]2.0.CO;2 .Prise, K. M., M. Folkard, S. Davies and B. D. Michael (1990) ‘The irradiation of V79 mammalian cells by protons with energies below 2 MeV. part ii. measurement of oxygen enhancement ratios and DNA damage’, International Journal of Radiation Biology ,58(2), pp. 261–277. doi: https://doi.org/10.1080/09553009014551611 .Raju, M. R., H. I. Amols, E. Bain, S. G. Carpenter, R. A. Cox and J. B. Robertson (1978) ‘A heavy particle comparative study. Part III: OER and RBE’, The British Journal of Radiology , 51(609), pp. 712–719. doi: https://doi.org/10.1259/0007-1285-51-609-712 .Raju, M. R., H. I. Amols, E. Bain, S. G. Carpenter, R. A. Cox and J. B. Robertson (1979) ‘OER and RBE for negative pion beams of different peak widths’, The British Journal of Radiology , 52(618), pp. 494–498. doi: https://doi.org/10.1259/0007-1285-52-618-494 .Raju, M. R., S. G. Carpenter, J. J. Chmielewski, M. E. Schillaci, M. E. Wilder, J. P. Freyer, N. F. Johnson, P. L. Schor, R. J. Sebring and D. T. Goodhead (1987) ‘Radiobiology of ultrasoft X-rays: I. cultured hamster cells (V79)’, Radiation Research , 110(3), pp. 396– 412. doi: https://doi.org/10.2307/3577007 .Raju, M. R., M. Gnanapurani, B. Martins, J. Howard and J. T. Lyman (1972) ‘Mea-surement of OER and RBE of a 910 MeV helium ion beam using cultured cells (T-1)’, 
+
+Radiology , 102(2), pp. 425–428. doi: https://doi.org/10.1148/102.2.425 .Roots, R. and S. Okada (1972) ‘Protection of DNA molecules of cultured mammalian cells from radiation-induced single-strand scissions by various alcohols and SH compounds’, 
+
+International Journal of Radiation Biology , 21(4), pp. 329–342. doi: https://doi. org/10.1080/09553007214550411 .Sakata, D., N. Lampe, M. Karamitros, et al . (2019) ‘Evaluation of early radiation DNA damage in a fractal cell nucleus model using Geant4-DNA’, Physica Medica , 62, pp. 152– 157. doi: https://doi.org/10.1016/j.ejmp.2019.04.010 .Schuemann, J., A. L. McNamara, J. Ramos-Méndez, J. Perl, K. D. Held, H. Paganetti, 
+
+et al . (2019a) ‘TOPAS-nBio: An extension to the TOPAS simulation toolkit for cellular and sub-cellular radiobiology’, Radiation Research , 191(2), pp. 125–138. doi: https: //doi.org/10.1667/rr15226.1 . 
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 34 | 39
+
+Schuemann, J., A. L. McNamara, J. W. Warmenhoven, N. T. Henthorn, K. J. Kirkby, M. J. Merchant, S. Ingram, H. Paganetti, K. D. Held, J. Ramos-Mendez, B. Faddegon, J. Perl, D. T. Goodhead, I. Plante, H. Rabus, H. Nettelbeck, W. Friedland, P. Kundrát, A. Ottolenghi, G. Baiocco and S. J. McMahon (2019b) ‘A new standard DNA damage (SDD) data format’, Radiation Research , 191(1), pp. 76–92. doi: https://doi.org/10. 1667/RR15209.1 .Schäfer, M., G. Hildenbrand and M. Hausmann (2024) ‘Impact of gold nanoparticles and ionizing radiation on whole chromatin organization as detected by single-molecule localization microscopy’, International Journal of Molecular Sciences , 25(23), 12843. doi: https://doi.org/10.3390/ijms252312843 .Scifoni, E., W. Tinganelli, W. K. Weyrather, M. Durante, A. Maier and M. Krämer (2013) ‘Including oxygen enhancement ratio in ion beam treatment planning: model implementation and experimental verification’, Physics in Medicine and Biology , 58(11), pp. 3871–3895. doi: https://doi.org/10.1088/0031-9155/58/11/3871 .Skarsgard, L. D. and I. Harrison (1991) ‘Dose dependence of the oxygen enhancement ratio (OER) in radiation inactivation of Chinese hamster V79-171 cells’, Radiation Research , 127(3), pp. 243–247. doi: https://doi.org/10.2307/3577937 .Sprong, D., H. L. Janssen, C. Vens and A. C. Begg (2006) ‘Resistance of hypoxic cells to ionizing radiation is influenced by homologous recombination status’, International Journal of Radiation Oncology, Biology, Physics , 64(2), pp. 562–572. doi: https : //doi.org/10.1016/j.ijrobp.2005.09.031 .Staab, A., D. Zukowski, S. Walenta, M. Scholz and W. Mueller-Klieser (2004) ‘Response of Chinese hamster V79 multicellular spheroids exposed to high-energy carbon ions’, 
+
+Radiation Research , 161(2), pp. 219–227. doi: https://doi.org/10.1667/RR3113 .Strigari, L., F. Torriani, L. Manganaro, T. Inaniwa, F. Dalmasso, R. Cirio and A. Attili (2018) ‘Tumour control in ion beam radiotherapy with different ions in presence of hypoxia: An oxygen enhancement ratio model based on the microdosimetric kinetic model’, Physics in Medicine and Biology , 63(6), 065012. doi: https://doi.org/10. 1088/1361-6560/aa89ae .Tenforde, T. S., S. B. Curtis, K. E. Crabtree, S. D. Tenforde, W. A. Schilling, J. Howard and J. T. Lyman (1980) ‘In vivo cell survival and volume response characteristics of rat rhabdomyosarcoma tumors irradiated in the extended peak region of carbon- and neon-ion beams’, Radiation Research , 83(1), pp. 42–56. doi: https://doi.org/10. 2307/3575257 .Tinganelli, W., M. Durante, R. Hirayama, et al . (2015) ‘Kill-painting of hypoxic tumours in charged particle therapy’, Scientific Reports , 5, 17016. doi: https://doi.org/10. 1038/srep17016 .Todd, P., B. I. Martins, J. T. Lyman, J. - H. Kim and C. B. Schroy (1974) ‘Spatial distribution of human cell survival and oxygen effect in a therapeutic helium ion beam’, 
+
+Cancer , 34(1), pp. 1–5. doi: https://doi.org/10.1002/1097- 0142(197407)34: 1<1::AID-CNCR2820340102>3.0.CO;2-H .Van den Heuvel, F. (2014) ‘A closed parameterization of DNA-damage by charged particles, as a function of energy—a geometrical approach’, PLoS ONE , 9(10), e110333. doi: 
+
+https://doi.org/10.1371/journal.pone.0110333 .Van den Heuvel, F., A. Vella, F. Fiorini, M. Brooke, M. A. Hill and T. Maughan (2021) ‘Incorporating oxygenation levels in analytical DNA-damage models—quantifying the  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 35 | 39
+
+oxygen fixation mechanism’, Physics in Medicine and Biology , 66(14), 145005. doi: 
+
+https://doi.org/10.1088/1361-6560/ac0b80 .Wenzl, T. and J. J. Wilkens (2011) ‘Modelling of the oxygen enhancement ratio for ion beam radiation therapy’, Physics in Medicine and Biology , 56(11), pp. 3251–3268. doi: 
+
+https://doi.org/10.1088/0031-9155/56/11/006 .Wheeler, K. T., D. F. Deen, J. T. Leith and K. L. Norton (1979) ‘Cellular response of a rat brain tumor to a therapeutic carbon ion beam’, Radiology , 133(3), pp. 757–760. doi: https://doi.org/10.1148/133.3.757 .Zhu, H., J. Li, X. Deng, R. Qiu, Z. Wu and H. Zhang (2021) ‘Development of a DNA damage model that accommodates different cellular oxygen concentrations and radiation qualities’, Medical Physics , 48(9), pp. 5511–5521. doi: https://doi.org/10.1002/mp. 15111 .
+
+# A Bootstrap convergence and parameter collinearity 
+
+The Pearson correlation between bootstrapped Kfix and Krepair values across 500 replicates is r = 0 .935 , confirming strong bivariate collinearity. Figure 5 shows the bootstrap scatter in the (Kfix , K repair ) plane: the point cloud lies along a narrow ridge with slope 
+
+−1, confirming that the likelihood surface is nearly flat along the direction of constant sum Kfix + Krepair , and nearly steep in the orthogonal direction. The individual CVs are 71% (Kfix ) and 96% (Krepair ), while the bootstrap distribution of the composite 
+
+Kfix + Krepair = 2 .82 mmHg has a 95% CI of [0 .645 , 1.867]% O 2 = [4 .9, 14 .2] mmHg. The width of this CI reflects the inherent identifiability limit of the Michaelis–Menten formulation from clonogenic OER data. It does not affect the model’s calibration accuracy, because the model depends on the sum, not the individual parameters. Bootstrap residuals pass the Shapiro–Wilk test at W = 0 .983 , p = 7 .25 × 10 −3. Formal rejection of normality at this modest significance level is expected and inconsequential for heterogeneous multi-decade experimental data spanning 10 particle types and 29 independent OER sources (Figure 6). Bootstrap confidence intervals are the primary inferential tool throughout and do not assume residual normality. The steepness uses a base/scale parameterization. Light particles have sdir = 1 .99 ,
+
+sind = 2 .00 ; heavy ions use a base scaled logarithmically with Z (sdir ,base = 1 .39 , sind ,base =1.88 ). Bootstrap CIs: sdir ,light [0.54,3.18] (CV 41% ), sdir ,base [0.69, 1.53] (CV 16% ). The scale parameters are unidentifiable (CV > 100% ) and are phenomenological nuisance parameters . They modulate sigmoid sharpness but carry no Z-ordering information. In practice they are held at their MLE values ( sdir ,scale = −0.007 , sind ,scale = −0.213 ); the model is functionally equivalent to a fixed-steepness parameterization within the clinical LET range. Z-ordering information resides entirely in xdir 50 and xind 50 (Table 8; CV 5–9% ). Despite the wide steepness CIs, the OER prediction surfaces are stable across the bootstrap ensemble. Evaluating all 500 bootstrap parameter sets at any fixed LET and oxygen level in the clinical range ( 20 –200 keV μm−1, 0.001 –21% O 2), the inter-quartile range of predicted OER ret values is less than 0.05 OER ret units for helium and carbon. The wide steepness CIs therefore affect the transition gradient in LET-space but not the model’s practical output. What matters for OER predictions at any given LET is the midpoint location, not how sharply the sigmoid rises around it.  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 36 | 39
+
+Table 8. Bootstrap 95% confidence intervals and coefficients of variation (CV) for the calibrated transition midpoints xdir 50 and xind 50 . All values are in dimensionless radiation quality units (parameter x, Equation 1). Midpoints for directly calibrated particles are labelled calib ; those recovered by Z-interpolation carry no individual CIs ( interp ). The heavy-ion sequence (He, C, Ne, Ar) shows CV 5–9% for xdir 50 and 4–7% for xind 50 , confirming tight identifiability. Proton and photon xdir 50 CIs are wide because both ions have sparse data in the sigmoid transition region; their xind 50 midpoints are well-constrained. Z-ordering of xdir 50 : He < C < Ne < Ar (monotonicity enforced as a hard constraint). Particle Z Type xdir 50 [95% CI] CV xind 50 [95% CI] CV xind 50 /x dir 50 
+
+Photon 0 calib 124.7 [119.8, 500.0] 64.1% 2016.7 [1940.5, 2413.9] 5.1% 16.2 Proton 1 calib 153.0 [147.7, 500.0] 63.9% 2448.5 [2352.6, 2865.8] 4.7% 16.0 Deuteron 1 calib 142.9 [137.1, 337.9] 24.2% 2319.5 [2235.8, 2419.5] 2.7% 16.2 Helium 2 calib 151.8 [145.6, 158.2] 8.8% 1838.9 [1768.3, 2210.0] 4.3% 12.1 Carbon 6 calib 264.4 [255.2, 275.1] 5.1% 2434.2 [2349.9, 2885.4] 6.9% 9.2 Nitrogen 7 interp 313.3 — 2653.7 — 8.5 Oxygen 8 interp 362.9 — 2859.7 — 7.9 Neon 10 calib 463.9 [442.8, 485.8] 6.4% 3240.2 [3110.3, 3653.9] 3.9% 7.0 Silicon 14 interp 566.9 — 3660.9 — 6.5 Argon 18 calib 658.4 [632.3, 698.5] 6.5% 4010.4 [3853.2, 4477.3] 3.7% 6.1 
+
+# B Variance decomposition 
+
+Type III variance decomposition of the OM calibration residuals attributes 61 .6% of the explainable variance to LET (log-linear component), 29 .4% to particle type independently of LET, 7.6% to the LET × particle-type interaction, and 2.2% to cell line. The 29 .4% 
+
+particle-type term is an estimated variance ceiling . The maximum recoverable by a particle-specific model in this dataset. Because the dataset is unbalanced and formally non-normal (Shapiro–Wilk p = 7 .25 × 10 −3), it is a heuristic indicator, not a rigorous bound. It encompasses both genuine Z-ordering physics and any systematic noise varying by ion species; the Z-ordering constraint targets the physical component. Even a perfectly calibrated LET-only model achieves at most R2 ≈ 0.61 + 0 .076 + 0 .022 = 0 .71 ; the remaining ∼ 0.29 is accessible only to a particle-specific model. The Z-ordering constraint on VOxA’s sigmoidal midpoints therefore contributes most of this gain. For the VA extension, the per-DSB variance in p(i)DSB is dominated by energy-explained variance ( δ2 
+
+> f
+
+· Var (Ezscore )) for carbon under moderate to severe hypoxia, and by parameter uncertainty in δf for electrons at all oxygen levels, consistent with the much smaller δf
+
+calibrated for electrons ( 0.00357 versus 0.0778 ). 
+
+# C Calibration dataset: primary sources 
+
+Table 9 lists the 29 primary publications from which the 233 OER calibration observa-tions are traceable through the two preprocessing R scripts ( step1_extract_furusawa _complete.R and step2_compile_literature.R ). These 29 sources account for all 233 observations exactly (column N sums to 233). A critical source referenced throughout this work is Hirayama et al . (2009), which contributes no OER observations, but its six DMSO  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 37 | 39
+
+radical-scavenging measurements (V79 cells, LET range 9.4–2106 keV μm−1) establish the high-LET direct-action asymptote p1,high = 0 .64 as a fixed, literature-derived parameter (Section 2.2), not a calibrated quantity. Sources were identified through the literature survey of Wenzl and Wilkens (2011) (their Tables 1 and 2) and restricted to: (i) the 
+
+10% clonogenic survival endpoint, (ii) in vitro conditions only (in vivo studies excluded), and (iii) cell lines with a corresponding correction factor in the model (V79, HSG, T1, CHO; other cell lines treated with unit correction factor). Furusawa et al . (2000) (He, C, Ne; V79 and HSG cells) was extracted independently via a dedicated preprocessing step (step 1 of the analysis pipeline). Tinganelli et al . (2015) was added to extend oxygen-level coverage to intermediate pO2 (0.15–2% O2) and to include N, O, and Si ions absent from the Wenzl and Wilkens (2011) compilation. All other sources are restricted to anoxic versus aerobic paired conditions ( pO2,hyp ≈ 0.001% , pO2,ref = 21% ).  
+
+> Bolo & Bagunu | Voxel-aware oxygen kinetics 38 | 39
+
+Table 9. Primary sources of the 233-observation OER calibration dataset. N : number of observations used from each source. LET range is dose-averaged LET in water at the experimental conditions reported. Particle symbols: γ/ X = photon; p = proton; d = deuteron; He = helium; C = carbon; N = nitrogen; O = oxygen; Ne = neon; Si = silicon; Ar = argon. Source Ions Cell line(s) LET range (keV μm−1) N
+
+Ando 1999 γ, C NFSa 1, 74 2Barendsen et al . 1966 γ/X, d, He T1 1.3–166 9Blakely et al . 1979 C, Ne, Ar T1 11–640 24 Chapman et al . 1977 γ/X, He, C, Ne, Ar V79 2–310 5Curtis 1976 He R1 110 1Curtis et al . 1982 C, Ne, Ar R1 11–750 9Feola et al . 1969 γ/X, He L2 1.7–22 5Freyer et al . 1991 γ CHO-xrs6 0.22 1Fu and Phillips 1976 γ/X, Ne EMT6 1, 31–180 3Furusawa et al . 2000 He, C, Ne V79, HSG 18.5–654 90 Guichard et al . 1977 γ, He EMT6 0.22, 10 2Hall et al . 1966 γ HeLa 0.22 1Hall et al . 1977 Ar V79 111–409 3Hirayama et al . 2005 γ/X, C CHO 1.7, 79.6 2Hill et al . 2002 γ/X V79 20 1Katz and Sharma 1974 p, He, Ne T1, p388, HeLa 5, 8, 46 9Nias et al . 1968 γ/X HeLa 2 1Prise et al . 1990 γ/X, p, He V79 2–110 5Raju et al . 1972 He T1 3 1Raju et al . 1978 γ/X, p, He, C, Ne, Ar V79 0.7–233 15 Raju et al . 1979 γ/X V79 2 2Raju et al . 1987 γ/X V79 20 1Skarsgard and Harrison 1991 
+
+γ/X V79 2 1Sprong et al . 2006 γ/X V79, CHO, AA8, others 2 7Staab et al . 2004 γ/X, C V79 1.7, 18, 60 3Tenforde et al . 1980 γ/X, C, Ne R1 2, 95, 177 3Tinganelli et al . 2015 γ/X, C, N, O, Si CHO 9.4–317 23 Todd et al . 1974 He V79 3 1Wheeler et al . 1979 γ/X, C 9L 2, 11–64 3
+
+Total 233
