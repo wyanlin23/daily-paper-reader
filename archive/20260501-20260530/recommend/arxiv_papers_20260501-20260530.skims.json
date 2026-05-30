@@ -1,16 +1,16 @@
 {
   "mode": "skims",
-  "generated_at": "2026-05-30T04:24:16.599285+00:00",
+  "generated_at": "2026-05-30T04:33:15.484617+00:00",
   "stats": {
     "mode": "skims",
     "forced_all_quick": true,
     "min_score": 8.0,
-    "deep_divecandidates": 2,
+    "deep_divecandidates": 1,
     "deep_cap": null,
     "deep_selected": 0,
-    "quick_candidates": 2,
+    "quick_candidates": 1,
     "quick_skim_target": null,
-    "quick_selected": 2
+    "quick_selected": 1
   },
   "deep_dive": [],
   "quick_skim": [
@@ -33,55 +33,20 @@
         "keyword:ad",
         "query:ad"
       ],
-      "llm_score": 9.0,
-      "llm_evidence_en": "TOPAS-nBio simulation of DNA damage with LET and oxygen signatures",
-      "llm_evidence_cn": "使用TOPAS-nBio模拟辐射诱导DNA损伤，包含LET和氧特征",
-      "llm_evidence": "使用TOPAS-nBio模拟辐射诱导DNA损伤，包含LET和氧特征",
-      "canonical_evidence": "使用TOPAS-nBio模拟辐射诱导DNA损伤，包含LET和氧特征",
-      "llm_tldr_en": "First nuclear-scale topological analysis of radiation-induced DNA damage using TOPAS-nBio, revealing coupled LET-oxygen signatures across particle configurations; directly relevant to Geant4-DNA track structure and microdosimetry for alpha particles.",
-      "llm_tldr_cn": "该研究首次在核尺度上利用持续同调与随机森林分析辐射诱导DNA双链断裂的拓扑结构，使用TOPAS-nBio（基于Geant4）在7种粒子配置和7种氧水平下模拟了2450个细胞核。结果揭示DNA损伤拓扑编码粒子身份、扩展布拉格峰位置和氧张力，实现对粒子类型和LET的精确解码。该工作为alpha粒子微剂量学和Geant4-DNA模拟提供了方法学支撑，并揭示了LET-氧耦合的损伤特征。",
-      "llm_tldr": "该研究首次在核尺度上利用持续同调与随机森林分析辐射诱导DNA双链断裂的拓扑结构，使用TOPAS-nBio（基于Geant4）在7种粒子配置和7种氧水平下模拟了2450个细胞核。结果揭示DNA损伤拓扑编码粒子身份、扩展布拉格峰位置和氧张力，实现对粒子类型和LET的精确解码。该工作为alpha粒子微剂量学和Geant4-DNA模拟提供了方法学支撑，并揭示了LET-氧耦合的损伤特征。",
+      "llm_score": 8.0,
+      "llm_evidence_en": "TOPAS-nBio simulation of DNA damage topology with LET and oxygen effects",
+      "llm_evidence_cn": "使用TOPAS-nBio模拟DNA损伤拓扑结构，关联LET和氧效应",
+      "llm_evidence": "使用TOPAS-nBio模拟DNA损伤拓扑结构，关联LET和氧效应",
+      "canonical_evidence": "使用TOPAS-nBio模拟DNA损伤拓扑结构，关联LET和氧效应",
+      "llm_tldr_en": "This paper uses TOPAS-nBio Monte Carlo simulations to model DNA damage topology across particle types and oxygen levels, employing persistent homology and Random Forest to decode LET-oxygen signatures. The approach demonstrates that DSB topology encodes particle identity and SOBP position with high accuracy, offering a new biophysical dosimetry method.",
+      "llm_tldr_cn": "针对辐射诱导DNA损伤的拓扑结构如何受LET和氧影响的问题，本文使用TOPAS-nBio蒙特卡罗模拟生成了涵盖不同粒子类型和氧水平的细胞核数据集，并采用持续性同调和随机森林分析DNA双链断裂的空间分布。结果显示，DNA损伤拓扑结构能精确解码粒子身份和扩展布拉格峰位置，且分类准确率几乎完美。该工作揭示了DNA损伤拓扑作为生物剂量计的潜力，为微剂量学建模提供了新视角。",
+      "llm_tldr": "针对辐射诱导DNA损伤的拓扑结构如何受LET和氧影响的问题，本文使用TOPAS-nBio蒙特卡罗模拟生成了涵盖不同粒子类型和氧水平的细胞核数据集，并采用持续性同调和随机森林分析DNA双链断裂的空间分布。结果显示，DNA损伤拓扑结构能精确解码粒子身份和扩展布拉格峰位置，且分类准确率几乎完美。该工作揭示了DNA损伤拓扑作为生物剂量计的潜力，为微剂量学建模提供了新视角。",
       "llm_tags": [
         "query:ad"
       ],
       "matched_query_tag": "query:ad",
       "matched_query_text": "Geant4-DNA simulation of alpha particle track structure and energy deposition in biological matter",
       "matched_requirement_id": "req-3",
-      "selection_source": "fresh_fetch"
-    },
-    {
-      "id": "2605.12558v2",
-      "source": "arxiv",
-      "title": "Voxel-aware oxygen kinetics resolves radiation-induced DNA damage retention across LET-oxygen conditions",
-      "abstract": "Objective. Hypoxic tumor subvolumes resist radiation through elevated oxygen enhancement ratios (OER), yet no computational OER model is simultaneously particle-specific, mechanistically grounded, and fast enough for voxel-scale treatment planning. We present the VOxel-Aware Oxygen Model (VOxA) to address all three requirements.   Approach. An Oxygen Model (OM) encodes particle-specific LET-OER dependence through dual sigmoidal transitions constrained to increase monotonically with atomic number Z, combined with Michaelis-Menten oxygen kinetics. A Voxel-Aware (VA) extension resolves per-DSB local energy heterogeneity via a calibrated particle-specific sensitivity parameter. Calibrated on 233 OER observations from 29 sources across 10 particle types (LET = 0.2-654 keV/um); DSB coordinates from TOPAS-nBio simulations.   Main results. The OM achieves $R^2 = 0.719$ and MAE = 0.300 retention OER units; theoretical OER maximum 3.32 (2.4% from measurement), bootstrap median 3.37 [3.18, 4.09]. The composite $K_{\\rm fix} + K_{\\rm repair} = 2.82$ mmHg is tightly constrained despite high collinearity (r = 0.935). On the Furusawa heavy-ion subset, VOxA achieves 28.4% lower survival OER MAE than the clinical standard (63.1% on helium, 24.0% on carbon) and reproduces He < C < Ne Z-ordering that universal models cannot capture. The VA extension passes 18 tests confirming sample-size-invariant within-nucleus coefficient of variation of the per-DSB retention probability. VOxA evaluates in under $10^{-3}$ ms per voxel, more than $10^6$ times faster than Monte Carlo chemistry.   Significance. VOxA is the first particle-specific OER model to reproduce Z-ordering analytically at clinical planning speed, validated on the largest OER calibration dataset for this model class. Committed-break coordinates at whole-nuclear scale provide the input for inter-break topological analysis and hypoxic LET painting.",
-      "authors": [
-        "Renato III Fernan Bolo",
-        "Ramon Jose C. Bagunu"
-      ],
-      "primary_category": "physics.med-ph",
-      "categories": [
-        "physics.med-ph"
-      ],
-      "published": "2026-05-11T15:00:31+00:00",
-      "link": "https://arxiv.org/pdf/2605.12558v2",
-      "tags": [
-        "keyword:ad",
-        "query:ad"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "voxel-aware oxygen model for LET-OER, particle-specific microdosimetry",
-      "llm_evidence_cn": "体素感知氧模型处理LET-OER，粒子特异性微剂量学",
-      "llm_evidence": "体素感知氧模型处理LET-OER，粒子特异性微剂量学",
-      "canonical_evidence": "体素感知氧模型处理LET-OER，粒子特异性微剂量学",
-      "llm_tldr_en": "Voxel-aware oxygen model resolves DNA damage retention across LET; provides particle-specific microdosimetry relevant to alpha.",
-      "llm_tldr_cn": "本文提出VOxA模型，结合双S形LET-OER曲线和Michaelis-Menten氧动力学，实现体素级别DNA损伤保留预测。该模型具有粒子特异性，可应用于阿尔法粒子微剂量学计算，尽管并非直接针对阿尔法放射性药物。",
-      "llm_tldr": "本文提出VOxA模型，结合双S形LET-OER曲线和Michaelis-Menten氧动力学，实现体素级别DNA损伤保留预测。该模型具有粒子特异性，可应用于阿尔法粒子微剂量学计算，尽管并非直接针对阿尔法放射性药物。",
-      "llm_tags": [
-        "query:ad"
-      ],
-      "matched_query_tag": "query:ad",
-      "matched_query_text": "microdosimetric calculations for alpha particles in cellular and subcellular scales",
-      "matched_requirement_id": "req-2",
       "selection_source": "fresh_fetch"
     }
   ]
