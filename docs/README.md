@@ -6,27 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-30
-- 运行时间：2026-05-30 20:19:30 UTC
+- 最新运行日期：2026-05-31
+- 运行时间：2026-05-31 20:52:32 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：0
 - 精读区：0
-- 速读区：2
+- 速读区：0
 
 ### 今日简报（AI）
-今日速读两篇论文，聚焦AI药代动力学建模与重离子CT成像技术。最值得关注的是《An AI-agent-orchestrated grey-box Transformer framework》提出稀疏曲线重建与模型初始化新思路。建议后续探索AI在药物模型与医学成像交叉领域的前沿应用。
-- 详情：[/202605/30/README](/202605/30/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202605/31/README](/202605/31/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [An AI-agent-orchestrated grey-box Transformer framework for sparse pharmacokinetic curve reconstruction and pharmacometric model initialization](/202605/30/biorxiv-10-64898-2026-05-23-727373-v1-an-ai-agent-orchestrated-grey-box-transformer-framework-for-sparse-pharmacokinetic-curve-reconstruction-and-pharmacometric-model-initialization)  
-   标签：评分：7.0/10、query:ad
-   evidence：药代动力学建模框架适用于一般药物，可用于阿尔法放射性药物分布建模
-2. [CT Imaging with Helium and Carbon Ions for Hadron Therapy](/202605/30/2605.29593v1-ct-imaging-with-helium-and-carbon-ions-for-hadron-therapy)  
-   标签：评分：6.0/10、query:ad
-   evidence：使用GATE/Geant4蒙特卡洛进行粒子成像与剂量估计，与复合需求中蒙特卡洛剂量学相关
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
