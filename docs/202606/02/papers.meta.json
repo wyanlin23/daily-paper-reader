@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-02",
+  "date": "2026-06-02",
+  "generated_at": "2026-06-02T22:18:55",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/02/biorxiv-10-64898-2026-05-28-728340-v1-stochastic-differential-equations-sdes-in-nonmem-for-probing-population-pharmacokinetic-model-misspecification-diagnostic-utility-practical-considerations-and-future-directions",
+      "section": "quick",
+      "title_en": "Stochastic Differential Equations (SDEs) in NONMEM for Probing Population Pharmacokinetic Model Misspecification: Diagnostic Utility, Practical Considerations, and Future Directions",
+      "authors": "Chen, P., Bauer, R. J., Li, Y.",
+      "date": "2026-06-01",
+      "pdf": "https://www.biorxiv.org/content/10.64898/2026.05.28.728340v1.full.pdf",
+      "score": "7.0",
+      "evidence": "用于药代动力学模型误设诊断的随机微分方程方法，可应用于阿尔法放射性药物建模",
+      "tldr": "群体药代动力学模型常因模型误设而导致系统偏差被吸收到随机变异中，难以量化。该研究利用随机微分方程引入系统噪声项，通过NONMEM的SDE.f90插件实现模型误设诊断。在模拟和多种误设场景下，估计的系统噪声参数对误设敏感，并能分离系统与残留变异，帮助定位误设来源。该方法扩展了药效学诊断工具箱，但需结合其他诊断指标综合评估。",
+      "tags": "query:ad",
+      "abstract_en": "Population pharmacokinetic (popPK) models are commonly developed using ordinary differential equations (ODEs) to describe deterministic concentration-time profiles, with unexplained variability typically attributed to interindividual variability or residual error. When model misspecification is present, system-level deviations may be absorbed into these conventional variability terms, making the source and magnitude of model inadequacy difficult to assess quantitatively. Stochastic differential equations (SDEs) provide an alternative framework by introducing an explicit system-noise component into the structural model, allowing model-data mismatch to be evaluated more directly. However, historical implementation of SDE-based models in NONMEM has been technically challenging. The availability of the Fortran plug-in subroutine SDE.f90 substantially lowers this barrier and enables more practical implementation of SDE-based models in NONMEM. In this work, SDE-based nonlinear mixed-effects models were evaluated as a quantitative diagnostic framework for probing popPK model misspecification. The SDE.f90 implementation was first verified using simulated one-compartment intravenous bolus datasets with stochastic process noise. Additional simulation-estimation scenarios were then conducted under intentionally misspecified structural or stochastic assumptions, including time-varying elimination, compartmental misspecification, and residual error misspecification. Across these scenarios, the estimated system-noise parameter was generally sensitive to misspecification, with larger values usually associated with greater structural or stochastic mismatch. SDE-based modeling also helped partially separate system-level variability from residual variability and, in selected settings, supported localization of misspecification to specific model components, thereby helping guide model refinement. Overall, SDE-based popPK modeling is a useful addition to the pharmacometric diagnostic toolbox, with system-noise estimates best interpreted together with structural model evaluation, residual diagnostics, parameter behavior, and pharmacologic plausibility.",
+      "source": "biorxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
