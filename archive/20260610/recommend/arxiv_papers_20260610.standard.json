@@ -1,0 +1,54 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-10T21:18:06.031563+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "biorxiv-10-64898-2026-06-01-724102-v1",
+      "source": "biorxiv",
+      "title": "Multiscale modeling of the subcutaneous administration of peptides",
+      "abstract": "With the increasing prevalence of subcutaneous administration of peptides, understanding their release and absorption is key to designing formulations with desired pharmacokinetics. Though the absorption of monoclonal anti-bodies (mAbs) has been widely explored through computational modeling, that of peptides remains poorly understood, as key features of peptide absorption, including concentration-dependent oligomerization and reversible binding with serum albumin and extracellular matrix, have not been captured. In this work, we present a first-of-its-kind approach to simulating subcutaneous administration of peptides that couples a high-fidelity tissue-level poroelastic model with a systemic compartment pharmacokinetic model. While accounting for competing binding and oligomerization tendencies of peptides, the model not only captures the process of injection but also tracks the absorption over subsequent days. We demonstrate the model using a single-dose administration of semaglutide and validate it against experimentally observed pharmacokinetic parameters. The results show the distribution of the different forms of the injected peptide throughout the body and describe the role of binding in sustaining its release. The model also reveals novel mechanisms, such as albumin-bound monomers enveloping the plume and the balance of oligomerization and binding in early stages of peptide absorption.",
+      "authors": [
+        "Kuhar, S.",
+        "Li, C.",
+        "Ardekani, A. M."
+      ],
+      "primary_category": "pharmacology and toxicology",
+      "categories": [
+        "pharmacology and toxicology"
+      ],
+      "published": "2026-06-04T00:00:00+00:00",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.06.01.724102v1.full.pdf",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multiscale modeling of subcutaneous administration with pharmacokinetic compartment model",
+      "llm_evidence_cn": "多尺度皮下给药建模结合房室药代动力学模型",
+      "llm_evidence": "多尺度皮下给药建模结合房室药代动力学模型",
+      "canonical_evidence": "多尺度皮下给药建模结合房室药代动力学模型",
+      "llm_tldr_en": "Proposes a multiscale model coupling tissue-level poroelastic and systemic compartment pharmacokinetic models for subcutaneous peptide administration, enabling mechanistic prediction of absorption.",
+      "llm_tldr_cn": "针对皮下给药肽类药物的吸收过程，现有模型未能捕捉浓度依赖寡聚化等关键特征。本文提出了首个将高保真组织多孔弹性模型与全身房室药代动力学模型耦合的多尺度模拟方法。该方法同时考虑了竞争性结合等机制，为预测肽类药物的释放和吸收提供了计算框架。尽管针对的是肽而非阿尔法放射性药物，但其中的多尺度药代动力学建模方法可直接迁移至阿尔法放射性药物的分布模拟。",
+      "llm_tldr": "针对皮下给药肽类药物的吸收过程，现有模型未能捕捉浓度依赖寡聚化等关键特征。本文提出了首个将高保真组织多孔弹性模型与全身房室药代动力学模型耦合的多尺度模拟方法。该方法同时考虑了竞争性结合等机制，为预测肽类药物的释放和吸收提供了计算框架。尽管针对的是肽而非阿尔法放射性药物，但其中的多尺度药代动力学建模方法可直接迁移至阿尔法放射性药物的分布模拟。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "pharmacokinetic modeling for alpha radiopharmaceutical distribution in human organs",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

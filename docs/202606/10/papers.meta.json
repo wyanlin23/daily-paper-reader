@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-10",
+  "date": "2026-06-10",
+  "generated_at": "2026-06-10T21:18:32",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/10/biorxiv-10-64898-2026-06-01-724102-v1-multiscale-modeling-of-the-subcutaneous-administration-of-peptides",
+      "section": "quick",
+      "title_en": "Multiscale modeling of the subcutaneous administration of peptides",
+      "authors": "Kuhar, S., Li, C., Ardekani, A. M.",
+      "date": "2026-06-04",
+      "pdf": "https://www.biorxiv.org/content/10.64898/2026.06.01.724102v1.full.pdf",
+      "score": "6.0",
+      "evidence": "多尺度皮下给药建模结合房室药代动力学模型",
+      "tldr": "皮下注射多肽的吸收机制尚不清晰，现有模型未考虑浓度依赖性低聚化和可逆结合。本文首次耦合组织级孔隙弹性模型与系统药代动力学模型，模拟注射及后续吸收过程。以semaglutide验证，模型准确预测药代参数，揭示白蛋白结合单体包裹注射区域、低聚化与结合的动态平衡等新机制。为设计理想药代动力学的多肽制剂提供理论工具。",
+      "tags": "query:ad",
+      "abstract_en": "With the increasing prevalence of subcutaneous administration of peptides, understanding their release and absorption is key to designing formulations with desired pharmacokinetics. Though the absorption of monoclonal anti-bodies (mAbs) has been widely explored through computational modeling, that of peptides remains poorly understood, as key features of peptide absorption, including concentration-dependent oligomerization and reversible binding with serum albumin and extracellular matrix, have not been captured. In this work, we present a first-of-its-kind approach to simulating subcutaneous administration of peptides that couples a high-fidelity tissue-level poroelastic model with a systemic compartment pharmacokinetic model. While accounting for competing binding and oligomerization tendencies of peptides, the model not only captures the process of injection but also tracks the absorption over subsequent days. We demonstrate the model using a single-dose administration of semaglutide and validate it against experimentally observed pharmacokinetic parameters. The results show the distribution of the different forms of the injected peptide throughout the body and describe the role of binding in sustaining its release. The model also reveals novel mechanisms, such as albumin-bound monomers enveloping the plume and the balance of oligomerization and binding in early stages of peptide absorption.",
+      "source": "biorxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
