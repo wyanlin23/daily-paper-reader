@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-06-15 <!--dpr-date:20260615-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202606/15/biorxiv-10-64898-2026-06-09-731239-v1-multiscale-modeling-identifies-cardiovascular-risk-from-common-chemical-exposures" data-sidebar-item="{&quot;title&quot;: &quot;Multiscale Modeling Identifies Cardiovascular Risk from Common Chemical Exposures&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/biorxiv-10-64898-2026-06-09-731239-v1-multiscale-modeling-identifies-cardiovascular-risk-from-common-chemical-exposures&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;采用生理药代动力学(PBPK)模型，方法可迁移至阿尔法放射性药物的药代动力学建模&quot;}">Multiscale Modeling Identifies Cardiovascular Risk from Common Chemical Exposures</a>
   * 2026-06-10 <!--dpr-date:20260610-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202606/10/biorxiv-10-64898-2026-06-01-724102-v1-multiscale-modeling-of-the-subcutaneous-administration-of-peptides" data-sidebar-item="{&quot;title&quot;: &quot;Multiscale modeling of the subcutaneous administration of peptides&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/biorxiv-10-64898-2026-06-01-724102-v1-multiscale-modeling-of-the-subcutaneous-administration-of-peptides&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;多尺度皮下给药建模结合房室药代动力学模型&quot;}">Multiscale modeling of the subcutaneous administration of peptides</a>

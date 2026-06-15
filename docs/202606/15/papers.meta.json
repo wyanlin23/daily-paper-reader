@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-15",
+  "date": "2026-06-15",
+  "generated_at": "2026-06-15T21:40:47",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/15/biorxiv-10-64898-2026-06-09-731239-v1-multiscale-modeling-identifies-cardiovascular-risk-from-common-chemical-exposures",
+      "section": "quick",
+      "title_en": "Multiscale Modeling Identifies Cardiovascular Risk from Common Chemical Exposures",
+      "authors": "Krishna, S., Chang, X., Eccles, K. M., Messier, K. P., Kleinstreuer, N. C.",
+      "date": "2026-06-12",
+      "pdf": "https://www.biorxiv.org/content/10.64898/2026.06.09.731239v1.full.pdf",
+      "score": "7.0",
+      "evidence": "采用生理药代动力学(PBPK)模型，方法可迁移至阿尔法放射性药物的药代动力学建模",
+      "tldr": "常见化学物质对心血管系统的风险评估受限于数据缺乏。本研究应用PBPK模型将300余个高通量筛选实验的生物活性浓度转换为人体等效剂量，并与暴露估计和动物毒理学起点比较。结果识别出个人护理产品、阻燃剂、农药等潜在心血管毒性物质，其中17种化学物的暴露水平超过生物活性剂量100倍以上。该多尺度框架从分子扰动延伸到人群风险，提升了风险评估的生物学相关性和转化价值。",
+      "tags": "query:ad",
+      "abstract_en": "Background: The cardiovascular system is significantly affected by exogenous factors, but understanding the risks posed by pharmaceuticals and environmental chemicals is restricted due to limited data availability. New approach methodologies (NAMs) apply in vitro, in chemico, and in silico methods to characterize hazard and risk, offering human biology-based strategies to overcome regulatory challenges and complement or replace animal testing for understanding chemical cardiovascular effects. Methods: We applied a workflow using physiologically based pharmacokinetic (PBPK) models to convert bioactive concentrations from >300 high-throughput screening (HTS) assays with cardiovascular-relevant molecular and cellular targets to human equivalent administered doses (EADs) for 859 substances. To derive risk predictions, the in vitro activity-derived EADs were compared with human exposure estimates and in vivo points of departure (PODs) from toxicological animal studies. Geospatial analysis assessed population-level risks. Results: The combined HTS assay data, human exposure predictions and PBPK modeling identified compounds with potential cardiovascular toxicity at relevant exposure levels. Personal care product ingredients, flame retardants, herbicides, pesticides, pharmaceuticals, and byproducts of various industrial processes were noted as agents of concern preferentially targeting endothelial cell signaling, nuclear hormone receptors, and other critical cardiovascular targets. Of the 859 chemicals assessed, in vitro CV-relevant assays were more risk protective than animal studies for 96.4% of the chemicals. Seventeen chemicals had a log10 bioactivity exposure ratio (BER) below -2, indicating that the estimated human exposure >100-fold above the in vitro-derived bioactive dose. Conclusions: This study establishes an integrative, multiscale framework linking molecular perturbations to population-level cardiovascular risk, enabling systematic identification of potentially cardiotoxic chemicals. By bridging mechanistic toxicology with pharmacokinetic modeling, this approach enhances the biological relevance and translational impact of human health risk assessment. This scalable, adaptable framework supports timely, evidence-based decision-making and aligns with the growing adoption of NAMs to advance cardiovascular research and disease prevention.",
+      "source": "biorxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

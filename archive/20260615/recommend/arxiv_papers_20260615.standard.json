@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-15T21:40:21.273942+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "biorxiv-10-64898-2026-06-09-731239-v1",
+      "source": "biorxiv",
+      "title": "Multiscale Modeling Identifies Cardiovascular Risk from Common Chemical Exposures",
+      "abstract": "Background: The cardiovascular system is significantly affected by exogenous factors, but understanding the risks posed by pharmaceuticals and environmental chemicals is restricted due to limited data availability. New approach methodologies (NAMs) apply in vitro, in chemico, and in silico methods to characterize hazard and risk, offering human biology-based strategies to overcome regulatory challenges and complement or replace animal testing for understanding chemical cardiovascular effects. Methods: We applied a workflow using physiologically based pharmacokinetic (PBPK) models to convert bioactive concentrations from >300 high-throughput screening (HTS) assays with cardiovascular-relevant molecular and cellular targets to human equivalent administered doses (EADs) for 859 substances. To derive risk predictions, the in vitro activity-derived EADs were compared with human exposure estimates and in vivo points of departure (PODs) from toxicological animal studies. Geospatial analysis assessed population-level risks. Results: The combined HTS assay data, human exposure predictions and PBPK modeling identified compounds with potential cardiovascular toxicity at relevant exposure levels. Personal care product ingredients, flame retardants, herbicides, pesticides, pharmaceuticals, and byproducts of various industrial processes were noted as agents of concern preferentially targeting endothelial cell signaling, nuclear hormone receptors, and other critical cardiovascular targets. Of the 859 chemicals assessed, in vitro CV-relevant assays were more risk protective than animal studies for 96.4% of the chemicals. Seventeen chemicals had a log10 bioactivity exposure ratio (BER) below -2, indicating that the estimated human exposure >100-fold above the in vitro-derived bioactive dose. Conclusions: This study establishes an integrative, multiscale framework linking molecular perturbations to population-level cardiovascular risk, enabling systematic identification of potentially cardiotoxic chemicals. By bridging mechanistic toxicology with pharmacokinetic modeling, this approach enhances the biological relevance and translational impact of human health risk assessment. This scalable, adaptable framework supports timely, evidence-based decision-making and aligns with the growing adoption of NAMs to advance cardiovascular research and disease prevention.",
+      "authors": [
+        "Krishna, S.",
+        "Chang, X.",
+        "Eccles, K. M.",
+        "Messier, K. P.",
+        "Kleinstreuer, N. C."
+      ],
+      "primary_category": "pharmacology and toxicology",
+      "categories": [
+        "pharmacology and toxicology"
+      ],
+      "published": "2026-06-12T00:00:00+00:00",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.06.09.731239v1.full.pdf",
+      "tags": [
+        "keyword:ad"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses PBPK model for chemical distribution, method transferable to alpha radiopharmaceutical pharmacokinetics",
+      "llm_evidence_cn": "采用生理药代动力学(PBPK)模型，方法可迁移至阿尔法放射性药物的药代动力学建模",
+      "llm_evidence": "采用生理药代动力学(PBPK)模型，方法可迁移至阿尔法放射性药物的药代动力学建模",
+      "canonical_evidence": "采用生理药代动力学(PBPK)模型，方法可迁移至阿尔法放射性药物的药代动力学建模",
+      "llm_tldr_en": "This paper applies physiologically based pharmacokinetic (PBPK) models to convert bioactive concentrations from high-throughput assays to human equivalent doses, demonstrating a workflow that can be adapted for alpha radiopharmaceutical distribution modeling.",
+      "llm_tldr_cn": "当前针对化学暴露的心血管风险评估因数据有限而受限。本文提出了一种结合体外高通量筛选与生理药代动力学（PBPK）模型的多尺度建模工作流，将超过300种活性浓度转化为人体等效剂量。该方法展示了从体外数据到体内风险评估的完整路径，其核心PBPK建模框架可直接迁移至阿尔法放射性药物在人体器官中的分布模拟，为辐射剂量学提供药代动力学支持。",
+      "llm_tldr": "当前针对化学暴露的心血管风险评估因数据有限而受限。本文提出了一种结合体外高通量筛选与生理药代动力学（PBPK）模型的多尺度建模工作流，将超过300种活性浓度转化为人体等效剂量。该方法展示了从体外数据到体内风险评估的完整路径，其核心PBPK建模框架可直接迁移至阿尔法放射性药物在人体器官中的分布模拟，为辐射剂量学提供药代动力学支持。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "pharmacokinetic modeling for alpha radiopharmaceutical distribution in human organs",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
