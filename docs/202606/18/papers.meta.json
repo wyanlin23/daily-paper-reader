@@ -1,0 +1,39 @@
+{
+  "label": "2026-06-18",
+  "date": "2026-06-18",
+  "generated_at": "2026-06-18T22:15:20",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202606/18/2606.12658v1-physics-informed-neural-networks-for-chemotherapy-pharmacokinetics-benchmarking-the-clinical-estimator-and-exposing-parameter-identifiability",
+      "section": "quick",
+      "title_en": "Physics-Informed Neural Networks for Chemotherapy Pharmacokinetics: Benchmarking the Clinical Estimator and Exposing Parameter Identifiability",
+      "authors": "Riya Bisht, Dhruv Agarwal",
+      "date": "2026-06-10",
+      "pdf": "https://arxiv.org/pdf/2606.12658v1",
+      "score": "7.0",
+      "evidence": "使用物理信息神经网络进行化疗药物药代动力学建模",
+      "tldr": "化疗药代动力学中组织浓度难以直接测量，标准临床估算器依赖血浆数据的双指数解析解。本文采用物理信息神经网络（PINN），将药代动力学方程融入损失函数，仅用血浆数据同时预测组织浓度。在标准线性两室模型中，PINN精度接近传统非线性最小二乘法，并直接输出组织曲线；在非线性Michaelis-Menten模型中，传统方法因无解析解而失效，PINN却暴露了参数不可识别问题，添加两个稀疏组织观测后显著改善识别性。PINN为部分观测生物系统提供统一框架，能揭示传统方法隐藏的结构可识别性，并灵活融合异构数据。",
+      "tags": "query:ad",
+      "abstract_en": "Physics-Informed Neural Networks (PINNs) are an attractive tool for partial-observation problems in biology, where the governing dynamics are known but some compartments cannot be measured. Chemotherapy pharmacokinetics (PK) is a clean instance: drug concentration in plasma is routinely measured, but concentration in tissue -- which determines tumour kill and off-target toxicity -- is not. We benchmark a PINN against the standard clinical baseline (nonlinear least-squares on the analytical biexponential plasma solution, hereafter NLS) and a physics-agnostic neural baseline (a data-only MLP) on two PK problems. On the linear two-compartment problem, NLS is near-optimal; the PINN matches it to within a small constant factor while also producing the tissue curve in a single training pass, whereas the data-only MLP fails on tissue by roughly 10x. On a Michaelis-Menten extension (saturable elimination), the biexponential closed form no longer exists, so NLS is mis-specified and silently returns meaningless rate constants. The PINN instead exposes a deeper fact: the Michaelis-Menten two-compartment model is non-identifiable from plasma alone, and the PINN reports this honestly by converging to a basin with k12 -> 0. Adding two sparse tissue observations largely resolves identifiability: across five seeds the PINN recovers k21 to within 1% of truth and Vmax, Km to within one standard-deviation bar, while k12 moves in the correct direction (0.02 -> 0.82) but remains ~2 sigma below truth -- a recovery the closed-form NLS estimator cannot attempt at all, because its biexponential ansatz describes only plasma. Our claim is not that PINNs beat NLS. It is that PINNs offer a uniform recipe that ties the textbook estimator on the textbook problem, exposes structural identifiability that   the textbook estimator hides, and absorbs heterogeneous measurements within a single loss.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/18/2606.12602v1-beam-modelling-of-hitachi-probeat-proton-therapy-system-for-a-gpu-based-fast-monte-carlo-dose-engine",
+      "section": "quick",
+      "title_en": "Beam modelling of Hitachi PROBEAT proton therapy system for a GPU-based Fast Monte Carlo dose engine",
+      "authors": "Qianxia Wang, Poenisch Falk, Yao Zhao, Xueming Bai, Roelf Slopsema, Kirk Jon Luca, Thomas J Whitaker, Yun Hu, Uwe Titt, Radhe Mohan, Pablo Yepes",
+      "date": "2026-06-10",
+      "pdf": "https://arxiv.org/pdf/2606.12602v1",
+      "score": "6.0",
+      "evidence": "质子治疗蒙特卡洛剂量引擎，方法可迁移至阿尔法发射体剂量计算",
+      "tldr": "质子治疗剂量验证依赖独立剂量引擎，但现有模型精度有限。本研究针对Hitachi PROBEAT系统，采用双高斯分布建模粒子空间分布和发散角，生成更准确的相空间文件，用于GPU加速快速蒙特卡洛剂量引擎。升级后的模型在MD安德森质子中心测试，预期提升临床QA和研究应用的可靠性。该方法为独立剂量引擎的精度提升提供了新途径。",
+      "tags": "query:ad",
+      "abstract_en": "Background: An in-house dose engine independent of clinic TPS is not only a reliable tool for patient QA verification. More importantly, it plays vital role in cutting-edge research due to its flexibility in implementing new functions. In this study, we upgraded our existing beam model with using double-Gaussian distributions for both spatial and opening angle distributions of particles to obtain more accurate phase space files. It is expected to potentially improve the performance of this independent dose engine in both clinic and research at the expanded MD Anderson proton center.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

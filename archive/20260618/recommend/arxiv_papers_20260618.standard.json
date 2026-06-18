@@ -1,0 +1,100 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-18T22:14:16.969934+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.12658v1",
+      "source": "arxiv",
+      "title": "Physics-Informed Neural Networks for Chemotherapy Pharmacokinetics: Benchmarking the Clinical Estimator and Exposing Parameter Identifiability",
+      "abstract": "Physics-Informed Neural Networks (PINNs) are an attractive tool for partial-observation problems in biology, where the governing dynamics are known but some compartments cannot be measured. Chemotherapy pharmacokinetics (PK) is a clean instance: drug concentration in plasma is routinely measured, but concentration in tissue -- which determines tumour kill and off-target toxicity -- is not. We benchmark a PINN against the standard clinical baseline (nonlinear least-squares on the analytical biexponential plasma solution, hereafter NLS) and a physics-agnostic neural baseline (a data-only MLP) on two PK problems. On the linear two-compartment problem, NLS is near-optimal; the PINN matches it to within a small constant factor while also producing the tissue curve in a single training pass, whereas the data-only MLP fails on tissue by roughly 10x. On a Michaelis-Menten extension (saturable elimination), the biexponential closed form no longer exists, so NLS is mis-specified and silently returns meaningless rate constants. The PINN instead exposes a deeper fact: the Michaelis-Menten two-compartment model is non-identifiable from plasma alone, and the PINN reports this honestly by converging to a basin with k12 -> 0. Adding two sparse tissue observations largely resolves identifiability: across five seeds the PINN recovers k21 to within 1% of truth and Vmax, Km to within one standard-deviation bar, while k12 moves in the correct direction (0.02 -> 0.82) but remains ~2 sigma below truth -- a recovery the closed-form NLS estimator cannot attempt at all, because its biexponential ansatz describes only plasma. Our claim is not that PINNs beat NLS. It is that PINNs offer a uniform recipe that ties the textbook estimator on the textbook problem, exposes structural identifiability that   the textbook estimator hides, and absorbs heterogeneous measurements within a single loss.",
+      "authors": [
+        "Riya Bisht",
+        "Dhruv Agarwal"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "q-bio.QM",
+        "stat.ML"
+      ],
+      "published": "2026-06-10T20:33:00+00:00",
+      "link": "https://arxiv.org/pdf/2606.12658v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "PINNs for pharmacokinetic modeling of chemotherapy drugs",
+      "llm_evidence_cn": "使用物理信息神经网络进行化疗药物药代动力学建模",
+      "llm_evidence": "使用物理信息神经网络进行化疗药物药代动力学建模",
+      "canonical_evidence": "使用物理信息神经网络进行化疗药物药代动力学建模",
+      "llm_tldr_en": "This paper benchmarks Physics-Informed Neural Networks (PINNs) against clinical baselines for chemotherapy pharmacokinetics, showing competitive performance on nonlinear problems and revealing parameter identifiability issues.",
+      "llm_tldr_cn": "本文针对化疗药代动力学问题，将物理信息神经网络（PINN）与临床标准方法（非线性最小二乘）和纯数据驱动的MLP进行基准测试。在双室线性问题上，临床方法接近最优；而在非线性问题中，PINN展现了优势并揭示了参数可识别性问题。该研究为将PINN应用于放射性药物的药代动力学建模提供了方法论基础。",
+      "llm_tldr": "本文针对化疗药代动力学问题，将物理信息神经网络（PINN）与临床标准方法（非线性最小二乘）和纯数据驱动的MLP进行基准测试。在双室线性问题上，临床方法接近最优；而在非线性问题中，PINN展现了优势并揭示了参数可识别性问题。该研究为将PINN应用于放射性药物的药代动力学建模提供了方法论基础。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "pharmacokinetic modeling for alpha radiopharmaceutical distribution in human organs",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.12602v1",
+      "source": "arxiv",
+      "title": "Beam modelling of Hitachi PROBEAT proton therapy system for a GPU-based Fast Monte Carlo dose engine",
+      "abstract": "Background: An in-house dose engine independent of clinic TPS is not only a reliable tool for patient QA verification. More importantly, it plays vital role in cutting-edge research due to its flexibility in implementing new functions. In this study, we upgraded our existing beam model with using double-Gaussian distributions for both spatial and opening angle distributions of particles to obtain more accurate phase space files. It is expected to potentially improve the performance of this independent dose engine in both clinic and research at the expanded MD Anderson proton center.",
+      "authors": [
+        "Qianxia Wang",
+        "Poenisch Falk",
+        "Yao Zhao",
+        "Xueming Bai",
+        "Roelf Slopsema",
+        "Kirk Jon Luca",
+        "Thomas J Whitaker",
+        "Yun Hu",
+        "Uwe Titt",
+        "Radhe Mohan",
+        "Pablo Yepes"
+      ],
+      "primary_category": "physics.med-ph",
+      "categories": [
+        "physics.med-ph"
+      ],
+      "published": "2026-06-10T19:01:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.12602v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Monte Carlo dose engine for proton therapy, method transferable to alpha emitter dose calculation",
+      "llm_evidence_cn": "质子治疗蒙特卡洛剂量引擎，方法可迁移至阿尔法发射体剂量计算",
+      "llm_evidence": "质子治疗蒙特卡洛剂量引擎，方法可迁移至阿尔法发射体剂量计算",
+      "canonical_evidence": "质子治疗蒙特卡洛剂量引擎，方法可迁移至阿尔法发射体剂量计算",
+      "llm_tldr_en": "This paper upgrades a beam model for the Hitachi PROBEAT proton therapy system using double-Gaussian distributions for spatial and angular distributions, improving the accuracy of a GPU-based fast Monte Carlo dose engine for independent dose verification.",
+      "llm_tldr_cn": "该论文针对Hitachi PROBEAT质子治疗系统升级了束流模型，采用双高斯分布描述粒子空间和开角分布，提高了基于GPU的快速蒙特卡洛剂量引擎的精度，用于独立剂量验证，其方法可扩展到阿尔法发射体的剂量分布计算。",
+      "llm_tldr": "该论文针对Hitachi PROBEAT质子治疗系统升级了束流模型，采用双高斯分布描述粒子空间和开角分布，提高了基于GPU的快速蒙特卡洛剂量引擎的精度，用于独立剂量验证，其方法可扩展到阿尔法发射体的剂量分布计算。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "absorbed dose distribution calculation using Monte Carlo software for alpha emitters",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
