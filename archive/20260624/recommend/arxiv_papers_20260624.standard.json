@@ -1,0 +1,59 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-24T21:48:42.703435+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.21476v1",
+      "source": "arxiv",
+      "title": "OpenPINT: Open-source Planning for Isoeffective Nuclear Treatments in BNCT research",
+      "abstract": "Objective: Present OpenPINT (Open-source Planning for Isoeffective Nuclear Treatments), an open-source treatment planning system for nuclear therapies that integrates Monte Carlo dose calculations with modular dosimetric and radiobiological models for photon-isoeffective dose evaluation.   Approach: We describe the software architecture, implementation choices, and data flow from segmented geometry and source configuration to NIfTI dose outputs. We define BNCT-relevant dosimetric metrics and evaluate the workflow with reproducible analytic and voxelized cylindrical-phantom benchmarks, supplemented by a geometric patient-positioning example.   Main results: The module provides a reproducible and scriptable path for generating MCNP-ready inputs, extracting component-wise BNCT dose maps, and computing analysis-ready outputs for quality checks and decision support. Fine-resolution voxelized configurations reproduced the 1 mm analytic reference within 0.13% for the brain-limited irradiation-time endpoint, whereas the full voxelized sweep exposed deviations up to 4.42% in coarse 8--10 mm configurations. Patient-wide gamma pass rates were at least 99.60% for the evaluated mesh/interpolation cases, while low-dose DVH-tail quantities remained sensitive to boundary discretization.   Significance: This first paper isolates and validates the simulation-preparation and dosimetric-analysis core of an open-source BNCT treatment-planning platform. It establishes a foundation for subsequent work on optimization, biological weighting, and clinical workflow integration.",
+      "authors": [
+        "Ian Postuma",
+        "Sara J. González",
+        "Setareh Fatemi",
+        "Cristina Pezzi",
+        "Carolina Ruzzon",
+        "Oreste Nicrosini",
+        "Valerio Vercesi",
+        "Silva Bortolussi"
+      ],
+      "primary_category": "physics.med-ph",
+      "categories": [
+        "physics.med-ph"
+      ],
+      "published": "2026-06-19T14:25:30+00:00",
+      "link": "https://arxiv.org/pdf/2606.21476v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Monte Carlo dose calculation for nuclear therapy including alpha particle production",
+      "llm_evidence_cn": "核治疗蒙特卡洛剂量计算，涵盖阿尔法粒子产生",
+      "llm_evidence": "核治疗蒙特卡洛剂量计算，涵盖阿尔法粒子产生",
+      "canonical_evidence": "核治疗蒙特卡洛剂量计算，涵盖阿尔法粒子产生",
+      "llm_tldr_en": "OpenPINT is an open-source treatment planning system for BNCT that integrates Monte Carlo dose calculations with modular dosimetric and radiobiological models, providing reproducible photon-isoeffective dose outputs for alpha-particle producing nuclear therapies.",
+      "llm_tldr_cn": "硼中子俘获治疗（BNCT）通过中子俘获产生阿尔法粒子，但其治疗计划系统通常专有且复杂。本文提出OpenPINT开源平台，集成MCNP蒙特卡洛剂量计算与模块化剂量学和辐射生物学模型，可直接输出光子等有效剂量。通过分析模型和体素化圆柱体模验证工作流，为BNCT剂量规划提供可重现的脚本化工具，其方法可扩展至其他阿尔法核素治疗。",
+      "llm_tldr": "硼中子俘获治疗（BNCT）通过中子俘获产生阿尔法粒子，但其治疗计划系统通常专有且复杂。本文提出OpenPINT开源平台，集成MCNP蒙特卡洛剂量计算与模块化剂量学和辐射生物学模型，可直接输出光子等有效剂量。通过分析模型和体素化圆柱体模验证工作流，为BNCT剂量规划提供可重现的脚本化工具，其方法可扩展至其他阿尔法核素治疗。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "absorbed dose distribution calculation using Monte Carlo software for alpha emitters",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
