@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-25",
+  "date": "2026-06-25",
+  "generated_at": "2026-06-25T21:29:48",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/25/2606.26089v1-parnassus-a-gpu-enabled-python-based-package-for-fast-particle-detector-simulation-and-reconstruction",
+      "section": "quick",
+      "title_en": "Parnassus: A GPU-enabled, Python-based Package for Fast Particle Detector Simulation and Reconstruction",
+      "authors": "Abdelrahman Elabd, Eilam Gross, Dmitrii Kobylianskii, Benjamin Nachman",
+      "date": "2026-06-24",
+      "pdf": "https://arxiv.org/pdf/2606.26089v1",
+      "score": "6.0",
+      "evidence": "GPU加速框架与Geant4兼容，提升粒子径迹模拟速度",
+      "tldr": "粒子探测器模拟通常基于Geant4，计算成本高且缺乏GPU支持。Parnassus是一个基于Python/PyTorch的快速模拟与重建框架，提供可互换的神经网络（流匹配）和参数化模型，覆盖CMS、ATLAS、ALEPH探测器。其GPU加速后端无需ROOT安装，共享API支持直接应用于新物理过程。该框架显著降低了模拟和重建的计算开销，并简化了使用流程。",
+      "tags": "query:ad",
+      "abstract_en": "We present the public software release of Parnassus, a Python/PyTorch, GPU-compatible framework for fast detector simulation and reconstruction in particle and nuclear physics. Parnassus provides a user-friendly framework with interchangeable detector models: neural models can emulate computationally expensive Geant4-based detector simulation and reconstruction chains, while parametric models provide PyTorch implementations of selected Delphes-style detector responses. This initial release includes two models of the CMS detector: one based on a flow-matching neural network architecture and one based on a PyTorch implementation of the Delphes CMS card (parametric bias and smearing). PyTorch versions of the ATLAS and ALEPH Delphes cards are also available, together with a flow-matching neural model of the ALEPH detector that extends the framework to the e+e- LEP environment. All detector-specific backends share the same process-agnostic and detector-agnostic API: users select a detector card - analogous to choosing a detector card in Delphes - and the same tool can be applied to new physics processes without retraining the released detector model. There are native interfaces to the event generator Pythia and the event clustering package FastJet. Unlike previous C++/ROOT-based tools, Parnassus provides GPU-capable PyTorch detector-response backends and requires no ROOT installation. We describe the installation, command-line and Python API, configuration system, and demonstrate the framework on Standard Model and BSM processes.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

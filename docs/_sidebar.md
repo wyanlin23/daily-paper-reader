@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-06-25 <!--dpr-date:20260625-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202606/25/2606.26089v1-parnassus-a-gpu-enabled-python-based-package-for-fast-particle-detector-simulation-and-reconstruction" data-sidebar-item="{&quot;title&quot;: &quot;Parnassus: A GPU-enabled, Python-based Package for Fast Particle Detector Simulation and Reconstruction&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2606.26089v1-parnassus-a-gpu-enabled-python-based-package-for-fast-particle-detector-simulation-and-reconstruction&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;GPU加速框架与Geant4兼容，提升粒子径迹模拟速度&quot;}">Parnassus: A GPU-enabled, Python-based Package for Fast Particle Detector Simulation and Reconstruction</a>
   * 2026-06-24 <!--dpr-date:20260624-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202606/24/2606.21476v1-openpint-open-source-planning-for-isoeffective-nuclear-treatments-in-bnct-research" data-sidebar-item="{&quot;title&quot;: &quot;OpenPINT: Open-source Planning for Isoeffective Nuclear Treatments in BNCT research&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2606.21476v1-openpint-open-source-planning-for-isoeffective-nuclear-treatments-in-bnct-research&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;核治疗蒙特卡洛剂量计算，涵盖阿尔法粒子产生&quot;}">OpenPINT: Open-source Planning for Isoeffective Nuclear Treatments in BNCT research</a>
