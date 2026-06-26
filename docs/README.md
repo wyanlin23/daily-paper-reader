@@ -6,24 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-25
-- 运行时间：2026-06-25 21:29:43 UTC
+- 最新运行日期：2026-06-26
+- 运行时间：2026-06-26 20:38:15 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：0
 - 精读区：0
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今天速读了一篇关于GPU加速粒子探测器模拟与重建的Python工具包论文。最值得关注的是该工具利用GPU实现了快速模拟，适合高能物理数据处理。建议有兴趣的读者可进一步了解其在大型实验中的性能表现。
-- 详情：[/202606/25/README](/202606/25/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202606/26/README](/202606/26/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Parnassus: A GPU-enabled, Python-based Package for Fast Particle Detector Simulation and Reconstruction](/202606/25/2606.26089v1-parnassus-a-gpu-enabled-python-based-package-for-fast-particle-detector-simulation-and-reconstruction)  
-   标签：评分：6.0/10、query:ad
-   evidence：GPU加速框架与Geant4兼容，提升粒子径迹模拟速度
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
