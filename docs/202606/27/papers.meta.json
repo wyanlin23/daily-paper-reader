@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-27",
+  "date": "2026-06-27",
+  "generated_at": "2026-06-27T20:28:07",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/27/biorxiv-10-64898-2026-06-24-733995-v1-dose-optimisation-of-favipiravir-against-rna-viruses-using-physiologically-based-pharmacokinetic-modelling",
+      "section": "quick",
+      "title_en": "Dose optimisation of favipiravir against RNA viruses using physiologically-based pharmacokinetic modelling.",
+      "authors": "Wood, W. H., Pertinez, H., Rowland, T., Owen, A., Fletcher, T.",
+      "date": "2026-06-26",
+      "pdf": "https://www.biorxiv.org/content/10.64898/2026.06.24.733995v1.full.pdf",
+      "score": "6.0",
+      "evidence": "基于生理的药代动力学模型用于剂量优化",
+      "tldr": "法匹拉韦(FPV)是一种RNA病毒RdRp抑制剂。利用生理药代动力学(PBPK)模型优化口服FPV及其代谢物M1的给药方案，以针对多种病毒的体外IC90目标。模型验证后预测，针对SARS-CoV-2需2400mg每日两次负荷剂量。慢性肾病(CKD)不影响FPV浓度但显著升高M1浓度。",
+      "tags": "query:ad",
+      "abstract_en": "Favipiravir (FPV) is an RdRp inhibitor developed and licensed in Japan for influenza but which has shown promising in-vitro activity against a range of RNA viruses. A physiologically-based pharmacokinetic model was developed for oral FPV and its metabolite M1 in order to optimise the dose regimen against plasma concentration targets for a number of viral pathogens. The model was validated using clinical data and was able to capture the variability in plasma concentrations for a population of individuals. FPV doses predicted to cause in-vivo exposures exceeding in-vitro IC90 targets against influenza, Ebola, Lassa fever, CCHF, SFTS, Andes virus and SARS-CoV-2, lie within the window of observed safe dosing, with SARS-CoV-2 requiring predicted doses of 2400 mg twice daily due to lower in-vitro potency. Simulations showed that a loading dose on day one of treatment should allow plasma targets to be exceeded on day one. Simulations of chronic kidney disease (CKD) showed no change to FPV plasma concentration in individuals with CKD3 and CKD5 compared to healthy individuals. Clinical data suggested active renal efflux of M1 which led to a predicted 2.2 and 11.5 fold increase in the maximum plasma concentrations of M1 in individuals with CKD3 and CKD5 respectively in comparison with healthy individuals.",
+      "source": "biorxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

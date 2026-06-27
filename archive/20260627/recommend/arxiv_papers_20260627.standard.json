@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-27T20:27:33.992806+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "biorxiv-10-64898-2026-06-24-733995-v1",
+      "source": "biorxiv",
+      "title": "Dose optimisation of favipiravir against RNA viruses using physiologically-based pharmacokinetic modelling.",
+      "abstract": "Favipiravir (FPV) is an RdRp inhibitor developed and licensed in Japan for influenza but which has shown promising in-vitro activity against a range of RNA viruses. A physiologically-based pharmacokinetic model was developed for oral FPV and its metabolite M1 in order to optimise the dose regimen against plasma concentration targets for a number of viral pathogens. The model was validated using clinical data and was able to capture the variability in plasma concentrations for a population of individuals. FPV doses predicted to cause in-vivo exposures exceeding in-vitro IC90 targets against influenza, Ebola, Lassa fever, CCHF, SFTS, Andes virus and SARS-CoV-2, lie within the window of observed safe dosing, with SARS-CoV-2 requiring predicted doses of 2400 mg twice daily due to lower in-vitro potency. Simulations showed that a loading dose on day one of treatment should allow plasma targets to be exceeded on day one. Simulations of chronic kidney disease (CKD) showed no change to FPV plasma concentration in individuals with CKD3 and CKD5 compared to healthy individuals. Clinical data suggested active renal efflux of M1 which led to a predicted 2.2 and 11.5 fold increase in the maximum plasma concentrations of M1 in individuals with CKD3 and CKD5 respectively in comparison with healthy individuals.",
+      "authors": [
+        "Wood, W. H.",
+        "Pertinez, H.",
+        "Rowland, T.",
+        "Owen, A.",
+        "Fletcher, T."
+      ],
+      "primary_category": "pharmacology and toxicology",
+      "categories": [
+        "pharmacology and toxicology"
+      ],
+      "published": "2026-06-26T00:00:00+00:00",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.06.24.733995v1.full.pdf",
+      "tags": [
+        "keyword:ad"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "physiologically-based pharmacokinetic modelling for dose optimisation",
+      "llm_evidence_cn": "基于生理的药代动力学模型用于剂量优化",
+      "llm_evidence": "基于生理的药代动力学模型用于剂量优化",
+      "canonical_evidence": "基于生理的药代动力学模型用于剂量优化",
+      "llm_tldr_en": "Develops a PBPK model for favipiravir to optimize dosing against RNA viruses, validated with clinical data. The model predicts effective dose ranges for multiple viruses, demonstrating its utility for regimen design.",
+      "llm_tldr_cn": "本研究针对抗病毒药物剂量优化缺乏系统性框架的问题，构建了基于生理的药代动力学模型。该模型整合了法匹拉韦及其代谢物的分布和清除过程，并利用临床数据验证。结果表明模型能准确预测多种RNA病毒的有效暴露剂量，为抗病毒药物的剂量方案设计提供了有力工具。该PBPK建模方法可迁移至其他药物，包括放射性药物。",
+      "llm_tldr": "本研究针对抗病毒药物剂量优化缺乏系统性框架的问题，构建了基于生理的药代动力学模型。该模型整合了法匹拉韦及其代谢物的分布和清除过程，并利用临床数据验证。结果表明模型能准确预测多种RNA病毒的有效暴露剂量，为抗病毒药物的剂量方案设计提供了有力工具。该PBPK建模方法可迁移至其他药物，包括放射性药物。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "pharmacokinetic modeling for alpha radiopharmaceutical distribution in human organs",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
