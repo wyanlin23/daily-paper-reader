@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-30",
+  "date": "2026-06-30",
+  "generated_at": "2026-06-30T20:42:02",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/30/2606.29945v1-prediction-of-biological-radiation-effects-based-on-ionization-clusters-nanodosimetry",
+      "section": "quick",
+      "title_en": "Prediction of biological radiation effects based on ionization clusters (nanodosimetry)",
+      "authors": "Hans Rabus",
+      "date": "2026-06-29",
+      "pdf": "https://arxiv.org/pdf/2606.29945v1",
+      "score": "7.0",
+      "evidence": "基于电离簇的纳米剂量学生物辐射效应预测",
+      "tldr": "该综述聚焦纳米剂量学领域，旨在通过电离簇的形成预测辐射生物效应。作者将现有模型分为三类：基于单一靶点电离簇频率分布、考虑不同靶点电离簇对的协同效应、以及从粒子注量推导宏观辐射量。文章讨论了模型的机制性与关联性差异，并指出未来需明确的关键问题。",
+      "tags": "query:ad",
+      "abstract_en": "This article reviews approaches that link the formation of ionization clusters in nanometric volumes to radiobiological effectiveness. The corresponding models are presented using harmonized terminology and notation. They are categorized into three classes according to the most important, often implicit model rationale: (a) models that use a nanodosimetric weighting factor for biological effectiveness derived from frequency distributions of ionization clusters in a single target; (b) models that account for the synergistic effects of pairs of ionization clusters formed in different targets; (c) models that account for 'macroscopic' situations involving many nanometric targets and derive radiation quantities from the particle fluence. Further conceptual differences between the models and their underlying assumptions are discussed, such as the fact that some models are mechanistic while others only aim to elucidate correlations. Eventually, an attempt is made to identify the key open questions in this field that still need to be addressed.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

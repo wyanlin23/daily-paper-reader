@@ -1,0 +1,4259 @@
+Title: Three-dimensional nanodosimetric characterisation of proton track structure
+
+URL Source: https://arxiv.org/pdf/2606.29945v1
+
+Published Time: Tue, 30 Jun 2026 01:54:27 GMT
+
+Number of Pages: 52
+
+Markdown Content:
+1
+
+## Review 
+
+## Prediction of biological radiation effects based on  ionization clusters 
+
+## (nanodosimetry )
+
+Hans Rabus 
+
+Physikalisch -Technische Bundesanstalt (PTB), 10587 Berlin, Germany 
+
+Dedicated to  the memory of Bernd Grosswendt †
+
+## Abstract 
+
+This article reviews approaches  that link  the formation of ionization clusters in nanometric 
+
+volumes  to  radiobiological effectiveness. The corresponding models are presented using 
+
+harmonized  terminology and notation. They are categorized into three classes according to the 
+
+most important, often implicit model rationale: (a) models  that use  a nan odosimetric weighting 
+
+factor for biological effectiveness derived from  frequency distributions of  ionization cluster s in a 
+
+single target; (b) models  that account for  the synergistic effects of  pairs of  ionization clusters 
+
+formed in  different  targets ; (c) models  that a ccount for  ‘macroscopic’ situations  involving  many 
+
+nanometric targets and  derive  radiation quantities from  the  particle fluence. Further  conceptual 
+
+differences between the models and their  underlying  assumptions  are discussed , such as  the 
+
+fact  that some models are mechanistic while others only aim  to  elucidat e correlations. 
+
+Eventually, an attempt is made to  identify  the key open questions in th is  field that still need to be 
+
+addressed. 
+
+Keywords : nanodosimetry, track structure,  biological effectiveness 
+
+## 1 Introduction 
+
+Nanodosimetry  is concerned  with the  quantitative description of the  stochastic pattern of 
+
+radiation interaction , known as  the track structure , in terms  of clusters  of ionizations in targets 
+
+with  nanometric dimensions  [1 –4] . The development of th is  field  was prompted by evidence  that 
+
+clustering of lesions within short segments of the  deoxyribonucleic  acid (DNA) molecule 
+
+determines  radiobiological effectiveness  [5 –7] . The  first detectors for measuring  particle track 
+
+structure  were developed 50 years ago  [8] . The  foundations for  the  present state -of -the -art 
+
+nanodosimetric gas counters were  established  in the late 1990s  [9 –11]  leading  to  parallel 
+
+developments  of  nanodosimeters  by  the Italian  National Institute for Nuclear Physics  (INFN) in 
+
+Legnaro,  Italy  [12] , the  Polish Nuclear Research Center  (NCBJ ) in Swierk,  Poland  [13] , and  a
+
+collaboration of Loma Linda University (LLU), USA and the Weizmann Institute of Science (WIS) ,
+
+Israel  [14] . These detectors simulate a single nanometric target volume in tissue or liquid water 
+
+based on  the  principle of  density and material scaling  [15]  and  are the established reference 
+
+instruments for nanodosimetry . However , the focus of development in th is a re a has shifted 
+
+to wards  the exploration of  detectors with  potential track imaging capabilities  [16 –18]  or  more 
+
+compact detector designs  [19 –21] .2
+
+The development of gas -counter nanodosimeters was accompanied by the oretical 
+
+investigations  into ionization cluster  (IC)  formation  [22,23]  and  the  development  of  a dedicated 
+
+track -structure simulation  code  [24] , which was later named  PTra  (PTB track structure code)  [25] .
+
+In contrast to  parallel  developments of  other  track -structure codes such as  KURBUC  (Kyushu 
+
+University and Radio -biology Unit Code)  [26,27]  and PARTRAC  [28] , PTra  focused on  numerical 
+
+simulation of the nanodosimetric detectors and  their performance. Later , it was also  employed 
+
+to  study the  significance  of differences between cross sections of liquid water  and DNA for 
+
+predict ing  IC s in DNA  [29] . The  general -purpose  Monte Carlo codes Geant4  and PHITS  were 
+
+extended to also enable t rack -structure simulation s with their variants Geant4 -DNA  [30 –33]  and 
+
+PHITS -ets  [34] , respectively .
+
+This article reviews  models proposed  to  predict  the  biological effectiveness of radiation from 
+
+nanodosimetric  features  of  the  particle track structure . Initial  attempts  to  achiev e this  objective 
+
+were already  made i n parallel  with  the  development of  nanodosimetric gas -counter  detector s
+
+[35] . Since then , a var iety of  approaches  have been  put forth , culminat ing  in the  recent ly proposed 
+
+framework  concept by  Faddegon et al.  for the use of nanodosimetric quantities in treatment 
+
+planning for hadron therapy  [36] .
+
+In this review, the models are categorized  into three different classes . One class  comprise s
+
+models that estimate  the relative biological effectiveness of different radiation  types from 
+
+nanodosimetric parameters  that  relat e to a single nanometric target . The second class 
+
+comprise s model s that account for  the correlated occurrence of ionization clusters in  distinct 
+
+target volumes . The third class  pertains  to  models  that  explicitly  utilize  particle fluence  and 
+
+macroscopic averages of  the frequency of  ionization cluster s. An example is  the new concept of 
+
+cluster dose  [36] . The majority  of these models  are  predicated  on  nanodosimetric  outcomes  from 
+
+track structure simulations, wh ile  a few  models in  the first class  are  based  on experimental data. 
+
+Following a  concise  outline  of  nanodosimetry in Section 2 , the  models  belonging to  the  three 
+
+classes  are described in Sections 3 to 5 . The objective of this review is to  provide  an o verview of 
+
+the  proposed  approaches  and to present them  in a  harmonized  way.  For this reason , the  notation 
+
+used  in this work  deviates  from that used in the  articles reviewed  in  certain  cases . In  instances 
+
+where this variant notation  might  lead to confusion,  this is explicitly noted in f ootnotes .
+
+## 2 The concepts of nanodosimetry 
+
+For the sake of clarity , it is  worth  to reiterate  that  the term  “nanodosimetry ,”  utilized  in this 
+
+review , pertains  to  the study of the formation of ionization clusters in nanometric volumes  and 
+
+must be discerned  from  its application in different context.  For instance,  for microdosimetry in 
+
+nanometric target volumes  [37,38]  or the  occasionally observed  mis conception  that it refers to 
+
+the  measurement of absorbed dose in nanometric volumes .
+
+Comprehensive r eviews of the  fundamental  principles  of nanodosimetry  can be found in the 
+
+literature  [1,3,4] , and  only the key features are  reiterated  here . Conceptually , a nanodosimetric 
+
+measurement  constitutes  a coincidence experiment as illustrated in  Fig.  1: A primary particle 
+
+moving along the black dashed line passes the target volume (label ed  ‘site’) and is recorded by a 
+
+primary particle detector. The black circles mark the points at which ionizing interactions by the 
+
+primary particle or its secondary electrons occur. The number of ionizations produced in the 
+
+target volume is  called  the ionization cluster size  (ICS)  𝜈  of this primary particle event. 3
+
+The relative frequency  fν of events producing an  IC  of size  𝜈  in an experiment or a simulation is 
+
+an estimate of the probability  Pν of  the  generation of an  IC  of size  𝜈 . This probability pertains to  a
+
+primary particle of this type and energy passing the site with  a given impact parameter. T he 
+
+impact parameter  is  defined by the offset between  the  parallel s to  the particle trajectory  passing 
+
+the site centrally  (dot -dashed line in  Fig.  1) and the  center of  primary particle detector  (dashed 
+
+line in  Fig.  1), respectively . The probability distribution of the different possible values of cluster 
+
+size  𝜈  is a characteristic of the radiation quality (specified by particle type and energy) and 
+
+depends on the material, size and shape of the target.           
+
+> Fig. 1:Illustration of a nanodosimetric event in a spherical site passed by a track at a given impact
+> parameter. The black dots represent points with ionizing interactions. The ionizations produced in th e
+> volume of th is site are scored in coincidence with the detection of a passing primary particle. The annulus
+> represents the area covered by primary particle detectors corresponding to the same impact parameter. 1
+
+With the coincidence setup shown in  Fig.  1, the possible values of  𝜈  include 0,  which means 
+
+no ionization in the target.  Cases of no ionization or only a single ionization evidently do not 
+
+correspond to ionization clustering in  a strict sense. 
+
+The nanodosimeters developed so far determine the ICS by counting the number of ion izations 
+
+produced in a dilute gas. Different approaches have been taken to define the actual target volume 
+
+in the gas  [2] , and the equivalence of the ICS distributions from these macroscopic gas targets to 
+
+targets in tissue or water  of nanometric dimensions  relies on a scaling relation. This scaling 
+
+relation (discussed in more detail in Appendix A)  accounts for  density and material properties  and 
+
+sometimes also  the detection efficiency  [15,39 –42] . The validity of the scaling between materials 
+
+was experimentally  confirmed  for several operating gases in a nanodosimeter  [43,44] .
+
+As an  illustration of the scaling principle , Fig.  2 presents  simulated IC distributions for an alpha 
+
+particle of 4.6  MeV energy traveling in water (boxes), nitrogen (circles), and propane (diamonds) 
+
+traversing a cylindrical target of equal diameter and height centrally. The target in water has a 
+
+diameter  𝐷  of 4  nm and a mass density  𝜌  of 1  g/cm³, corresponding to  𝐷𝜌  = 0.4  mg/cm². Similar 
+
+IC distributions are obtained with  𝐷𝜌  values of 0.58 mg/cm² for nitrogen and 0.32 mg/cm² for 
+
+propane.      
+
+> 1Fig. 1is reprinted from Radiation Physics and Chemistry 232, H. Rabus and L. Thomas, On a revised
+> concept of an event that allows linking nanodosimetry and microdosimetry in nanometric sites with
+> macroscopic dosimetry, 112640, Copyright (2025), with permission from Elsevier.
+
+4           
+
+> Fig. 2:Simulated ionization cluster size distributions for a 4.6 MeV alpha particle passing through the center
+> of a cylindrical target in a direction perpendicular to the cylinder’s axis. In the case of liquid water, the
+> cylinder’s height and diameter 𝐷 were set to 4 nm. To obtain the same mean ionization cluster size in the
+> sensitive volume, the mass per unit area 𝐷𝜌 of nitrogen and propane was 0.58 mg/cm 2and 0.32 mg/cm 2,
+> respectively, where 𝜌 denotes the mass density. 2
+
+The  diameters of  target volumes in liquid water simulated  by existing nanodosimeters range 
+
+between  approximately  2 nm and 20  nm . The resulting  measured  ICS  distributions are different ,
+
+with the mean cluster size essentially proportional  to the site diameter and the instrumental 
+
+detection efficiency . However,  as  was  demonstrated  by Conte et al.  [45]  and  corroborated  by 
+
+Miete lska et al.  [46] , the complementary cumulative cluster probabilities  𝐹 𝑘  measured by 
+
+different nanodosimeters  plotted as  a function of the corresponding mean  IC  size  𝑀 1 fall on the 
+
+same curves  (see  Supplementary Fig.  1,  which shows the case of  𝐹 2).  As discussed in Section  3.3 ,
+
+these curves  can even be related to radiobiological cross -sections  [47] . The complementary 
+
+cumulative probabilities are obtained from the probabilit ies  𝑃 𝜈  of cluster size  𝜈  by  using  Eq.  (1).
+
+𝐹 𝑘  = ∑ 𝑃 𝜈 
+
+> 𝜈 ≥𝑘
+
+(1)
+
+The mean cluster size is the first moment of the ICS distribution , where the moments  𝑀 𝑘  are 
+
+defined by Eq.  (2).
+
+𝑀 𝑘  = ∑ 𝜈 𝑘 𝑃 𝜈 
+
+> 𝜈
+
+(2)
+
+While early nanodosimetric experiments used  only  setup s in which the primary particle 
+
+traversed the target volume,  measu ring  ICS  distribution s for primary particles  passing the target 
+
+at an  impact parameter  as shown in  Fig.  1 offers  further  insight . One example is  that the 
+
+conditional ICS distribution s 𝑃 𝜈 
+
+> 𝑐
+
+, which are defined  for  𝜈  ≥ 1 by  Eq.  (3) were found to be almost 
+
+invariant in a certain range of impact parameters  [48,49] .
+
+𝑃 𝜈  
+
+> 𝑐
+
+= 𝑃 𝜈 
+
+𝐹 1
+
+= 𝑃 𝜈 
+
+1 − 𝑃 0
+
+(3)      
+
+> 2Fig. 2is reprinted from Radiation Measurements 46 (9), H. Nettelbeck and H. Rabus, Nanodosimetry: The
+> missing link between radiobiology and radiation physics? 893 -897, Copyright (2011), with permission from
+> Elsevier.
+
+5
+
+As was  demonstrated  by Pietrzak et al , conditional ICS distributions can also be derived from 
+
+nanodosimetric measurements performed without a primary particle detector  [50] . However , this 
+
+faces  challenges  such as  discriminating against  multiple events  that  contribut e to the same 
+
+measurement. 
+
+Some authors  [51 –54]  considered  conditional ICS distributions  𝑃 𝜈  
+
+> 𝑐 2
+
+defined  for  𝜈  ≥ 2 by Eq.  (4)
+
+𝑃 𝜈  
+
+> 𝑐 2
+
+= 𝑃 𝜈 
+
+𝐹 2
+
+= 𝑃 𝜈 
+
+1 − 𝑃 0 − 𝑃 1
+
+(4)
+
+This second type of conditional ICS distribution  focuses  on target s receiving true ionization 
+
+clusters (i.e., more than one ionization) . T he first type  pertains  to a n event concept  similar  to  that 
+
+employed  in microdosimetry  [55] .
+
+While  simulation studies  of  track structure  frequently  use  configurations  analogous  to  those 
+
+of  experimental setup s, Selva et al.  [56]  pointed out that  impact parameters at which the  primary 
+
+particle intersects  a spherical  target can also be realized by  using the ion trajectory as reference 
+
+and placing a multitude of targets  around it with cylinder -radial distances less  than  or equal  to 
+
+their diameter.  The same philosophy was  followed  by  Braunroth et al.  [57 –60]  to  study the 
+
+variation of  conditional  ICS distributions  with impact parameter  over the full range of  impact 
+
+parameters generating ICs in the target.  (Earlier work by Rabus et al.  [61,62]  employed  a nearly 
+
+identical  sampling approach  but  only considered impact parameters up to 100  nm.) 
+
+Consequently, authentic  broad beam conditions  can be realized that are more general than those 
+
+used in  experiments or  some  simulation  studies , in which  the beam  cross -section  matche d the 
+
+target cross -section al are a [42]  or the beam  diameter  was  about  double  [63]  or  three to  five times 
+
+[49,64,65]  the target ’s  diameter .
+
+The paradigm shift towards a track -centered view of nanodosimetry  was first utilized in a  study 
+
+by  Alexander et al.  [66]  in which  nanodosimetric frequency distributions  were scored  with  a
+
+multitude of  targets distributed around a particle trajectory . This is, however,  essentially 
+
+equivalent to  considering a single target and a beam  centered on the target having the same  cross 
+
+section  as the  region around a particle trajectory within which targets are placed  [55] . In contrast 
+
+to  approach es  that  utilize  both an extended beam and a spatial distribution  of targets  [52,67] ,
+
+track -centered approaches allow  investigat ing  the influence of different impact parameters on 
+
+the final  ICS distribution. 
+
+In any case, it  is imperative to  underst and  that  simulation and measurement results are always 
+
+conditional on the irradiation geometry used . This applies  especially  to the  probability  of  clusters 
+
+of size zero , which  strongly depends on the beam size . The reason for this is that  the probability 
+
+of ionizations  in a target decreases with  increasing  beam size , so that the probability of no 
+
+ionization increases . Conversely , conditional ICS distributi ons may  be expected to be less 
+
+dependent  on beam size  since  the absolute number of ICs  per unit path of the primary particle 
+
+saturates  for  all  𝜈  ≥ 1 as  the beam diameter increases. 
+
+As posited in  a generic model  proposed by the BioQu aRT (Biologically weighted  quantities for 
+
+radiotherapy) project  [68]  and subsequent  independent  studies  [69] , there is the possibility  that 
+
+correlated ICs  play a role for  the  effectiveness  of  ionizing radiation . In addition to  the  develop ment 
+
+of  nanodosimetric detectors for  the  spatial imaging of particle track  segments  [16,70,17] , where 
+
+such information would be obtained comprehensively,  experimental studies have also been 
+
+conducted on the correlations of ionization clusters in two targets in proximity  [64,65,71] .
+
+The majority of  nanodosimetric experiments were conducted under conditions of a  well -
+
+defined  ion beam quality, i.e., ion type, charge state , and kinetic energy.  In a  recent  proof -of -6
+
+principle investigation,  a nanodosimeter was operated  behind an absorber hit by a  clinical carbon 
+
+ion beam  [72] , where  data analysis becomes more involved owing to the  complex mixed radiation 
+
+field  [73] . However , such  mixed fields are typical of practical applications of ion beams in  the 
+
+domain of  radiotherapy. 
+
+This  necessitates  an extension  of nanodosimetric concepts . In the  context  of the BioQuaRT 
+
+project,  quantities defined as weighted averag es  over many targets  distributed  in  volume s of 
+
+micromet ric dimensions  corresponding to biological cells or cell nuclei  were studied  [74] .
+
+Ramos -Ménde z et al.  [52]  have  generalized  th is  concept to arbitrary  volumes , such as  voxels used 
+
+for treatment planning . In essence,  for  a nanodosimetric  quantity  𝑄 , the  fluence -weighted and 
+
+dose -weighted averages , 𝑄 ̅𝛷 and  𝑄 ̅𝐷 , are  concept ually  defined by Eqs.  (5) and  (6), respectively .
+
+𝑄 ̅𝛷  = ∑ ∫ 𝑄 (𝐸 , 𝑝 )𝛷 𝐸 
+
+> 𝑝
+
+(𝐸 )𝑑𝐸 𝑝 
+
+∑ ∫ 𝛷 𝐸 
+
+> 𝑝
+
+(𝐸 )𝑑𝐸 𝑝 
+
+(5)
+
+𝑄 ̅𝐷  = ∑ ∫ 𝑄 (𝐸 , 𝑝 )𝛷 𝐸 
+
+> 𝑝
+
+(𝐸 )𝑆 𝑝 (𝐸 )𝑑𝐸 𝑝 
+
+∑ ∫ 𝛷 𝐸 
+
+> 𝑝
+
+(𝐸 )𝑆 𝑝 (𝐸 )𝑑𝐸 𝑝 
+
+(6)
+
+In Eqs.  (5) and  (6), 𝑝  denotes the type of (charged) particle and  𝑄 𝑝 (𝐸 ) is the value of the 
+
+nanodosimetric quantity produced in a considered target by a particle of type  𝑝  and energy  𝐸 , 𝛷 𝐸 
+
+> 𝑝
+
+is the spectral particle fluence of particles of type  𝑝  in the volume considered for averaging, and 
+
+𝑆 𝑝  is the stopping power of the material in the voxel for a particle of type  𝑝  and energy  𝐸 .
+
+It  is important to acknowledge  that the definitions provided by Eqs.  (5) and  (6) are  consistent 
+
+with the work of Dai et al.  [53] . Alexander et al.  [74]  used in their Eq.  (7) the arithmetic mean of 
+
+tracks for  the purpose of  fluence averaging . However, this  is not exactly the same as  fluence 
+
+averaging . Ramos -Mendez et al.  [52]  considered imparted energy ( termed  “deposited energy ”)
+
+instead of dose and omitted the summation over particle type in the denominator in their Eqs.  (1) 
+
+and (2) . Additionally, they  did not explicitly  note  the dependence o f the contributions to 
+
+accumulated track length and energy imparted on the particle type  in their formulae .
+
+The  practical  evaluation of Eqs.  (5) and  (6) follows  a t hree -step procedure. In the first step,  the 
+
+nanodos imetric  quantities , 𝑄 𝑝 (𝐸 ), are determined by performing  track structure  simulations  for 
+
+a set of relevant particle types  and energies.  Subsequently , interpolating functions of the energy 
+
+dependence  of  𝑄 𝑝 (𝐸 ) are determined  for each  distinct  particle type . In the  final  step , volume -
+
+averaged fluences of  pertinent  particles and energies are obtained  through  condensed -history 
+
+simulations . Subsequently,  the integrals are  estimated  through the  summation over energy bins. 
+
+Alexander et al.  [66]  determined p arameterizations  of the energy dependence of some 
+
+nanodosimetric quantities  in a limited energy range  for protons and carbon ions  for targets 
+
+randomly placed around a particle track within a  cubic volume of 1  μm side.  A far m ore 
+
+comprehensive  database was determined by Ramos -Méndez et al.  [52] , who employed  a
+
+multitude of targets  within  a cylinder simulating a  segment of a chromatin fiber. In both cases, 
+
+the nanometric targets were cylinders  with a diameter of 2.3 nm  and  a height of 3.4 nm, 
+
+corresponding to a DNA segment of 10 base pairs. Schwarze et al.  [75]  used the scoring approach 
+
+of  [57]  using cylinder shell segments of the same volume as these cylinders  and scoring all ICs 
+
+produced by the tracks. 
+
+The  volume averaging was done by  Alexander et al.  [66]  in micrometric volumes representing a 
+
+cell  nucleus.  The other aforementioned studies and  those related to the cluster dose concept 
+
+implicitly considered cuboid -shaped  voxels  as used in treatment planning  [36,52,75] . In contrast, 
+
+Dai et al. considered cylinder shells  with outer dimensions  corresponding to  a decrease of the 7
+
+absorbed  dose  to  50  %, 10  %, 1  %, and 0.1  % of  that  at the  beam  axis  of a circular beam  with a 
+
+diameter of  4 mm  [53] .
+
+Another  modified nanodosimetric quantity  was introduced by  Casiraghi and Schulte  [67] ,
+
+namely the  biologically effective mean ICS  per voxel  defined  according to Eq.  (7):
+
+𝑀 1 
+
+> 𝑏𝑖𝑜
+
+= ∑ 𝜈 𝑃 𝜈 
+
+> 10
+> 𝜈 =2
+
+∑ 𝑃 𝜈 
+
+> 10
+> 𝜈 =2
+
+(7)
+
+The  𝑃 𝜈  appearing  in  Eq.  (7) were  the  average  probabilities of  ICs formed in  cylindrical targets 
+
+with a diameter of  2 nm  and height  of 16  nm , produced  by proton and carbon ion  pencil beams 
+
+with a two -dimensional Gaussian profile of 3  nm standard deviation.  The averag e was calculated 
+
+over  target cylinders  contained within  a regular two -dimensional array of 10 4×10 4 cylinders  with a 
+
+height and diameter of 500 nm . Within each  of these  scoring  cylinders , 10 4 target cylinders were 
+
+randomly placed . In addition to the biologically effective mean ICS , Casiraghi and Schulte  [67] 
+
+also considered  the yield of  small clusters (ICS of 2 or 3) and the yield of large clusters (ICS 
+
+between 4 and 10)  per voxel and per pencil beam.  Using  the  definition  proposed by Yang et al.  [76] 
+
+for conditional ICS probabilities  (Eq.  (8)), these quantities would be denoted as  𝐹 2−3 and  𝐹 4−10 .
+
+𝐹 𝑎 −𝑏  = ∑ 𝑃 𝜈 
+
+> 𝑏
+> 𝜈 =𝑎
+
+; 𝐹 𝑎 −𝑏  
+
+> 𝑐
+
+= ∑ 𝑃 𝜈 
+
+> 𝑐
+> 𝑏
+> 𝜈 =𝑎
+
+(8)
+
+Rabus et al.  [61]  and Braunroth et al.  [57]  determined the radial dependence of the frequency 
+
+distribution of ICs around segments of proton trajectories  and proposed the concept of the 
+
+effective track cross section (ETCS) . The ETCS i s defined as the two -dimensional  integral of the 
+
+probability of a nanometric target receiving an ICS of given properties , e.g. , at least  𝑘  ionizations 
+
+in the cluster , in a plane perpendicular to the primary particle trajectory.  The  ETCS depends on 
+
+the radiation quality and  the target dimensions , but  was found to be  relatively in sensitive to the 
+
+target  shape  [57] . The ETCS  can be interpreted as the ratio of the frequency of ionization clusters 
+
+in nanometric sites to the fluence of primary particles . Consequently, it  provides  the basis  for the 
+
+definition of  a nanodosimetric  analog  to  the microdosimetric  concept  of an  event  [55] .
+
+## 3 RBE estimation from  ionization cluster s in a single target 
+
+## 3.1  The approach of  Grosswendt  considering a s ingle target and direct effects 
+
+The fundamental model assumption s of the approach  developed by Grosswendt in several 
+
+publications  [42,77,78]  are  as follows : 1. T he yield of  DNA  single -strand  breaks ( SSBs ) produced 
+
+by a  specific  type of radiation  is  proportional to the probability  𝑃 1 of an ICS of  𝜈  = 1 in a 
+
+nanometric  cylindrical target  volume . 2.  The yield of  DNA  double -strand  breaks is proportional to 
+
+the complementary cumulative probability  𝐹 2 of  generat ing  an ICS with  𝜈  ≥ 2 in  the same target 
+
+volume. The dimensions of this volume  are  implicit  model parameters, and different choices were 
+
+made  at  different st ages  of the model development. 
+
+In  the initial study , the  cylindrical volume  had  a diameter and height of 2 nm  and  was irradiated 
+
+by  a circular  monoenergetic  electron  beam  of  2 nm in diameter  [77] . The  initial energies  ranged 
+
+from  12 eV  to  100 keV . In addition to the ICS distribution , the mean energy imparted in the 
+
+cylinder , Δ𝐸  , was  also  determined in the simulations.  (The  aforementioned  paper does not 
+
+provide  these details, but it  can be reasonably inferred  that  a planar electron source  in contact 
+
+with  the target cylinder was used and that  the scored energy  encompassed  energy deposits from 
+
+ionizations, electronic excitations , and stopping  electrons.)  The yields of SSBs and DSBs,  𝐺 𝑆𝑆𝐵 8
+
+and  𝐺 𝐷𝑆𝐵  , were then estimated by  utilizing  Eq.  (9), where  𝑐 1 and  𝑐 2 represent  dimensionless 
+
+parameters. 
+
+𝐺 𝑆𝑆𝐵  = 𝑐 1
+
+𝑃 1
+
+∆𝐸  ; 𝐺 𝐷𝑆𝐵  = 𝑐 2
+
+𝐹 2
+
+∆𝐸  (9)
+
+This was motivated by the fact  that yields of DNA strand breaks  are generally quantified as  the 
+
+ratio of the  number  of breaks  to the product of  absorbed  dose and mass of  irradiated  DNA . If the 
+
+dose is  uniform  in the  part of the  irradiated  region containing DNA, the denominator of this ratio 
+
+is the  expectation of the  energy imparted to DNA. 
+
+Although  not explicitly determined, the parameters  𝑐 1 and  𝑐 2 we re  im plicitly determined by 
+
+comparing the predictions according to Eq.  (9) with results obtained by the PARTRAC code  [79] 
+
+requiring a match at the highest  electron energy . For SSBs this scaling  produced agreement at 
+
+energies  above 8  keV , where as for DSBs up to roughly 10  % discrepanc ies  were found in this 
+
+energy range. Overall , the data from Eq.  (9) gave a comparable  qualitative  energy  dependence  as 
+
+the PARTRAC data , while  the absolute  values differed by up to a factor of almost 2 for SSBs and 
+
+almost 3 for DSBs. 
+
+A c omparison of the  ratio of the yields for DSBs to that of SSBs  revealed  up to a factor of  4
+
+higher values than obtained with PARTRAC , with experimental data  [80]  (available only at a few 
+
+energy points)  falling  in between the  two predictions.  In addition, a comparison was presented 
+
+between the energy dependence of  𝐹 2 and  the bio -effect cross -section  data of Simmons and 
+
+Watt  [81] , where a scaling factor was  once again  applied  to  match  the data at an electron energy 
+
+of 150 eV.  This comparison showed  agreement  with respect to the trend ; the absolute  deviations 
+
+remained below  several 10  % in many cases , but  there were also instances of  up to a factor of 3 
+
+di screpancy .
+
+In further development of the approach  [42,78] , the size of the cylindrical target was set to a 
+
+diameter of 2.3  nm and a height of 3.4  nm , corresponding to a segment of 10 base pairs in DNA in 
+
+its B -type  configuration  [82] . This choice implicitly introduc ed a mechanistic model assumption ,
+
+namely that nanodosimetric quantities relate to direct  radiation  effects in the DNA , thus 
+
+neglecting indirect damage by radiolytic species.  For DSB induction, this can be expected to 
+
+provide a good approximation , since  the  radical species undergo Brownian motion so that 
+
+concurrent arrival of different  species at the same short DNA segment and reactions  forming 
+
+strand breaks  may be  expected to be of low probability. 
+
+A c omparison  of the SSB and DSB yields  from electrons  with results from PARTRAC  again 
+
+yielded  the same qualitative energy dependence , with  agreement  for energies of 8  keV or higher 
+
+for both yields  [42] . The discrepancies  observed  at smaller electron energies were still by up to a 
+
+factor of two for SSBs . Furthermore , the ratio of the maximum yields predicted  according to Eq. 
+
+(9) and those from PARTRAC  was  reduced to  a factor of about 1.7.  When the  scaling factor s 𝑐 1
+
+and  𝑐 2 for the  nanodosimetric prediction s according to Eq.  (9) were  determined  by comparison 
+
+with the yield s obtained with PARTRAC for 220  kV x -rays  [83] , about 14  % higher  values  than  with 
+
+PARTRAC  were  obtained for the SSB yield at high electron energies  and almost a factor of two 
+
+difference  to data reported by Nikjoo et al.  [84] . For the ratio of DSB to SSB yields , a factor of four 
+
+higher  maximal value w as  obtained  compared with PARTRAC  [78] .
+
+For monoenergetic protons and alpha particles  in linear energy transfer (LET)  ranges  between 
+
+0.4  keV/μm and 30  keV/μm and between  about 9  keV/ μm and 170  keV/μm, respectively,  a peak 
+
+in the LET dependence was found  at abou t 50 keV/μm  for the estimate from Eq.  (9) [78] . The 9
+
+findings  from PARTRAC  [83,85]  and  Nikjoo et al.  [86]  indicated  this peak to appear at about 
+
+150  keV/μm , a conclusion  that is corroborated  by experimental studies  [87] . A comparison  with 
+
+the corresponding data from PARTRAC and Nikjoo et al. for the ratio  𝑅 𝑑𝑠  of DSB to SSB  yields 
+
+showed that  a comparable LET dependence was obtained with the nanodosimetric estimator 
+
+given by  Eq . (10 ).
+
+𝑅 𝑑𝑠  = 𝑐 3
+
+𝑀 2
+
+𝑀 1
+
+(10 )
+
+The value of the proportionality constant  𝑐 3 was obtained by  requiring a  match with the  yield ratio 
+
+obtained by PARTRAC for protons of 20  MeV  [78] .
+
+The model  postulate s that  the probabilities  𝐹 2 of generation of an IC of size 2 or higher  and of 
+
+DSB induction  in a short DNA segment  are  proportional to  each other . The validity of this 
+
+assumption  was  scrutinized  for DSB formation in plasmid DNA by  different ion types and  energ ies 
+
+[88 –90] . Fig.  3 shows  a comparison between  the cross -section for  DSB ind uction in viral DNA  [91] 
+
+as a function of  LET and  the  corresponding  probability  𝐹 2, obtained  by simulations in water for a 
+
+target cylinder  with a diameter of 2.3 nm  and  a height of 3.4 nm . In the simulations,  an incident 
+
+rectangular beam  with a width  of 4.6  nm and  a height of  6.8  nm  was used . The  two  y-axes  in  Fig.  3
+
+are proportional to each other , both spanning 2.5 orders of magnitude . Th us, Fig.  3 suggest s that 
+
+the assumed proportionality  is  approximately valid  (with some  experimental  data points deviating 
+
+from the  curve  defined  by the simulations  by a factor of  up to  two.                  
+
+> Fig. 3:Dependence of measured cross -section data for double -strand break (DSB) formation, 𝜎 𝐷𝑆𝐵 , in SV40
+> viral DNA [91] on LET (filled symbols ,left y -axis) and the cumulative probability, 𝐹 2, of obtaining an
+> ionization cluster size of two or more (open symbols, right y -axis) . These 𝐹 2values were derived from Monte
+> Carlo simulations of helium, lithium, carbon and neon ions (of different energies), using a water cylinder
+> with a diameter of 2.3 nm and a height of 3.4 nm as the target volume [89,90] . The primary particle beam
+> had a rectangular cross section with dimensions twice the magnitude of the target’s dimensions. The
+> direction was perpendicular to the cylinder’s axis. 3
+
+However, based  on considerations following the work of Garty et al.  [92,93] , which will be 
+
+discussed in  the next section, one might question  the expectation  whether  of such proportionality     
+
+> 3Fig. 3is reprinted from Radiation Measurements 46 (12), H. Rabus and H. Nettelbeck, Nanodosimetry:
+> Bridging the gap to radiation biophysics, 1522 -1528, Copyright (2011), with permission from Elsevier.
+
+10 
+
+would be expected . If  there are  two or more ionizations  in  the  DNA segment  for which no  further 
+
+details  are available  regarding  their spatial locations,  then  the probability  𝑝 2𝑠  of  damage on  both 
+
+strands of DNA  depends on  the ICS , 𝜈 , and is  given  by Eq.  (11 ) [92]  under the assumption that 
+
+each ionization results in a strand break :
+
+𝑝 2𝑠  = 1 − (1
+
+2)
+
+> 𝜈 −1
+
+(11 )
+
+That is, this probability is 50%  for  𝜈  = 2, 75%  for  𝜈  = 3, and 87.5%  for  𝜈  = 4. Considering this 
+
+and  taking into account  that an ionization may have a probability  of  less than  1 for  resulting in a 
+
+strand break,  the predicted probability of DSB induction  shows  non -linear dependence on  𝐹 2 as 
+
+illustrated  in  Fig.  4. The se  data correspond to results obtained  using  the  track structure codes 
+
+PTra  [25]  and Geant4 -DNA  [30 –33]  empl oying  the  probability  of  DSB induction  from  [93] . The data 
+
+show the  expected  saturation -type behavior  when  𝐹 2 approaches its upper limit of unity . This 
+
+implies that  proportionality between  𝐹 2 and DSB induction  is  only expected  for small values of  𝐹 2,
+
+i.e., when  the probability  𝑃 2 for two ionizations dominates. 
+
+Bug et al.  [94]  later confirmed this  in their work  us ing  a Bayesian approach  to determine the 
+
+likelihood s that an  SSB results from an  IC of size  𝜈  and that a DSB results from  an IC of at least  𝑘 
+
+ionizations  in a DNA target of 10 base pairs.  Among the four radiation qualities considered,  a DSB 
+
+was most likely  to  result  from  an IC with  𝑘  = 2 for the sparsely ionizing  5 MeV proton and 20  MeV 
+
+alpha particle . For these two radiation qualities , an  SSB was  also  most likely to result from an IC 
+
+of  𝜈  = 1. However, f or  more  densely ionizing  radiation , this was no longer the case. For  example ,
+
+for a  60  MeV  12 C ion , a DSB  had an IC with  𝑘  = 6 as its most likely origin.  One  caveat  of these 
+
+findings is that they  used  the  value  for the  probability of an ionization result ing  in a strand break 
+
+as  determined in the work of Garty et al.  [92] . However,  the probability  derived by Garty et al. 
+
+conceptually  did not pertain  only  to  direct strand breaks.                   
+
+> Fig. 4:Correlation between the probability of double -strand break (DSB) induction, as predicted by the
+> combinatorial model (Section 3.2 ), and the cumulative probability 𝐹 2for an ionisation cluster size of at least
+> two by particles with an LET between 5 keV/μm and 220 keV/μm. These values were derived from the
+> ionization cluster size distributions simulated with the PTra code (PTB) and Geant4 -DNA, where G4Ch and
+> G4SR correspond to the respective Screened Rutherford a nd Champion models used for elastic scattering
+> of electron s.4
+> 4Fig. 4is reprinted from Radiation Measurements 46 (12), H. Rabus and H. Nettelbeck, Nanodosimetry:
+> Bridging the gap to radiation biophysics, 1522 -1528, Copyright (2011), with permission from Elsevier.
+
+11 
+
+## 3.2  The  combinatorial  model  of  Garty  et al. 
+
+The approach of Garty et al.  [92,93]  is based on ICS distributions measured with the Ion 
+
+Counter  nanodosimeter  [14,95] . These distributions  are assumed to be representative of the ICS 
+
+distribution in an equivalent target in biological matter. The determination of the size of the 
+
+equivalent  volume  relies on the scaling relation proposed by Grosswendt (see Appendix  A). The 
+
+variant  for  produced  ionizations  [40]  was used,  which  implicitly assume s a 100  % detection 
+
+efficiency  for the nanodosimeter.  Using the same scaling factor  for lateral dimensions  as well ,
+
+the beam size used in the experiments  corresponds to a beam size in biological matter of 56  nm. 
+
+The first version of the model  [92]  had only one parameter  𝑝 𝑠 , which  represent ed the  constant 
+
+probability of an ionization to result in a  DNA  strand break,  regardless  whe re  the ionization 
+
+occur red  in  the  target volume . The  nanometric  target volume  was assumed to  be a cylinder  of 
+
+4.5  nm  in  diameter  and  8 nm  in  height , representing  a DNA segment of 16 base pairs (2.3  nm in 
+
+diameter and 5.4  nm in height) surrounded by a hydration layer  with a  thickness  of 1.3 nm.  Th us, 
+
+the model includes indirect effects from water radiolysis and  the subsequ en t reactions of 
+
+produced radical species with DNA , which  result in a strand break. The model parameter  𝑝 𝑠 
+
+corresponds to  the  average probability resulting from  the combined  direct and indirect effects. 
+
+A later version of the model  [93]  includes  a second parameter , 𝑝 𝑏  , which  represen ts the 
+
+constant probability  that  base damage  will occur  when an ionization  takes place  anywhere in the 
+
+target cylinder.  In this  study , the  simulated  nanometric target volume  was  estimated to be  a
+
+cylinder  of 4.3 nm  in  diameter  and  a height  of  6 nm , interpreted as  a segment of DNA  surrounded 
+
+by  a 1 nm -thick  water shell . Assum ing the  presence of  a water shell on the top and bottom of the 
+
+target cylinder  as well , the DNA content corresponds to  approximately  12 base pairs.  (T he  height 
+
+of the  cylinder  corresponds to 18  DNA base pairs.) 
+
+The joint probability  of  having  𝑛 𝑠  strand breaks  and  𝑛 𝑏  base damages  is obtained  by 
+
+considering the multinomial  probability  of  obtaining these values  through  random sampling from 
+
+𝜈  ionizations in the target cylinder (Eq.  (12 )). 
+
+𝑝 (𝑛 𝑠 , 𝑛 𝑏 ) = ∑ 𝑓 𝜈 
+
+𝜈 !
+
+𝑛 𝑠 ! 𝑛 𝑏 ! (𝜈  − 𝑛 𝑠  − 𝑛 𝑏 )! 𝑝 𝑠  
+
+> 𝑛 𝑠
+
+𝑝 𝑏 𝑛 𝑏  (1 − 𝑝 𝑠  − 𝑝 𝑏 )𝜈 −𝑛 𝑠 −𝑛 𝑏 
+
+> 𝜈 ≥𝑛 𝑠 +𝑛 𝑏
+
+(12 )
+
+Note  that in Eqs.  (12 ) and  (13 ), 𝑓 𝜈  is used instead of  𝑃 𝜈  to emphasize that the model relies on 
+
+measured ICS distributions  (or  ICS distributions from simulations of the measurement).  The 
+
+probability  of inducing a DSB , 𝑝 𝐷𝑆𝐵 , is obtained  by multiplying  Eq.  (12 ) by the probability of  at least 
+
+one SB per strand (Eq.  (11 )) and summing over  𝑛 𝑏 . The re sult is  given in  Eq.  (13 ) [93] .
+
+𝑝 𝐷𝑆𝐵  = ∑ 𝑓 𝜈  [1 − 2 (1 − 𝑝 𝑠 
+
+2 )
+
+> 𝜈
+
++ (1 − 𝑝 𝑠 )𝜈 ]
+
+> 𝜈 ≥2
+
+(13 )
+
+Additionally , double -strand  lesions (DSL) were considered in which each strand contains at 
+
+least one  break or base damage. The corresponding probability  𝑝 𝐷𝑆𝐿  is  obtained  by  replacing  𝑝 𝑠 
+
+in Eq.  (13 ) by  𝑝 𝑡  = 𝑝 𝑠  + 𝑝 𝑏 . The probability of a non -DSB lesion  affecting both strands is  obtained 
+
+by subtracting  𝑝 𝐷𝑆𝐵  from  𝑝 𝐷𝑆𝐿  [93] .
+
+The model parameters  were obtained by fitting predicted yields  of DSBs and DSLs  to  the 
+
+experimental data  from  plasmid DNA assays  [96] . Conversion  from probabilities  to yields was 
+
+performed  by estimating the  average energy imparted in the target  as  Δ𝐸  = 𝑀 1 × 𝑊 𝑖 , where  𝑀 1 is 
+
+the mean ICS and  𝑊 𝑖  is the (macroscopic) mean energy  per ionization.  The a bsorbed dose  𝐷  was 12 
+
+then obtained  by dividing  the energy imparted,  Δ𝐸 , by  the mass  of  the  nanometric  target volume ,
+
+𝑚 𝑇𝑉  . Using  Eq. (14 ), the yields of different DNA  damage  are obtained , where  the subscript  d
+
+indicates the type of damage (SSB, DSB, DSL)  and  𝑚 𝐷𝑁𝐴  represents  the mass content  of DNA in 
+
+the target volume. 
+
+𝐺 𝑑  = 𝑝 𝑑 
+
+𝐷  × 𝑚 𝐷𝑁𝐴 
+
+= 𝑚 𝑇𝑉 
+
+𝑀 1 × 𝑊 𝑖  × 𝑚 𝐷𝑁𝐴 
+
+× 𝑝 𝑑  (14 )
+
+It is worth noting that in both papers of Garty et al.  [92,93]  the expressions for the  gains  were 
+
+written in a dimension -free style by which the  mass of the DNA content did not appear explicitly. 
+
+In  both papers  a value of 6500  Da was used for  𝑚 𝐷𝑁𝐴  which  seems  inconsequential given the 
+
+actual lengths of the DNA segment s assumed.  Furthermore , the second paper  [93]  states that 
+
+𝑚 𝑇𝑉  pertains to the  mass of the  (macroscopic)  target volume  in the nanodosimeter , meaning  that 
+
+all parameters entering the yield , except  𝑊 𝑖  , were obtained experimentally . However, t his 
+
+appears  inconsistent  with the scaling relation  according to  which the  diameter of the target 
+
+volume  (and not the target volume itself)  is inversely proportional to  the  mass density  (Appendix 
+
+A). Thus,  the mass es  of the macroscopic and nanometric volumes  are  different . (In fact, they 
+
+differ by  twelve orders of magnitude .)  This  also ignores the  difference in the mean free path for 
+
+ionization between different materials, which the scaling relation accounts for. 
+
+The  yields  predicted  by the model were  benchmarked  against  PARTRAC  simulations  of  protons 
+
+over a wide energy range  [83] , where good agreement  of  better than 10 % was  generally  found. 
+
+The p redictions  were also compared with  experimental data from various studies (see Section  3.4 
+
+in  [93] ). The  model reproduced the  LET dependence  of  the  yield of DSBs in irradiated V79 cells in 
+
+the  LET  range  up to 100  keV/μm.  However , the  trend of the  LET  dependence of non -DSB lesion 
+
+clusters was not correct ly predicted.  Radiochemical reactions within large ion ization  clusters ,
+
+which are not considered in the model, were discussed  as  one  po ss ible expl an ation .
+
+Schulte et al. used  a variant of the  first version of the model  to  derive n anodosimetry -based 
+
+predictions of radiation  quality factors for  high -LET radiation s for  application s in  radiation 
+
+protection  dosimetry in space  [97] . They  simulated  measurements with the Ion Counter 
+
+nanodosimeter using a dedicated track structure code  [98]  for electrons  with an  energy  of 
+
+100  keV, protons  with energies ranging from  0.5  MeV  to  250  MeV,  4He ions  with energies ranging 
+
+from  1 MeV  to  30  MeV, and  12 C ions  with energies ranging from  10  MeV  to  250  MeV.  These 
+
+combinations of particle type and energy  covered  the LET range between 0.4  keV/μm and 
+
+800  keV/μm. The model parameter  𝑝 𝑠  was assumed to be independent of LET and to have a value 
+
+of 0.15  ± 0.05. Three different heights of the sensitive volume were considered, 7  nm, 16  nm, and 
+
+150  nm , which  correspond  to about 20, 50, and 500 base pairs , respectively . The quantity derived 
+
+from the ICS distributions was the  probability  𝑝 𝑐𝐷𝑆𝐵  of form ing  a complex DSB . This probability  is 
+
+given by Eq.  (15 ), where the symbol  (𝜈 
+
+2) represents a binomial coefficient. 
+
+𝑝 𝑐𝐷𝑆𝐵  = 𝑝 𝐷𝑆𝐵  − ∑ 𝑓 𝜈  (𝜈 
+
+2) 𝑝 𝑠 2
+
+2 (1 − 𝑝 𝑠 )𝜈 −2
+
+> 𝜈 ≥2
+
+(15 )
+
+The resulting  yield of complex DSBs  𝐺 𝑐𝐷𝑆𝐵  is given  by  Eq.  (16 ), where  𝑊 𝑖  is again the mean energy 
+
+per ionization :
+
+𝐺 𝑐𝐷𝑆𝐵  = 𝑝 𝑐𝐷𝑆𝐵 
+
+𝑀 1 × 𝑊 𝑖 
+
+(16 )13 
+
+As can be seen by compari ng  with Eq.  (14 ), it was  implicit ly  assum ed  that the sensitive volume is 
+
+identical to the volume occupied by DNA. 
+
+Nanodosimetric quality factors were obtained  by calculating  the ratio of the yield for complex 
+
+DSBs , according to Eq.  (16 ), from the ICS distributions produced by particles of given type and 
+
+energy , divided by  the yield  obtained for the reference radiation, which was 100  keV electrons. 
+
+Fig.  5 shows a comparison of the quality factors obtained for protons (diamonds), helium ions 
+
+(triangles) and carbon ions (squares) with  the  quality factors  defined in ICRP publication 60 ( thick 
+
+line). It can be seen that the nanodosimetric quality factors reproduce the increasing trend of the 
+
+quality factors at LET values up to 80  keV/μm but fail to capture the decrease at higher LET values. 
+
+There is also  a clear  difference between protons and heavier ions. As shown in  [97] , this difference 
+
+among  particle types and general trends are essentially insensitive to the choice of model 
+
+parameter  with in the considered  range  between 0.1 and 0.2. Compari ng  results for different  𝑝 𝑠 
+
+values  and heights indicat ed  that Q -factors decrease with LET for higher LET values when larger 
+
+𝑝 𝑠  values  and heights of the sensitive volume are used.          
+
+> Fig. 5:Comparison of the radiation quality factor Q as a function of LET from ICRP Publication 60 (thick line)
+> and nanodosimetry -based quality factors derived by Schulte et al. from ICS distributions obtained for a
+> cylindrical sensitive volume with a diameter of 2 nm and a height of 16 nm. 5
+
+## 3.3  The correlation  approach of  Conte  et al. 
+
+The approach of Conte  et al.  [45,47,99 –101]  was  based on  findin gs within the European joint 
+
+research project BioQuaRT (Biologically weighted quantities in radiation therapy)  [68,102]  and  the 
+
+Italian project MITRA (M icrodosimetry and  track  structure) . As part of the BioQuaRT  project, 
+
+pairwise comparisons of the  three nanodosimeters exi sting at that time were  performed  by 
+
+measuring the same ion beams.  The  Ion Counter and Startrack nanodosimeters, simulating 
+
+target diameters  of  2 nm and 20 nm, respectively,  were  compared by  perform ing measurements 
+
+at the accelerator facilities of the Italian Nuclear Research C enter in Legnaro, Italy . Protons and      
+
+> 5Fig. 5is r eprinted from Zeitschrift für Medizinische Physik 18 (4), R. Schulte et al., Nanodosimetry -based
+> quality factors for radiation protection in space, 286 -296, Copyright (2008), with permission from Elsevier.
+
+14 
+
+> 12
+
+C-ion  beam s with  energies per mass  between 3.5 MeV/u and 20 MeV/u  were used . The 
+
+comparison of the Ion Counter  and the Jet Counter  was  performed at the Heavy Ion  Accelerator 
+
+Laboratory  of Warsaw University  in  Poland.  The simulated target sizes at unit density in nitrogen 
+
+were 1.3  nm for the Ion Counter  and  1.6  nm and 3.2  nm for the Jet Counter . Measurements were 
+
+taken  for 45  MeV and 76  MeV carbon ions. 
+
+The results  of these measurements , along with  data measured previously with the 
+
+nanodosimeters  for protons,  4He, and  12 C ions  [48,49,103 –105] , suggested  the existence of  a
+
+universal relation ship  between the  measured  mean ICS and  the  first three  cumulative 
+
+probabilities for ionization clusters of  minimum sizes of one, two, and three  [45,47] . Th is  universal 
+
+relation showed qualitative similarity with the LET dependence of cell inactivation cross section 
+
+data  in the particle irradiation data ensemble (PIDE)  [87] .
+
+Cell inactivation cross section s,  𝜎 𝑖  , are  derived from  the  relative  slope s of survival curves 
+
+according to the  linear -quadratic (LQ) model  of cell survival , 𝑆 , as a function of absorbed dose , 𝐷 
+
+[106] . It is given by  Eq.  (17 ), where  𝛷  is  the particle fluence .
+
+𝜎 𝑖 (𝐷 ) = − 1
+
+𝑆 (𝐷 )
+
+𝑑𝑆 (𝐷 )
+
+𝑑𝐷  × 𝐷 
+
+𝛷  = − 1
+
+𝑆 (𝛷 )
+
+𝑑𝑆 (𝛷 )
+
+𝑑𝛷  (17 )
+
+As indicated by the second identity in Eq.  (17 ), 𝜎 𝑖 (𝐷 ) can be interpreted as the  expect ed number 
+
+of additional  lesions leading to inactivation  caused by an  additional ion hitting the cell.  Obviously, 
+
+𝜎 𝑖 (𝐷 ) depends on the dose value . I n the work of Conte et al. , two cases were considered : the dose 
+
+corresponding to an expected survival rate of 5  % and  the limit of very small doses. The 
+
+corresponding  values of  𝜎 𝑖  were denoted as  𝜎 5%  and  𝜎 𝛼 , respectively. 
+
+Since  the  𝑀 1 and  𝐹 𝑘  parameters  of ICS distributions are dimensionless quantities , a linear 
+
+model was assumed  to fit  the  universal curves from  nanodosimetric  measurements  to the 
+
+experimental radiobiological data from the PIDE database . This model used  proportionality 
+
+factors between  𝑀 1 and LET , as well as  between  𝐹 𝑘  and  𝜎 5%  and  𝜎 𝛼 , respectively  [45] .
+
+The analysis was performed  on  three different cell lines, namely V 79,  HSG and CHO cells , for 
+
+which  corresponding data were available in the PIDE database. For  𝜎 5%  , the  best match was 
+
+found for the cumulative probability  𝐹 2 as a function of  𝑀 1, as illustrated in the left panel of  Fig.  6
+
+for the case of V79 cells  and in the left panel of  Supplementary Fig.  2 for the other cell types . In 
+
+contrast,  the  best -fitting  curve  for  𝜎 𝛼  was that of  𝐹 3 as a function of  𝑀 1 , as  shown  in  the right 
+
+panel s of  Fig.  6 and  Supplementary Fig.  2. The scaling factors for the  𝐹 𝑘  were in the  range between 
+
+50  μm² and 80  μm² , i.e. , comparable to  the geometric cross sections  of the  cell nucle i. The se 
+
+values depended on cell type and varied  up to  20 % between  𝜎 5%  and  𝜎 𝛼  . The scaling  factors 
+
+between  𝑀 1 and LET  were  established by track structure simulations . The b est fits between 
+
+nanodosim etric  and radiobiologic  data  were found when  the  ICS  distribution was determined  in 
+
+a target equivalent to a  cylindrical  water  target  with a  diameter and height  1 nm for the  𝜎 5%  data 
+
+and to a  water cylinder  with a  diameter and  a height  of 1.5  nm for the  𝜎 𝛼  data  [45] .15              
+
+> Fig. 6:Results of the linear fit of the measured dependence of nanodosimetric parameters 𝐹 𝑘 as a function
+> of the mean ICS 𝑀 1to radiobiological data for the inactivation cross section at 5 % survival rate (left) and in
+> the limit of small dose values (right). The symbols represent data from the PIDE database [87] plotted as a
+> function of LET (upper x -axis). The lines represent the best fit to the nanodosimetric data scaled bi -linearly
+> such as to match the radiobiological data. 6
+
+The same analysis was also performed for repair -deficient XRS5 cells , for  which  the best fit was 
+
+obtained  using  the parameter  𝐹 1 as a function of  𝑀 1 . The scaling factor for  𝐹 1 was found to be 
+
+190  μm², i.e., comparatively large. The scaling factor for  𝑀 1 corresponded to a water cylinder  with 
+
+a diameter  and height  of 0.3  nm. 
+
+In follow -up work , t he nanodosimetric dataset was extended  by  including  nanodosimetric  data 
+
+taken from the literature , including electrons as primary particles  [47] . A sensitivity analysis was 
+
+performed  for the case of  𝜎 5%  by also  considering  water  cylinders  of  equal  diameter s and height s
+
+of  0.5  nm  and  1.5  nm , demonstrating the optimality of the value 1  nm found earlier.  In addition, 
+
+expressions  were obtained  for the parameters  𝛼  and  𝛽  of the  LQ model  in terms  of  the 
+
+nanodosimetric  parameters  𝐹 2 and  𝐹 3 , determined in targets of size s of  1.0  nm and 1.5  nm, 
+
+respectively . These expressions  had the form  given in Eq.  (18 ), where  𝑆  is  a survival rate of 5  %
+
+and  𝑐 𝛼  and  𝑐 𝑆  are  proportional to the ratio of fluence  𝛷  to  absorbed  dose  𝐷 .
+
+𝛼  = 𝑐 𝛼 𝐹 3 ; 𝛽  = 𝛼 2 − (𝑐 𝑆 𝐹 2)2
+
+4 ln  𝑆  (18 )
+
+The corresponding proportionality factors are assumed to be independent of radiation quality, so 
+
+that they can be determined by “calibration” with the known values of the parameters  𝛼  and  𝛽  for 
+
+a reference radiation quality.  This enabled the parameters  𝑐 𝛼  and  𝑐 𝑆  to be calculated  for  any 
+
+radiation quality  and  was  shown to lead to  reasonable fits of the survival curves of V79 for a 
+
+selection of LET values  [47,99] .
+
+To further study the  influence of target size  on  the functional dependence of  the parameters  𝐹 𝑘 
+
+on  𝑀 1, track structure simulations were performed  in later work  for protons, helium and carbon 
+
+ions of different energies  [100] . The projectile s were  travelling in propane  gas,  and ICS 
+
+distributions were obtained  for central passage of  spherical target volumes  of different  size    
+
+> 6Fig. 6is a merger of two figures r eprinted from Radiation Measurements 106 (1), V. Conte et al., Track
+> structure characterization and its link to radiobiology, 506 -511, Copyright (2017), with permission from
+> Elsevier.
+
+16 
+
+equivalent  to  spheres  in water with  diameters  between 0.5  nm  and 10  nm . The  functional 
+
+dependence was assumed to be given by  Eq.  (19 ).
+
+𝐹 𝑘 (𝑀 1|𝐷 𝑡 ) = 1 − Π̃𝑘 −1(𝑀 1|𝐷 𝑡 )𝑒 −𝐶 1(𝐷 𝑡 )𝑀 1 (19 )
+
+Here,  𝐷 𝑡  denotes the diameter of the target sphere,  Π̃𝑛  is a polynomial  of degree  𝑛  in  the 
+
+independent  variable  𝑀 1, and  𝐶 1 is one of the  parameters of the  function. The  coefficient of the 
+
+zeroth -order term of  Π̃𝑛  is unity  for all  𝑛 , and the other  coefficients  and  𝐶 1 depend o n the target 
+
+diameter  [100] . However , the  non -trivial  coefficien ts of the polynomials  depend on  only two 
+
+model  parameters , 𝐶 2(𝐷 𝑡 ) and  𝐶 3(𝐷 𝑡 ).
+
+Conte et al.  [100]  derived  the model parameters  based on  earlier work of De Nardo et al.  [107] .
+
+In this approach, the  ICS probabilities are derived from  probabilistic considerations of  a
+
+compound Poisson process . Specifically,  the probabilities  𝑃 𝜈  are  written  according to the law of 
+
+total probability as the sum of the probabilities  of  𝜅  ionizing interactions  of the primary particle in 
+
+the target volume , multiplied by the conditional probabilit y of form ing  a cluster of size  𝜈  when  𝜅 
+
+interactions of the primary particle occur.  Th is conditional probability  is assumed to be given by 
+
+𝜅  -fold convolution of the probability distribution corresponding to a single ionization of the 
+
+primary particle in the target volume. 
+
+Using the  resulting  parameterization of the function s 𝐹 𝑘 (𝑀 1|𝐷 𝑡 ) and their dependence on the 
+
+target size  𝐷 𝑡 , the optimality  of a target diameter of 1  nm  was reconfirmed  by comparison with 
+
+radiobiological data . Additionally , the known functional dependence  enabled the  investigation of 
+
+whether  using  linear combinations of  𝐹 2 and  𝐹 3 improves the fits between  nanodosimetric 
+
+parameters and  radiobiological cross sections for inactivation. The outcome  showed  that , when 
+
+both  𝐹 2 and  𝐹 3 are  determined for a  spherical target  with a  diameter of 1  nm,  𝜎 5%  and  𝜎 𝛼  are best 
+
+reproduced as proportional to  0.8𝐹 2 + 0.2𝐹 3 and  0.2𝐹 2 + 0.8𝐹 3 , respectively.  Notably,  these 
+
+combinations can also be written as  0.8𝑃 2 + 𝐹 3 and  0.2𝑃 2 + 𝐹 3 . That is, the main difference 
+
+between high and low -dose inactivation cross -sections appears to  be  the  contribution of clusters 
+
+of size 2. 
+
+By definition, t he complementary cumulative frequencies  𝐹 2 and  𝐹 3 depend only on the 
+
+probabilities  of  ICS  values  between 0 and 2 . Therefore,  further work  [101]  studied  the dependence 
+
+of the probabilities  𝑃 𝜈  on  𝑀 1 for  𝜈  ∈ {0,1,2,3}, i.e.  also  including the parameter  𝐹 47. The study  used 
+
+simulations of  the tracks of protons,  4He,  12 C, and  20 Ne ions  with energies per mass  ranging from 
+
+1 MeV/u to 330  MeV/u  in propane  gas. The  target size considered  correspond s to a sphere  with a 
+
+diameter of 1  nm  in liquid water.  Based on  the same theoretical assumptions  as  before , the 
+
+expressions for  the functional dependence of  𝑃 𝜈  on  𝑀 1 for  𝜈  ≥ 1 have the form  given in Eq.  (20 ).
+
+𝑃 𝜈 (𝑀 1) = 𝑀 1Π𝜈 −1(𝑀 1)𝑒 −𝐶 1𝑀 1 (20 )
+
+Here , Π𝑛  is a polynomial of degree  𝑛  in the  independent variable  𝑀 1, related to the polynomial s in 
+
+Eq.  (17 ) by  𝛱 ̃𝑛 +1(𝑀 1) = 1 + 𝑀 1Π𝑛 (𝑀 1).
+
+Further, i t was demonstrated that , for the considered  radiation qualities and  irradiation 
+
+geometry of ions  passing centrally  through the target volume,  𝑀 1 is  approximat ely  proportional to 
+
+the mean number of ionizations  produced by the primary particle , with a  proportionality constant 
+
+of  1.103  ± 0.003  [101] . Addition ally , the dependence of  𝑀 1 on  particle energy  was shown to  be 
+
+well reproduced by a three -parameter model function  with energy per mass as  the  independent              
+
+> 7Note that i n th e corresponding work [101] , Conte et al. used the quantities 𝐹 𝑘
+> ∗=𝐹 𝑘 +1, i.e. 𝐹 𝑘
+> ∗is the
+> probability of ICS exceeding 𝑘 ionizations.
+
+17 
+
+variable . Differences between ions could be taken into  account by considering  the effective 
+
+projectile charge according to the Barkas formula  [108] .
+
+The resulting functional  expressions  were then fitted to  radiobiological data from the PIDE 
+
+database  [87,109] , distinguishing between  experiments conducted under aerobic and hypoxi c
+
+conditions  [101] . The results showed  the  best fit between  𝜎 5%  and  𝐹 3 for hypoxic V79 and HSG 
+
+cells  (cf.  Supplementary Fig.  3a and c) . In contrast,  for aerobic cells a linear combination  of  𝐹 3
+
+and  𝑃 2 had to be used, where the weight of  𝑃 2 depended on the cell type  (cf.  Supplementary 
+
+Fig.  4a and c).  For V79 cells,  𝜎 𝛼  correlated with  𝐹 3 for aerobic conditions and with  𝐹 4 for hypoxic 
+
+conditions  (cf.  Supplementary Fig.  3b and d ). Additional components of  𝑃 2 and  𝑃 3 had to be 
+
+considered  for  aerobic and hypoxic  HSG cells , respectively  (cf.  Supplementary Fig.  4b and d ).
+
+## 3.4  The binomial weighting approach of Mietelska et al. 
+
+Unlike  the correlation approach  of Conte et al. , which  was completely agnostic  to  the 
+
+mechanis m connecting  ionization clusters and radiobiological effects,  the approach of  Mietelska 
+
+et al.  [46]  includes  a mechanistic component in the form  of a weighting function  for the 
+
+probabilities of different ICs. Similar to the  combinatorial  approach of Garty et al.  [92,93] , a 
+
+binomial  distribution  is assumed  for the  conditional  probability of an IC o f size  𝜈  to result in  𝑘  DNA 
+
+lesions . Th e success probability , 𝑝 𝑠 , of  the binomial  process  is assumed to be independent of the 
+
+ICS .
+
+The probability  of  a given number  of DNA lesions , 𝑚  , is then obtained  using  the derived 
+
+nanodosimetric parameters , 𝑅 𝑚 , as  defined by Eq.  (21 ).
+
+𝑅 𝑚 (𝑝 𝑠 ) = ∑ ∑ 𝑃 𝜈 𝐵 (𝑘 |𝜈 , 𝑝 𝑠 )
+
+> 𝜈
+> 𝑘 =𝑚
+> ∞
+> 𝜈 =𝑚
+
+(21 )
+
+Given  the normalization of the conditional probabilities  and the definition s of  𝐹 𝑚  and the 
+
+binomial  distribution , Eq.  (21 ) can be rewritten as Eq.  (22 ).
+
+𝑅 𝑚 (𝑝 𝑠 ) = 𝐹 𝑚  − ∑ 𝑃 𝜈  ∑ (𝜈 
+
+𝑘 ) 𝑝 𝑠 
+
+> 𝑘
+
+(1 − 𝑝 𝑠 )𝜈 −𝑘 
+
+> 𝑚 −1
+> 𝑘 =0
+> ∞
+> 𝜈 =𝑚
+
+(22 )
+
+Mietelska et al. only considered the case  𝑚  = 2, which  results in  Eq.  (23 ).
+
+𝑅 2(𝑝 𝑠 ) = 𝐹 2 − ∑ 𝑃 𝜈 (1 − 𝑝 𝑠 )𝜈 
+
+> ∞
+> 𝜈 =2
+
+− 𝑝 𝑠  ∑ 𝜈𝑃 𝜈 (1 − 𝑝 𝑠 )𝜈 −1
+
+> ∞
+> 𝜈 =2
+
+(23 )
+
+The parameter  𝑅 2 is assumed to represent the probability of a DNA  double -strand  break. 
+
+Therefore, while  the approach of Mietelska et al.  [46]  contain s elements of the  approach of Garty 
+
+et al.  [92,93] , it  considers two DNA lesions sufficient for induction  of a DSB without taking into 
+
+account  the location of  these lesions  on the two strands . In this respect, t he approach  of 
+
+Mietelska et al.  appears to  align with the approach  of Grosswendt. 18                                
+
+> Fig. 7:Comparison of 𝑅 2and 𝐹 𝑘 curves yielding the best fit with radiobiological data for cylindrical target s
+> of (A) both diameter and height of 1 nm (and hence a cross section of 1 × 1 nm² )and (B) diameter of 2.3 nm
+> and height of 3.4 nm (i.e., cross section of 2.3 × 3.4 nm²). In (A), the optimal fit is achieved with 𝐹 2and 𝑅 2
+> for 𝑝 equal to 0.8, while in (B), the best fit is observed for 𝐹 5and 𝑅 2for 𝑝 equal to 0.35. In both cases, 𝑅 2
+> provides a better fit than 𝐹 𝑘 .8
+
+Mietelska et al.  [46]  performed  simulations using Geant4 -DNA  for  1H,  4He,  7Li,  11 B,  12 C,  14 N,  16 O, 
+
+and  28 Si ions  in water . The simulations covered  a range of energies between 200  keV and  1 GeV 
+
+and  a range of LET between 6 keV/μm and 650 keV/μm . The target volumes were cylinders  with 
+
+equal  diameter and  height , ranging from 0.8  nm to 2.5  nm.  They  also considered  cylinders  with  a
+
+height of  1.48 times the diameter  and  diameter s between 1.0  nm and 2.3  nm. 
+
+For a cylindrical target  with a diameter of 2.3 nm  and  a height of 3.4 nm,  the  ratio  𝑅 2/𝑀 1 plotted 
+
+versus LET showed clear differences between  hydrogen ions, helium ions , and all heavier ions .
+
+However , the data of the different ions coincided when plotted against  𝑀 1, except for mean ICS 
+
+values below  about 1.5 . At these lower  𝑀 1 values , the  heav ier  ions showed much lower values 
+
+tha n hydrogen and  helium ions  [46] . These findings presumably  pertain to  a value  𝑝 𝑠  = 0.35 , i.e., 
+
+the best fitting parameter for this target size. Unfortunately, the value is  not stated in  [46] , neither 
+
+in the figure caption  nor the  text  related to the figure .
+
+Using  𝜎 5%  data extracted from the  PIDE database  [87,109]  for V79 cells,  the model parameter 
+
+𝑝 𝑠  that provides  the best fit  was determined  for targets  of  different  sizes  using a fixed  scaling 
+
+factor  between probabilities and cross sections.  The optim al  𝑝 𝑠  parameter  varied  from  0.8 f or 
+
+targets  with a  diameter  of  1 nm  and 0.35 for targets  with a  diameter  of  2.3  nm.  𝑅 2 curves based 
+
+on  these optimum  parameter values  can be seen  in  Fig.  7 to better fit the experimental  𝜎 5%  data 
+
+at large  𝑀 1 values  than  the fits to  𝐹 2 and  𝐹 5 for targets  with  diameter and height  of  1 nm  and 
+
+targets  with  diameter of 2.3  nm and height of 3.4  nm , respectively .    
+
+> 8Fig. 7reproduced under the CC BY 4.0 license (https://creativecommons.org/licenses/by/4.0/) from [46] ,
+> copyright Mietelska et al. 2024.
+
+19 
+
+## 3.5  The  nanodosimetric quantity -weighted dose  of Yang et al. 
+
+Yang et al.  [76]  compar ed  dose -weighting approaches in carbon -ion therapy using RBE 
+
+weighting factors derived from microdosimetry and nanodosimetry.  They  introduced  a radiation 
+
+quantity named  nanodosimetric quantity -weighted dose ( 𝐷 𝑎 −𝑏  
+
+> 𝑄
+
+), as defined by Eq.  (24 ).
+
+𝐷 𝑎 −𝑏  
+
+> 𝑄
+
+= 𝑘  × 𝐹 𝑎 −𝑏 ,𝑄 
+
+> 𝑐
+
+𝐹 𝑎 −𝑏 ,𝑋  
+
+> 𝑐
+
+× 𝐷  (24 )
+
+Here,  𝐹 𝑎 −𝑏  
+
+> 𝑐
+
+are the  conditional  probabilities for ICS between  𝑎  and  𝑏  , as defined in  Eq.  (9). The 
+
+superscripts  Q and  X refer to  the  radiation quality of  the  ion beams and of X -ray s used as  reference 
+
+radiation , respectively . 𝐷  is the absorbed dose, and  𝑘  is  an  adjustable , cell -line -specific  model 
+
+parameter .
+
+The y compared  the  predicted  survival curves derived from the model with  the  experimental 
+
+data  obtained  by Furusawa et al.  [110]  from  irradiations  of  HSG and V79  cells  at different  depths 
+
+in  water  with a  135  MeV/u  primary  carbon ion  beam . In the simulations , m onoenergetic photons 
+
+with an energy of 200 keV were used as  the  reference radiation instead of the 200  kV p X-ray 
+
+spectrum used in the experiments . This  substitution  was justified by the argument that  photon 
+
+energy has little influence on  nanodosimetric quantities.  Further details  on  how the  IC 
+
+distributions were determined, such as target size and irradiation geometry,  are not provided in 
+
+[76] .
+
+In the ir  analysis , Yang et al.  [76] , tested  the  cumulative IC probabilities  with  𝑎  = 3 and  𝑏  ∈
+
+{8,10 ,12 } in  Eq.  (9), as well as  the  probabilities  𝐹 2 
+
+> 𝑐
+
+, 𝐹 3 
+
+> 𝑐
+
+, and  𝐹 4 
+
+> 𝑐
+
+, for which  the upper bound  𝑏  in 
+
+Eq.  (9) is  formally  infinity . The e xperimental c ell  survival fraction s plotted as  a function  of  𝐷 3−10 
+
+> 𝑄
+
+ap peared to  follow the same curve  for all considered values of  LET.  The experimental RBE  plotted 
+
+as a function of  the ratio of  the  𝐹 𝑎 −𝑏  
+
+> 𝑐
+
+probabilities  in  Eq.  (24 ) showed the highest  coefficient of 
+
+determination with  the  𝐹 3−10  
+
+> 𝑐
+
+probability . The cell -specific scaling factor  𝑘  was found to  be  in the 
+
+order of magnitude of unity , differing  by about  25  % between the two cell lines. 
+
+## 3.6  The  machine learning -based approach  of  Bordieri et al. 
+
+In  their  recent work, Bordieri et al.  [111]  employed  machine learning to  examine  the 
+
+relationship  between  microdosimetric and nanodosimetric  properties  of  ion beams and  cell 
+
+survival data  obtained  from the PIDE database  [87,109] . They  used  a machine  learning  model 
+
+based  on the  TabNet  deep neural network architecture . The m icrodosimetric information  used 
+
+was  the  frequency -mean  (𝑦 ̅𝐹 ) and dose -mean  (𝑦 ̅𝐷 ) lineal  energy  in a  water  sphere  with  diameter 
+
+of  1 μm. The nanodosimetric information w as  the  complementary  cumulative probabilities 9 𝐹 2,
+
+𝐹 3, and  𝐹 4 which were  determined by simulations. However, the shape and dimensions  of the  site 
+
+are not specified. 
+
+The  machine learning concept of attention  was used to quantify  the  rel evance of the different 
+
+input feature s, which essentially measures the importance  of  the particular input feature for the 
+
+final regression model . The corresponding findings are shown  in  Fig.  8, which illustrates  a low -
+
+dose case  in the  top panels and for a survival fraction of 10  % in the  bottom panels. The panels 
+
+on  the left apply to protons , and th e panels on  the right  apply  to carbon ions.  The shaded areas 
+
+indicate a 95  % confidence band , and the lines  indicate  the mean values.  The results suggest that       
+
+> 9Note that Bordieri et al. used a similar notation as in [101] , so that their 𝐹 ∗(𝑘 )≡𝐹 𝑘 +1.
+
+20 
+
+nanodosimetric features of track structure  are more  importan t for  more densely ionizing radiation 
+
+and in the low -dose regime.                      
+
+> Fig. 8:Variation of the attention of the deep network to LET, the two microdosimetric features ( 𝑦 ̅𝐹 and 𝑦 ̅𝐷 )
+> and the three nanodosimetric features ( 𝐹 2,𝐹 3, and 𝐹 4)with particle energy per mass .(a) and (b) correspond
+> to the average of data for absorbed doses of 0.5 Gy, 0.5 Gy, and 0.75 Gy. (c) and (d) relate to a survival level
+> of 10 %. (a) and (c) pertain to protons, and (b) and (d) to carbon ions. 10
+
+## 4 Correlated ionization cluster approaches 
+
+## 4.1  The t wo compartment model  of Schulte et al. 
+
+Chron olog ically,  the first attempt to  link  nanodosimetry with biological effects was the t wo -
+
+compartment  model  proposed  by  Schulte et al.  [35]  in 2001 , at a time  when most of the  state -of -
+
+the -art gas -counter nanodosimeters were still under development .
+
+The two -compartment model  considers  cylindrical nanodosimetric site s with a diameter of 
+
+2 nm and  a height  of  16  nm  (corresponding to  a sequence of  approximately  50 base pairs  in the 
+
+DNA  molecule ). Th e choice of target volume appears to  have been  primarily motivated  by the 
+
+availability of published data accessible at that time  regarding  energy deposition by  protons and 
+
+helium ions with energy per mass between  0.3  MeV and 5  MeV.  Furthermore , the  dimension s
+
+were  similar  to  those of  the sensitive volume of the ion counter nanodosimeter when operated 
+
+without  a time window for ion collection.       
+
+> 10 Fig. 8reproduced under the CC BY 4.0 license (https://creativecommons.org/licenses/by/4.0/) from
+> [111] , rearranging panels and adding labels (a) to (d) . Copyright Bordieri et al. 202 6.
+
+21 
+
+It is assumed that ICs between 2 and 5 in such a target  result in  repairable DNA damage, 
+
+whereas ICs between 6 and 10  create  irreparable damage . Charge and radical recombination  are 
+
+assumed to  lead to a reduced biological effectiveness  for  IC S exceeding  10 , similar to , albeit not 
+
+analogous  to , the known decrease  in  RBE at high LET values . It is further assumed that  reparable 
+
+DNA  damage  may be  misrepaired  and  that  lethal damage resulting from repairable lesions 
+
+follows  a linear -quadratic  dose dependence . In this model , the quadratic term corresponds to 
+
+the  implicit assum ption that  two repairable lesions may interact to form a lethal lesion. 
+
+Irreparable damage is assumed to occur  proportionally  to  the  dose. 
+
+The frequency of l ethal damage  is assumed to  follow  a Poisson distribut ion . Thus , the  resulting 
+
+surviving  probability  𝑆  of cells  as a  function of absorbed dose  𝐷  is  given by  Eq.  (25 ).
+
+𝑆  = 𝑒 −(𝛼 1𝑞 1−𝛼 2𝑞 2)𝐷 −𝛽 𝑞 12𝐷 2 (25 )
+
+The parameters  𝛼 1 and  𝛼 2 are LET -independent and  correspond to the induction of direct lethal 
+
+DNA damage and lethal damage resulting from misrepair of repairable damage, respec tively.  The 
+
+parameter  𝛽  corresponds  to  the  conventional  quadratic  term of the  dose dependence , and  the 
+
+weighting factors  𝑞 1 and  𝑞 2 are  defined by Eq.  (26 ) for a  given  radiation quality  𝑄  and  reference 
+
+radiation quality  𝑄 𝑟𝑒𝑓 .
+
+𝑞 1 = ∑ 𝑃 𝜈 (𝑄 )5
+
+> 𝜈 =2
+
+∑ 𝑃 𝜈  
+
+> 5
+> 𝜈 =2
+
+(𝑄 𝑟𝑒𝑓 ) ; 𝑞 2 = ∑ 𝑃 𝜈 (𝑄 )10 
+
+> 𝜈 =6
+
+∑ 𝑃 𝜈  
+
+> 10
+> 𝜈 =6
+
+(𝑄 𝑟𝑒𝑓 ) (26 )
+
+In other words , the radiation quality factors are the ratio s of  the probabilities of  small and large 
+
+clusters  of radiation quality  𝑄  to  the probabilities  of  reference  radiation quality  𝑄 𝑟𝑒𝑓 .
+
+The v alues  of  the  radiation  quality parameters  were obtained  from published data for energy 
+
+deposition in the considered target volume  in water . F rom  this data,  IC distributions were 
+
+estimated  according to the law of total probability . The conditional probabilities of an ICS for  a
+
+given energy imparted , 𝜀 , wa s assumed  to be  uniquely determined by  the mean ICS  𝑀 1, estimated 
+
+as  𝑀 1 = 𝜀 /𝑊 , where  𝑊  is the macroscopic mean energy per ion pair . The ICS distribution  was 
+
+assumed  to be a modified Poisson distribution with  𝑀 1 as expectation and a variance reduced by 
+
+a chosen  Fano  factor of  0.3 . T he inverse of  the  Fano  factor  is  the modifying parameter  𝑚  in 
+
+Eq.  (27 ).
+
+𝑃 𝜈 (𝑀 1) = 𝑚  (𝑚 𝑀 1)𝑚𝜈 
+
+Γ(𝑚𝜈  + 1) 𝑒 −𝑚 𝑀 1 (27 )
+
+The  denominator of Eq.  (27 ) is the gamma function, which  satisfies  the identity  Γ(𝑛  + 1) = 𝑛 ! for 
+
+integer values of  𝑛 .
+
+The resulting model function was tested  on  literature  data  of V79 cell survival  [112]  and  it 
+
+reasonably  reproduce d the corresponding survival curves. 
+
+## 4.2  The  track event theory  of Besserer and Schneider 
+
+## 4.2.1  The  original  track event  theory 
+
+The track event theory  (TET)  was  formulated by Besserer and Schneider  [113,114]  as an 
+
+abstract model  of biological radiation effects . While a  potential  relation to  nanodosimetry  was 
+
+me ntioned in the first paper presenting the concept  [113] , it was  only elaborated  on  in later work 
+
+[69,115,116] . Note  that the term “event”  used  in the TET  has  the  same  meaning as in stochastics :22 
+
+a potential outcome of a random process . This differs  from the  use  of this term in  the terminology 
+
+of  microdosimetry. 
+
+The  original TET  [113]  assume s that  all DNA  SSBs  and  the  occurrence of a single  (direct)  DSB 
+
+in a cell nucleus  are non -lethal . In contrast,  two  (direct)  DSBs formed on the same or two different 
+
+chromosomes  are  always  assumed to be  lethal . The model distinguishes between one -track 
+
+events  (OTEs)  and two -track even ts  (TTEs) . An OTE  correspond s to the induction  of  two DSBs in 
+
+the nucleus  by  a single  track ; a TTE corresponds to the induction  of one DSB by a track.  TTEs 
+
+induced by two different tracks result in a  lethal event . OTEs and TTEs are  assumed to be 
+
+statistically independent events “in the terminology of nanodosimetry”  [113] .
+
+It is  further assum ed  that  the  number of  tracks interacting with a cell , the occurrence of  OTEs ,
+
+and  the occurrence  TTEs are  all  Poisson distributed . T he frequenc ies  of  occurrence  of  OTEs and 
+
+TTEs  are  assumed to be  proportional  to the absorbed dose with different proportionality factors ,
+
+𝑝  and  𝑞 , respectively.  Under these assumptions, a cell survives  if  it  experiences  no OTE and no 
+
+more than one TTE . Thus , the probability of survival , 𝑆 , as a function of absorbed dose , 𝐷 , is given 
+
+by Eq.  (28 ).
+
+𝑆 (𝐷 ) = (1 + 𝑞𝐷 )𝑒 −(𝑝 +𝑞 )𝐷  (28 )
+
+When  𝑞𝐷  ≪ 1, Eq.  (28 ) can be transformed into the expression  of the LQ model with  𝛼  = 𝑝  and 
+
+𝛽  = 𝑞 2/2 [113] . In the  asymptotic  limit of  𝑞𝐷  ≫ 1, the model  approaches a n exponential  dose 
+
+dependence  (linear in  the conventional  semi -logarithm ic plots) . The model was used to fit  a set 
+
+of  experimental survival data . The  quality of fit was  found to be comparable  to that of the (three -
+
+parameter) model of Hug and Kellerer  [117] , while the purely phenomenological LQ -model 
+
+generally  showed better performance than both  [113] .
+
+Ngcezu et al.  [118]  pointed out that the model assumptions of exactly two DSBs per OTE and 
+
+the interaction of exactly two TTEs to form a lethal lesion should have been phrased as at least 
+
+two DSBs per OTE and at least two TTEs. Assuming then a Poisson distribution for the nu mber of 
+
+tracks interacting with a cell and  equal  probabilities of all tracks to produce an OTE or a TTE, the 
+
+frequencies of OTEs and TTEs are Poisson distributed and the frequency distributions  are 
+
+statistically independent.  This also leads to Eq.  (28 ) but requires  fewer model assumptions. 
+
+## 4.2.2  Track event theory with repair 
+
+The second version  of the TET  also  accounted for  repair  by introducing a  third parameter , 𝑅 ,
+
+which  represent s the probability  of  repairing  two DSBs  produced  either  by an OTE or two TTE s.
+
+This  results in  a more complex dose dependence,  wherein  the factor  preceding  the exponential 
+
+is  modified such that the parameter  𝑞  is  replaced by a  second -order  polynomial  𝛱 2 in the 
+
+absorbed dose  [114] .
+
+𝑆 (𝐷 ) = (1 + 𝛱 2(𝐷 |𝑝 , 𝑞 , 𝑅 ) × 𝐷 )𝑒 −(𝑝 +𝑞 )𝐷  (29 )
+
+The coefficients of this polynomial depend  on the  parameters  𝑝 , 𝑞 , and  𝑅 .
+
+To reduce the number of free parameters to two  again , it was  argued  that the  ratio of the 
+
+parameters  𝑝  and  𝑞  should depend  only  on  the chromatin structure , so  that cells having the same 
+
+basic chromatin structure would have the same ratio , 𝜀  = 𝑝 /𝑞 , when irradiated  with  the same 
+
+radiation quality .
+
+The  second -version model was fitted to a large  set  of  radiobiological survival data comprising 
+
+42 different cell lines irradiated at comparable dose rates with either  60 Co,  137 Cs, or X -rays o f at 
+
+least 220  kV peak voltage to ensure comparability of radiation quality  across  all experiments. 
+
+Initially  fitting  all  model  parameters  𝑝  , 𝑞  and  𝑅  allowed deriving an estimate for  𝜀  . In a second 23 
+
+pass, this value of  𝜀  was kept fixed, and only  𝑞  and  𝑅  were allowed to vary.  With the second -
+
+version TET using only two free parameters (i.e. , keeping  𝜀  fixed), statistically significant fits were 
+
+obtained for 36 of the datasets, whereas with the conventional LQ model this was only the case 
+
+for 32 dataset s.
+
+In their analysis of the TET, Ngcezu et al.  [118]  noted  that  the model assumptions regarding 
+
+repair cover  only a fraction of the cases  possible . Since  the model considered  only the repair of a 
+
+pair of DSBs (produced by an OTE or two TTEs),  it  does not  address  how  cases  involving  more than 
+
+two lesions produced by a single track, more than two tracks producing one lesion each, or 
+
+combinations of OTEs and TTEs would be affected by repair.  Additionally, they  pointed out that 
+
+the derivation of Eq.  (29 ) seemed to  implicitly assume that lesions produced in the same cell from 
+
+an OTE and by two TTEs are repaired independently, i.e., as if they occurred in two different cells .
+
+The illustration of the model in  [114] , a ccording to Ngcezu et al.  [118] , suggested that four or more 
+
+DNA lesions in a cell would always be lethal ; however,  the consequences of more than two DNA 
+
+lesions  were  not explicitly addressed. Therefore,  Ngcezu et al.  [118]  proposed  that the  model 
+
+required an additional parameter to  distinguish between  always -fatal  and  potentially -fatal 
+
+events. They also suggested that  outcome  of  repair depends on the number of lesions induced ,
+
+not  on  how they were induced.  Considering  cells in which more than two DSBs are produced  and 
+
+assuming these to be always lethal  yields  a simpler model equation than Eq.  (29 ). This equation 
+
+has no mixed terms between OTEs and TTEs , but  it  requires  a fourth model paramete r [118] .
+
+## 4.2.3  Track event theory  and  nanodosimetry 
+
+Although  nanodosimetry was  mentioned in the first work on the TET  [113] , the relationship 
+
+between the  parameters of the  TET and nanodosimetry was  first  discussed in work  of  Schneider 
+
+et al.  [119] . They  proposed that  th e ratio  𝜀  = 𝑝 /𝑞  could  be  factorized into  two  part s: one 
+
+depending  only  on radiation quality and  the other one  depending  only  on chromatin organization .
+
+Th is  geometrical part , 𝜀 𝑔𝑒𝑜  , was  determined  by  considering voxelized  models of 
+
+tetranucleosomes  with  cubic voxels  with a side of  2 nm . Two different approaches  were explored 
+
+to determin e whether  voxels  wer e hit. One  approach  assum ed  uniformly distributed ionizations ,
+
+while the second  used  ray -tracing  simulations . In the latter  approach , t wo  tetranucleosomes 
+
+were placed  in  close  proximity  at  the center of  a sphere  with a diameter of  32  nm , and chords 
+
+through the sphere were determined by randomly choosing entrance and exit pos itions .
+
+Intersections  of a voxel  by a chord w ere  counted as  a DSB .
+
+To  determin e the part  𝜀 𝑖𝑜𝑛  , which  depend s on radiation quality , Grosswendt ’s  assumptions 
+
+[42,77,78]  were used : an ICS of  at least  two  in  a voxel of the  considered tetranucleosome  model 
+
+corresponds to a DSB and an ICS of  one  corresponds to an SSB . Using  the corresponding 
+
+probabilities , 𝐹 2 and  𝑃 1, t he parameter  𝜀 𝑖𝑜𝑛  is  determined  according to  Eq.  (30 ):
+
+𝜀 𝑖𝑜𝑛  = (𝐹 2
+
+𝑃 1
+
+> 2
+
+)
+
+> 2
+
+(30 )
+
+However , It  should  be noted  that this implies an implicit modification of the  model 
+
+assumptions . N ow a TTE is assumed to correspond to two SSBs induced in different voxels.  (In 
+
+the original TET, a TTE was the induction of one DSB in the nucleus.) Furthermore,  the lethal 
+
+combination of two TTEs  now  require s that  both tracks produce SSBs in the same voxels. 
+
+In later work  by Schneider et al.  [115] , a different connection between the TET and 
+
+nanodosimetry was discussed . They  modified  two  of the original model assumptions such that 24 
+
+an OTE is  now  equivalent to the induction of one DSB and a TTE  is  equivalent to an SSB.  The lethal 
+
+combination of two TTEs corresponds to the occurrence of SSBs in the same volume by different 
+
+tracks.  Using  Grosswendt ’s assumptions , the parameter  𝜀  is now determined by using Eq.  (31 ).
+
+𝜀 𝑖𝑜𝑛  = 𝑝 1 
+
+> 𝑒
+
+× 𝐹 2
+
+𝑓 2 
+
+> 𝑒
+
+× 𝑃 1 
+
+> 2
+
+(31 )
+
+Here,  𝑝 1 
+
+> 𝑒
+
+and  𝑓 2 
+
+> 𝑒
+
+represent  the  probability  of finding  one  or at least  two  electron s with in  the 
+
+sensitive volume . The frequency of electrons is  assumed to be Poisson distributed  again . The 
+
+nanodosimetric probabilities  𝑃 1 and  𝐹 2 are  conditional  probabilities  for one or at least two 
+
+ionizations in the target volume  by an electron hitting it , respectively .
+
+The v alues of  𝑝 1 
+
+> 𝑒
+
+and  𝑓 2 
+
+> 𝑒
+
+were determined for electrons  with energies of  100  keV , 500  keV , and 
+
+1000  keV  using simulations based on the NOREC code  [120]  in a voxelized geometry  with  cubic 
+
+voxels of 2  nm side.  The union of all voxels traversed by  (straight -line) steps of  primary or 
+
+secondary electrons  between  interactions  was defined as the track volume  𝑉 𝑇𝑟𝑎 . The  sum  of all 11 
+
+electron  steps  between interaction s was defined as the track length  𝑙 𝑇𝑟𝑎 . Three different  sensitive 
+
+biological targets were considered : a single DNA segment,  two adjacent  chromatin fibers , and 
+
+chromatin  loops . E ach  target is  characterized by a typical  dimension  𝑙 𝑆𝑒𝑛  (diameter or length). 
+
+The number  of sensitive targets affected by an electron track , 𝑛 𝑆𝑒𝑛 , was estimated as  𝑛 𝑆𝑒𝑛  =
+
+𝑙 𝑇𝑟𝑎 /𝑙 𝑆𝑒𝑛 . The number  of sensitive targets , 𝑛 𝑅𝑎𝑑 , in  the  irradiated volume , 𝑉 𝑅𝑎𝑑 , was estimated  as 
+
+𝑛 𝑅𝑎𝑑  = 𝑉 𝑅𝑎𝑑 /𝑉 𝑆𝑒𝑛 , where  𝑉 𝑆𝑒𝑛  denotes  the volume of the sensitive structure . I t appears that the 
+
+irradiated volume is assumed to be completely filled with sensitive structures . The  expect ed 
+
+number of  electron  tracks traversing  a sensitive  volume is estimated by the proportion of  sensitive 
+
+volumes that are traversed by a track. 
+
+## 4.2.4  RBE model  based on track event theory and nanodosimetry 
+
+Another  version  of the  connection between the  track event theory  (with out  repair)  and 
+
+nanodosimetr y was presented  by  Schneider  et al.  [116] . They considered t wo  relevant  target 
+
+volumes of different sizes . First , a basic interaction volume (BIV) in the form of a sphere  with a 
+
+diameter of  2 nm  represents  a DNA segment of  5 to  10 base pairs  and  constitutes  the target for 
+
+formation of DSBs . On the other  hand, a larger sensitive volume containing several BIVs  is  named 
+
+the  lethal interaction volume (LIV).  An  OTE is  defined as  the induction of two or more  DSBs  in  the 
+
+LIV  by a single track , while  a TTE  is  defined as two DSBs  (in  two different BIVs)  produced by two 
+
+tracks, each producing one DSB .
+
+The probability of  production of a DSB  in a BIV  is assumed to be  equal to the probability  𝐹 2 of 
+
+forming  an IC of two or  more . The formation of ICs in  different BIVs  with in the LIV  is  assumed  to 
+
+oc cur statistically independent ly . This  allows us  to  deriv e expressions for the  TET  parameter s 𝑝 
+
+and  𝑞  in terms of  𝐹 2. Solving Eq.  (28 ) for dose  𝐷  then provide s an expression for RBE  under the 
+
+assum ption  that the parameter  𝑞  is independent of radiation quality . The resulting RBE is a 
+
+function of  the ratio of the LIV  and  BIV  diameters  and the  probability  𝐹 2, which depends on particle 
+
+type and energy . The energy dependence of RBE was obtained  by performing  track structure 
+
+simulations for  photons, protons, helium  ions , and carbon ions . C ompar ing the results to 
+
+experimental data  allowed  to  identify  the best -fitting  LIV diameter. The result was that the optim al          
+
+> 11 In fact, Schneider et al. [115] give separate resu lts for the track length of primary and all secondary
+> electron s. Since this distinction is not mentioned with the introduction of the symbol for the track length, it
+> appears logical that the total track length is meant.
+
+25 
+
+LIV diameter depend s on  the  particle type , ranging from 35  nm for photons to  6 nm for carbon 
+
+ions  [116] .
+
+In their analysis of the TET , Ngcezu et al.  [118]  noted  that  the model parameters  𝑝  and  𝑞  in 
+
+Eq.  (28 ) have a dimension of reciprocal dose . In contrast, the  expressions for  𝑝  and  𝑞  derived  in 
+
+[116]  are probabilities, that is, dimensionless  quantities . Since  the parameters  are derived from 
+
+geometr y and the single -track quantity  F2, it is unclear how they relate to absorbed dose.  Ngcezu 
+
+et al. also noted that  the model considers  only one nanometric LIV , that is, a small sub -cellular 
+
+region, wh ile  the original TET model  assumed  OTEs and TTEs to occur  at  the chromosome level .
+
+The y estimated  that there are  at least in the order of 10 3 LIVs in a cell  and showed that the resulting 
+
+modifications to the theory presented in  [116]  results  in  a purely exponential dose dependence 
+
+[118] . However , this  objection is only valid if a cell contains more than one LIV. 
+
+## 5 Fluence -based approaches 
+
+## 5.1  The cluster -dose concept of Faddegon et al. 
+
+The concept of cluster dose was introduced  by  Faddegon et al.  [36]  and builds on  the concept 
+
+of ionization detail . The latter is  a generaliz ation of  nanodosimetric quantities  that were 
+
+introduced by  Ramos -Méndez et al.  [52] , which  were  proposed  for use in treatment planning for 
+
+hadron therapy  [121] . In the original work  on the cluster dose concept  and  follow -up  articles  [122 –
+
+124] , the computational realization was presented as part of the concept.  For clarity , the 
+
+explanation of the concept and its  realization are treated separately  below .
+
+Essentially , cluster dose is defined as the expectation of the weighted sum of ionization 
+
+clusters per mass.  One possible weighting scheme is to assign a weight of unity to  ionization 
+
+clusters  that  contain at least a minimum number of ionizations and a weight of zero  to  cluster s
+
+with fewer ionizations than  this minimum value.  This special case  has been  employed in different 
+
+studies  [122,123,125 –127] , albeit with different  minimum  values,  but  the concept also allows for 
+
+cases where ionization clusters of different complexity have different weights , such as  to account 
+
+for their varying relevance in  inducing biological damage. 
+
+Similar to  absorbed dose , which under conditions of charged particle equilibrium can be 
+
+expressed  as the integral of  the  fluence of charged particles , weighted by the stopping power 
+
+(unrestricted linear energy transfer) , over energy and particle types, cluster dose  𝑔 𝑤  can be 
+
+expressed  by  Eq.  (32 ).
+
+𝑔 𝑤  = 1
+
+𝜌  ∑ ∫ 𝛷 𝑝 ,𝐸 (𝐸 ) ∑ 𝑤 𝜈 
+
+𝑑 𝑁 𝜈 
+
+𝑑𝑥  (𝐸 , 𝑝 )
+
+> 𝜈
+
+𝑑𝐸 
+
+> 𝑝
+
+(32 )
+
+Herein,  𝛷 𝑝 ,𝐸  (𝐸 ) is the spectral fluence of particle type  p (number per area and energy interval), 
+
+𝜈  is the ionization cluster size,  𝑤 𝜈  is the weight associated with an ionization cluster of size  𝜈 , and 
+
+𝑑 𝑁 𝜈 /𝑑𝑥  is the expected number of ionizations produced per pathlength by a particle of type  𝑝  and 
+
+energy  𝐸 . Note  that the term particle type includes the  state of charge , so that  atoms and their 
+
+ions as well as  ions of different charge are considered as distinct particles. 
+
+The weighting factors  𝑤 𝜈  have values between 0 and 1.  Therefore, Eq.  (32 ) is a generic definition 
+
+of a category of quantities  that  depend  not only  on  the choice of weighting factors but also on the 
+
+choice of the considered target volume. The target volume considered in the works of Faddegon 
+
+et al.  [122,123,126]  was a cylinder  with a diameter of 2.3 nm  and  a height of 3.4 nm.  Thomas et al. 
+
+[125]  used spheres of the same volume as this cylinder. Schwarze et al.  [127]  used the approach 26 
+
+of Braunroth et al.  [57]  with a central cylinder and cylinder shell segments of the same volume as 
+
+this cylinder. 
+
+Analogous to absorbed dose, the definition of cluster dose in  Eq.  (32 ) is for a point quantity .
+
+However , for practical purposes , averages over voxels  are  considered.  Additionally , the particle 
+
+fluence is  typically  obtained by simulations (or measurements) as  an  average fluence in energy 
+
+intervals. Therefore, the voxel -average ionization cluster dose  can be expressed  by  Eq.  (33 ).
+
+𝑔 ̅𝑤 (𝑉 𝑥 ) = 1
+
+𝑚  ∑ ∑ ∫ 𝛷 ̅𝑝 ,𝐸 (𝐸 𝑖 )∆𝐸 𝑖 𝑑𝑉  × ∑ 𝑤 𝜈 
+
+𝑑 𝑁 ̅𝜈 
+
+𝑑𝑥  (𝐸 𝑖 , 𝑝 )
+
+> 𝜈 𝑉 𝑥 𝑖 𝑝
+
+(33 )
+
+Here,  𝑉 𝑥  denotes the  volume of the  voxel,  m denotes its mass,  𝐸 𝑖  is the center of  the  ith  energy bin .
+
+The bar superscript on the left -hand side of the equation  denotes  the voxel average, while on the 
+
+right -hand side it denotes the energy bin average. The volume integral of the spectral fluence 
+
+multiplied  by  the energy bin w idth  is  equal  to  the expected total  path length  𝑡 𝑝 (𝐸 𝑖 ) of particles of 
+
+type  p with energies  with in the corresponding energy interval in the voxel. This essentially 
+
+transforms Eq.  (33 ) into the expressions used by Faddegon et al.  [36] , except for the explicit 
+
+representation of cluster weighting used  in  Eq.  (33 ).
+
+The production rate of ionization clusters along path segments of protons and carbon ions was 
+
+first  determined  by Alexander et al.  [66] . They  also studied the synergistic effects of several ions 
+
+within the same voxel  [74] . Ramos -Méndez et al.  created  a comprehensive database for carbon 
+
+ions and the ir  most abundant nuclear fragments  [52] . Braunroth et al.  [57 –60]  developed an 
+
+approach to determine the radial dependence in cylinder coordinates around proton tracks and 
+
+determined an integral quantity named  the  effective cross -section of the track for cluster 
+
+formation  [61] . The ratio of this quantity to the target volume corresponds to the number of 
+
+clusters per pathlength  [55] .
+
+In practical applications, particle fluence in voxels is obtained from condensed history 
+
+simulation s of particle transport  that  consider the average material composition of voxels  with in 
+
+a given  geometry.  However, s ince track structure codes generally only allow simulations in water 
+
+(or a limited combination of water and DNA constituents, as in Geant4 -DNA), the determination 
+
+of the number of clusters per pathlength generally relates to a different material than that  in a 
+
+voxel. Therefore,  Schwarze et al.  [128]  proposed  a density and material scaling approach for the 
+
+quantities  𝑑 𝑁 ̅𝜈  
+
+> 𝑑𝑥
+
+(𝐸 𝑖 , 𝑝 ) and used  it to  determin e cluster dose in carbon ion therapy  [127] .
+
+It is important to emphasize that , although the conversion factors  𝑑 𝑁 ̅𝜈  
+
+> 𝑑𝑥
+
+(𝐸 𝑖 , 𝑝 ) were determined 
+
+by simulations using  randomly distributed  target cylinders in a larger cylinder of dimensions 
+
+corresponding to a chromatin fiber  [52] , the quantity determined is the number of ionization 
+
+clusters per  particle  pathlength  [36] . Therefore, even though the corresponding figures in the 
+
+articles may suggest that spatial filtering to DNA regions was applied, this is not the case .
+
+Therefore , the quantity cluster dose is defined in full analogy to  the  absorbed dose  as described 
+
+above . Thus, scaling of the  number of  clusters produced per pathlength in different materials ,
+
+analogous  to the one introduced to nanodosimetry by Grosswendt  [24] , seems appropriate .
+
+Otherwise the cluster dose would be independent of the material in the voxel  [128] .
+
+Ortiz et al.  [126]  investigated  the  degree of association between  the cl uster dose concept and 
+
+cell survival  considering cluster dose from  ICs of a given minimum number of ionizations  and 
+
+three datasets  from cell  survival  studies.  The underlying nanodosimetric database  was 
+
+constructed from simulations using cylindrical targets  with diameter s of 2.3  nm  and  height s of 27 
+
+3.4  nm  that were  closely packed in cubes of 100  nm side to which per iodic boundary conditions 
+
+were applied for electron tracks  [124] . An optimized energy binning  was  used to  produce  the 
+
+database , ensur ing  that the  relative  variation of the  parameters  𝐹 𝑘  between adjacent  energy 
+
+points  did not exceed  5 %. 
+
+Fig.  9 shows survival data of human kidney cells under heavy ion irradiation under aerobic (top 
+
+row) and hypoxic conditions  (bottom row) . The data were taken from  [129] , and the reported dose 
+
+values were converted  to cluster doses  for different minimum ICS  for each ion type and energy. 
+
+The middle column shows the minimum ICS for which the data for the different ions and the 
+
+corresponding fit curves agree best. The left and right panels show how the picture changes when 
+
+the minimum  ICS  is 1 smaller or larger, respectively. For the  aerobic cell  data shown in the top 
+
+row, the best agreement occurs for a minimum ICS of 5. In contrast,  the best agreement  for the 
+
+hypoxic cell  data in the bottom row  occurs  for a minimum ICS of 7.  
+
+> Fig. 9[129] bottom 12
+
+The degree  to which cell survival is associated  with  cluster dose was assessed  in  [126]  using 
+
+three different statistical metrics , including  the  associated uncertainties . The first  metric  was a 
+
+sliding window approach , which essentially  averaged  survival data and fit values  across  dose 
+
+intervals . The second  metric  was the  mean ratio of absolute  fi t error to the value of the  fit curve at 
+
+each dose. The third  method  was based on  a Bayesian information criterion  from pa ttern 
+
+recognition using neural networks based on the likelihood  concept.  All  metrics  were determined 
+
+using  the  combined  dataset  of all ion types  employed  to  irradiat e the cells , which was fitted to  an 
+
+LQ -model of cell survival as a function of cluster dose . Additionally, the metrics were also 
+
+evaluated separately for  each  ion type.  The variation of the se  three  metrics  with the  minimum ICS       
+
+> 12 Fig. 9reproduced under the CC BY 4.0 license (https://creativecommons.org/licenses/by/4.0/) from
+> [126] ,merged into a single figure ,adding the labels (a) to (f) . Copyright Ortiz et al. 2025.
+
+28 
+
+used for calculation of the cluster dose  can be seen in  Supplementary Fig.  5. T he rows correspond 
+
+to the different metrics , and the columns  correspond  to  the  datasets o f different cell types and 
+
+oxygenation state s. The minimum , indicating  the  best association , is c onsistent ly found  across 
+
+all metrics  at a cluster dose with ICs of  at least  5 for aerobic cells  and at a cluster dose with ICs 
+
+of  at least  7 for hypoxic cells  (Supplementary Fig.  5). 
+
+In addition,  𝜒 2 values  were determined  for fits to the LQ -model  for the combined dataset of all 
+
+ion types , as well as  for separate fits  to the data of each ion type  (shown as  lines in  Fig.  9).  Fig.  10 
+
+shows t he difference , Δ𝜒 2, between the LQ -fit  to the combined datasets and the sum of the  𝜒 2
+
+values  for the separate fits per ion species . This figure  confirms  the visual impression from  Fig.  9
+
+that , for aerobic cells , the  smallest  Δ𝜒 2 indicating the  best association  for all ion types  is obtained 
+
+with a  cluster dose corresponding to a minimum ICS of 5 , even when different  cell types are 
+
+considered. F or hypoxic  kidney cells and heavy ion irradiation,  Fig.  10  shows  the  smallest  Δ𝜒 2 at 
+
+a minimum ICS of 7.                       
+
+> Fig. 10 :Variation of the difference in the 𝜒 2value between a fit of the data from all ion types to the LQ model
+> and the sum of the 𝜒 2values from fit s per ion type .The x-axis of the plots is the minimum number of ions in
+> an IC used in the calculation of the cluster dose . The left and middle are results for survival of human kidney
+> cells under heavy ion irradiation under aerobic and hypoxic conditions, respectively [129] .The right panel
+> is for data of aerobic A549 cells irradiated with protons, helium, carbon and oxygen ions [130] .13
+
+## 5.2  The logistic nanodosimetry model of Dai et al. 
+
+Dai et al.  [53]  developed the logistic nanodosimetry mode l building on the database of Ramos -
+
+Méndez et al.  [52] . Th is  model assumes that the number of lethal lesions produced by direct 
+
+radiation  effects  is proportional to the  number of targets with  an  ICS of  two  or more . For a  cell 
+
+nucleus  in which  𝑁  ionizations  occur , this number is  estimated as  𝐹 2 
+
+> 𝑐
+
+× 𝑁 /𝑀 1 
+
+> 𝑐
+
+, where both  𝑀 1
+
+> 𝑐
+
+and  𝐹 2 
+
+> 𝑐
+
+are defined as fluence averages  defined  according to  Eq.  (5). (Note that Dai et al.  [53]  used 
+
+the notation  𝑃 (𝜈 ) , 𝑀 1 and  𝐹 2 for conditional probabilities and moments. ) The proportionality 
+
+factor , 𝑝 𝐿  , is the probability  that  a true IC  (ICS at least two)  will  re sult in a lethal lesion . It  is 
+
+assumed to  be a function of the conditional mean cluster size  𝑀 1
+
+> 𝑐 2
+
+, calculated  using  Eq.  (2), and 
+
+the conditional probabilities  𝑃 𝜈 
+
+> 𝑐 2
+
+, according to Eq.  (4). The dependence is assumed to be a logistic 
+
+function  with three free parameters  (𝑎 1, 𝑎 2, 𝑎 3) as shown in Eq.  (34 ). The parameters  𝑎 1, 𝑎 2, 𝑎 3
+
+appearing in Eq.  (34 ) are related to th e parameters  𝑘 , 𝑚 0, and  𝑟  used by Dai et al.  by the relations 
+
+𝑎 1 = 1/𝑘 , 𝑎 2 = 𝑒 𝑟 𝑚 0 /𝑘 , 𝑎 3 = 𝑟 .   
+
+> 13 Fig. 10 reproduced under the CC BY 4.0 license (https://creativecommons.org/licenses/by/4.0/) from
+> [126] , copyright Ortiz et al. 2024.
+
+29 
+
+𝑝 𝐿 (𝑀 1
+
+> 𝑐 2
+
+) = (𝑎 1 + 𝑎 2𝑒 −𝑎 3𝑀 1
+
+> 𝑐 2
+
+)−1 (34 )
+
+Additionally , it is assumed that  all ICs  (including those of ICS of 1)  that do not result in a lethal 
+
+lesion  constitute sub -lethal lesions  and that there is a constant probability of any  pair of these 
+
+sub -lethal  lesions  combin ing  to  produce  a lethal lesion.  This probability , 𝑝 𝑠𝑙 , is a fourth model 
+
+parameter  and  is twice the parameter  𝑃 𝑠 →𝑙  used by Dai et al. , who omitted the  necessary  division 
+
+by  two  to obtain the number of pairs  in their Eq.  (14) .
+
+The  model  also  assum es  that the number of ionizations in a cell nucleus is Poisson distributed 
+
+and can be related to the  specific energy using a constant mean energy  per ion ization , 𝑊 . Using 
+
+the se  model assumptions,  the parameters  𝛼  and  𝛽  of the LQ model can be  expressed  as given in 
+
+Eqs.  (35 ) and  (36 ):
+
+𝛼  = [𝐹 2
+
+> 𝑐
+
+𝑝 𝐿 (𝑀 1
+
+> 𝑐 2
+
+) − 𝑝 𝑠𝑙 
+
+2 (1 − 𝐹 2
+
+> 𝑐
+
+𝑝 𝐿 (𝑀 1
+
+> 𝑐 2
+
+)) + 𝑝 𝑠𝑙 
+
+2𝑀 1 
+
+> 𝑐
+
+(1 − 𝐹 2
+
+> 𝑐
+
+𝑝 𝐿 (𝑀 1
+
+> 𝑐 2
+
+))2
+
+] × 𝑑 𝑐 −1 (35 )
+
+𝛽  = 𝑝 𝑆𝐿 
+
+2 (1 − 𝐹 2
+
+> 𝑐
+
+𝑝 𝐿 (𝑀 1
+
+> 𝑐 2
+
+))2
+
+× 𝑑 𝑐 −2 (36 )
+
+The quantity  𝑑 𝑐  is  the average contribution to  the  absorbed dose  from the energy imparted to a 
+
+nanometric  target volume  that  receiv es  at least one ionization . It is  given by Eq.  (37 ), where  𝑊 𝑖  is 
+
+the mean energy imparted per ionization , 𝑀 1 
+
+> 𝑐
+
+is the  conditional  mean ICS 14 , and  𝜌  and  𝑉  are the 
+
+mass density and  volume of the cell nucleus , respectively .
+
+𝑑 𝑐  = 𝑊 𝑖 𝑀 1
+
+> 𝑐
+
+𝜌𝑉  (37 )
+
+A later  development  of the logistic  nanodosimetry model  [54]  used  the approach of Garty et al. 
+
+[93]  for connecting ionizations and DNA strand breaks  (Eqs.  (12 ) and  (13 )), employing  the value 
+
+𝑝 𝑠  = 0.15  from  [97]  and an upper limit  of 10  for the summation in  Eq.  (12 ), as in the work of 
+
+Casiraghi et al.  [67] . Addition ally , it is assumed that a DSB  doe s not nece ssarily lead to a lethal 
+
+event. 
+
+The probability  𝑝 ̂𝐿  of a DSB result ing  in a lethal lesion is assumed to be a  function of the mean 
+
+ICS , 𝑀 1
+
+> 𝑐
+
+, calculated with the  conditional probabilities of Eq.  (3). This function is  given by Eq.  (34 )
+
+after substitution of  𝑝 ̂𝐿  for  𝑝 𝐿  and  𝑀 1 
+
+> 𝑐
+
+for  𝑀 2
+
+> 𝑐
+
+. The same substitutions  also apply to the formulas 
+
+for  𝛼  and  𝛽  (Eq s. (35 ) and  (36 )). However , Yang et al.  [54]  only keep the first term in the brackets 
+
+of  Eq.  (35 ), which corresponds to DNA lesions  due  to direct effects only.  The reason for this 
+
+simplification is  twofold. First,  unlike  the work of Dai et al.  [53] , it is not assumed that the number 
+
+of ionizations follows a Poisson distribution . Second , the number of indirect lesions  (formed by 
+
+combinations of two sub -lethal lesions) is  assumed  to be  proportional to the square of the 
+
+number of sublethal lesions ( see  Eq.  (11) in  [54] ).  This second assumption  implies that a sub -
+
+lethal lesion  could  “interact ” with itself  to form a lethal lesion , which appears paradoxical. Th is 
+
+inconsistency must be considered as a caveat of the modified logistic nanodosimetric model. 
+
+## 5.3  The model of radiation action based on nanodosimetry of Schneider et al. 
+
+The model of radiation action based on  nanodosimetry , as  proposed by Schneider et al.  [69] ,
+
+was essentially  a reformulation of the TET with some developments. The fundamental model 
+
+equation for the survival rate  is given by  Eq.  (28 ), wh ere  the terms  𝑞𝐷  and  𝑝𝐷  are  replaced  by  the        
+
+> 14 Note that Dai et al. [53] used the notation 𝑃 (𝜈 ),𝑀 1and 𝐹 2for conditional probabilities and moments.
+
+30 
+
+mean numbers  of unrepaired 15  sublethal lesions (SLs) and clustered lesions (CLs) , denoted by 
+
+𝑛 ̅𝑆𝐿  and  𝑛 ̅ 𝐶𝐿 , respectively. A lesion  wa s assumed to be a DNA DSB and  assumed to be  equivalent 
+
+to an IC of  two  or more in a spherical BIV  with a diameter  of 2.5  nm. A CL is assumed to  be two or 
+
+more DSBs produced by a single track in a sphere  with a diameter of  between 3  nm and 10  nm ,
+
+called the cluster -lesion volume (CLV). An SL is one DSB in a CLV. A pair of SLs formed by one or 
+
+more tracks  in different CLVs  is called  a distant lesion, where the two SLs potentially interact. 
+
+The mean number  of unrepaired CLs , 𝑛 ̅ 𝐶𝐿 , is related to particle fluence  𝛷  by Eq.  (38 ).
+
+𝑛 ̅ 𝐶𝐿  = 𝛷  × 𝜎 ∗ × 𝑝 𝐶𝐿  (38 )
+
+The free  parameter  𝜎 ∗ = 𝜎  × (1 − 𝑅 𝐶𝐿 ) of the model  is  called “intersection -cross -section”  and is 
+
+defined such that  𝛷  × 𝜎  is the probability of a particle track to intersect any of the CLVs in a cell 
+
+nucleus 16 . The term  𝑅 𝐶𝐿  is the probability of repair ing  a CL 15 , and  𝑝 𝐶𝐿  is the probability of a track 
+
+passing  through  the CLV to produce  a CL. The mean number  of SLs , 𝑛 ̅𝑆𝐿 , is assumed to be given 
+
+by  Eq.  (39 ).
+
+𝑛 ̅𝑆𝐿  = 𝛷  × 𝜎 ∗ × 1
+
+8 × (1 − 𝑅 𝑆𝐿 ) × 𝑝 𝑆𝐿  (39 )
+
+The factor 1/8 was  empirically  determined by comparin g the ratio of persistent simple and 
+
+complex DSBs  in  radiobiological data  (Appendix A of  [69] ), assuming two DSBs per CL.  𝑅 𝑆𝐿  is  the 
+
+dose -rate dependent (fast) repair probability of SLs  and  is assumed to converge to zero  at  high 
+
+dose rate s.
+
+The relation ship  between particle fluence , 𝛷 , and dose , 𝐷 , is given by Eq.  (40 ), w here  𝑑 𝐵𝐼𝑉  is 
+
+the diameter of the BIV,  𝜌  is the mass density,  𝑀 1 is the mean ICS and  𝑊 𝑖  is the mean energy 
+
+imparted per ionization .
+
+𝛷  = 2
+
+3 × 𝑑 𝐵𝐼𝑉  × 𝐷𝜌 
+
+𝑀 1𝑊 𝑖 
+
+(40 )
+
+The probabilities of CLs and SLs were related to nanodosimetry  under the  assum ption  that the 
+
+probabilities of BIVs receiv ing  an ICS of  two  or more are statistically independent , and that the 
+
+mean number  of BIVs traversed by a track , 𝑛 , is  equal to  the ratio of the mean chord length of the 
+
+CLV  to  the diameter of the BIV.  When  the diameter of the CLV is chosen s o that  𝑛  is  an integer, 
+
+these two probabilities can be calculated from the binomial distribution,  yielding  Eqs.  (41 ) and 
+
+(42 ).
+
+𝑝 𝐶𝐿  = 1 − (1 − 𝐹 2)𝑛  − 𝑝 𝑆𝐿  (41 )
+
+𝑝 𝑆𝐿  = 𝑛 𝐹 2(1 − 𝐹 2)𝑛 −1 (42 )
+
+Since low -energy photons were considered as  the  primary radiation in  [69] , the  track -averages 
+
+of the nanodosimetric probabilities  𝐹 2 were used in Eqs.  (41 ) and  (42 ). These averages were 
+
+determined  in  a two -step procedure.  First , the energy dependence of  𝐹 2 was determined for 
+
+electrons with initial energies between 10  eV and 1  MeV. In the second step,  the  spectral fluence 
+
+of electrons was determined from track -length distributions obtained by transport simulations of 
+
+initially monoenergetic electrons with energies equal to the mean energy of secondary electrons                    
+
+> 15 This is not stated explicitly in [69] . However, including ”cell specific parameters … [such as] phase in cell
+> cycle, radioresistance, repopulation and repair capability” in parameter 𝜎 ∗(written as 𝜎 in [69] ) suggests
+> that this was intended . We believe the model is clearer when cell -specific factors are explicitly included in
+> the repair probability 𝑅 𝐶𝐿 .
+> 16 Schneider et al. write “any BIV in the cell nucleus” [69] , but this appears to be a typo given that CLs and
+> SLs refer to the CLV.
+
+31 
+
+produced by the interaction of monoenergetic photons with energies between 280  eV and 8  keV 
+
+or by 250  kV x -rays or  137 Cs or  60 Co gamma radiation. 
+
+The doses for survival levels of 0.1 and 0.9 were determined  by inver ting  the model  function ,
+
+and RBE predictions were obtained using  60 Co as the reference radiation.  A c omparison of the 
+
+prediction for  CLV  diameters  corresponding  to  𝑛  = 1, … ,4 BIV diameters per mean chord length 
+
+with experimental data showed best agreement when  𝑛  was 2. 
+
+The model with  𝑛  = 2 and  𝑅 𝑆𝐿  = 0 was fitted to six radiobiological datasets  of  cell survival as a 
+
+function of dose . This  yield ed  values  for  the parameter  𝜎 ∗ that  correspon d to circles  with 
+
+diameter s between 5  μm and 8  μm , depending on the cell type and phase  of  the  cell cycle. 
+
+In their analysis of the TET and derived models, Ngcezu et al.  [118]  pointed out that Eqs.  (41 )
+
+and  (42 ) result ed  from the  model assumptions of statistical independence of IC formation in 
+
+neighboring targets . However, this assumption  contradict s the  conceptual  definition of  tracks  as 
+
+collections of statistically corre la ted energy transfer points  [131] . For proton tracks with 
+
+projectile energies between 1  MeV and 100  MeV,  Ngcezu et al.  showed that only about 25  % of 
+
+the ICs in spherical BIVs  with a diameter  of 3  nm are produced by primary particles traversing the 
+
+BIV.  Addition ally , they demonstrated  that for  a proton  fluence corresponding to a dose of 2  Gy, 
+
+the probability of an IC in a BIV is in the order of magnitude 10 -6-10 -5, making  the probability  𝑝 𝐶𝐿 
+
+according to Eq.  (41 ) negligibly small.                
+
+> Fig. 11 :Multi -event (ME) distributions of cluster volumes (diameter of 12 nm) inside a spherical region with
+> aradius of 6 μm that receive a single DSB (squares) or two or more DSBs (circles) from protons of (a) 3 MeV
+> and (b) 50 MeV energy. The data applies to a particle fluence corresponding to an absorbed dose of 2 Gy
+> and a constant probability of 0.01 that an IC is converted to a DSB. The solid lines are Poisson distributions
+> with the same expectation as the data shown by symbols. 17
+
+Ngcezu et al.  [118]  suggested that a model in the spirit of the TET  must  consider IC formation 
+
+in tracks on the micrometer scale. Th ey  demonstrated  this  by first scoring ICs in the polyhedral 
+
+unit cells of a  face -centered cubic  Bravais lattice  with  the same volume as the BIV . T hen  they 
+
+scored  clusters of BIVs with ICs in unit cells with the volume of the CV. The resulting frequency    
+
+> 17 Fig. 11 reproduced under the CC BY 4.0 license (https://creativecommons.org/licenses/by/4.0/) from
+> [118] , Copyright Ngcezu and Rabus (2021).
+
+32 
+
+distributions of CVs containing a single BIV with IC S of at least two  and multiple BIVs with IC S of 
+
+at least two , respectively, were not Poisson distributed. The estimated number of CVs with a 
+
+single IC or multiple ICs at a fluence corresponding to a dose of 2  Gy in a cell nucleus of 6  μm 
+
+diameter was estimated to be thousands of times  greater  than the number of DSBs typically 
+
+observed  in radiobiological experiments. 
+
+This discrepancy  can be  explained by the fact that only a small proportion of the matter in a cell 
+
+nucleus is DNA. Assuming a uniform distribution of true DNA targets in the cell nucleus covering 
+
+1 % of the nucleus volume and using this value for the success probability of a bin omial 
+
+distribution, the frequency distribution of single and multiple DSBs in spherical cluster volumes 
+
+was obtained. Examples are shown in  Fig.  11 (a) and (b) for a dose of 2  Gy produced by  proton 
+
+irradiation  at  an  energy  of 3  MeV and 50  MeV, respectively. The results indicate that  Poisson 
+
+distribution can be  applicable  to  less densely ionizing radiation but  not to  more densely ionizing 
+
+radiation. 
+
+## 6 Discussion  and conclusions 
+
+## 6.1  Commonalities among the models 
+
+The models presented in the previous three sections  are based on different approaches.  From 
+
+an abstract mathematical perspective,  they  all implicit ly  assum e that radi ation effects can be 
+
+described by  one or more  nanodosimetric  parameters , 𝑞 𝑛  , which can be  obtained from ICS 
+
+distributions  by  applying  the  corresponding  weighting  factors , 𝑤 𝑛 ,𝜈 , to the ICS probabilities  𝑃 𝜈 
+
+(Eq.  (43 )) or  weighting factors  𝑤 𝑛 ,𝜈  
+
+> 𝑐
+
+to the conditional ICS probabilities  𝑃 𝜈 
+
+> 𝑐
+
+.
+
+𝑞 𝑛 (𝑄 , 𝜃 𝑠 , 𝜃 𝑏 ) = ∑ 𝑤 𝑛 ,𝜈 (𝜃 𝑠 , 𝜃 𝑏 , 𝜃 𝑚 )𝑃 𝜈 (𝑄 , 𝜃 𝑠 , 𝜃 𝑏 )
+
+> ∞
+> 𝜈 =1
+
+(43 )
+
+Some approaches  use  instead the  conceptually  equivalent  method  of applying  weighting factors 
+
+𝑊 𝑛 ,𝑘  to the complementary  cumulative  ICS probabilities  𝐹 𝑘  (Eq.  (44 )) or weighting factors  𝑊 𝑛 ,𝑘  
+
+> 𝑐
+
+to 
+
+the conditional complementary cumulative ICS probabilities  𝐹 𝑘 
+
+> 𝑐
+
+.
+
+𝑞 𝑛 (𝑄 , 𝜃 𝑠 , 𝜃 𝑏 ) = ∑ 𝑊 𝑛 ,𝑘 (𝜃 𝑠 , 𝜃 𝑏 , 𝜃 𝑚 )𝐹 𝑘 (𝑄 , 𝜃 𝑠 , 𝜃 𝑏 )
+
+> ∞
+> 𝑘 =1
+
+(44 )
+
+The parameters  𝑞 𝑛  depend on the radiation quality  𝑄 , a set of parameters  𝜃 𝑠  characterizing the 
+
+target volume (size) , and a set of parameters  𝜃 𝑏  characterizing the irradiation geometry . The ICS 
+
+probabilities  𝑃 𝜈  and  𝐹 𝑘  also depend  on these three parameters, while the weighting factors  𝑤 𝑛 ,𝜈 
+
+and  𝑊 𝑛 ,𝑘  are assumed to be independent of the radiation quality  but may depend on  the  model -
+
+specific parameters .
+
+Examples of choices of such weighting factors are listed in  Table  1. For instance , in the  model 
+
+of Grosswendt  [42,77,78]  the  weighting factors related to DSB formation are  simply  𝑤 𝑛 ,𝜈  = 0 for 
+
+𝜈  = 1 and  𝑤 𝑛 ,𝜈  = 1 for  𝜈  ≥ 2. In the  approach of Mietelska et al.  [46] , the weighting factors  𝑤 𝑛 ,𝜈 
+
+are cumulative probabilities of  a binomial distribution with success parameter  𝑝 𝑠  (Eq.  (22 )). This 
+
+success parameter  corresponds to  the model -specific parameter  𝜃 𝑚 .
+
+Although  the parameters  𝑞 𝑛  are weighted linear combinations of nanodosimetric probabilities, 
+
+the actual model is  often  non -linear in these parameters , for instance, in Eq.  (18 ).33 
+
+Another  categorization  of the  presented  models is that some  are mechanistic  while others are 
+
+mechanism -agnostic. The mechanistic models  often come with strong  heuristic  hypotheses 
+
+such as the  assumption  made in  [42,69,77,78,115,116,119]  that an IC of size  two  or  greater 
+
+corresponds to  a DSB . This assumption implies that  the model  only  consider s direct radiation 
+
+damage  and  considers  DNA damage due to reaction of radicals formed by water radiolysis  to be 
+
+negligible  or irrelevant .
+
+## 6.2  Mechanistic models 
+
+As demonstrated  in  Fig.  3, mechanistic models  make  predictions that reproduce experimental 
+
+data, even  when  they contain model assumptions such as that the probabilities of an IC of two or 
+
+larger and of formation of a DSB  being equal. These assumption  have been argued to lack 
+
+plausibility  [89,94,118] . For some  models , the agreement between  the  model  prediction  and 
+
+radiobiological data is related to adjust ing  one or more free parameters external to 
+
+nanodosimetry. In the work of Garty et al.  [92,93] , e.g., this  free parameter is  the conversion 
+
+Table  1: Examples  of weighting factors used in different models for parameters determined according to 
+
+Eqs.  (43 ) or  (44 ). (𝑝 𝑆𝑆𝐵  and  𝑝 𝐷𝑆𝐵  are predicted probability of induction of a single and a double strand break, 
+
+respectively;  𝑝 𝑐𝐷𝑆𝐵  and  𝑝 𝑠𝐷𝑆𝐵  are predicted probability of  a complex  and simple  double strand break, 
+
+respectively;  𝜎 𝛼  and  𝜎 5%  are inactivation cross sections  at low dose and at 5  % survival rate , respectively ;
+
+𝑔 𝑤  is cluster dose,  𝑞 1 and  𝑞 2 are radiation quality factors,  𝐷 3−10  
+
+> 𝑄
+
+is the nanodosimetry -weighted dose, and 
+
+𝛿 𝑖 ,𝑗  is the Kronecker symbol, i.e., unity if the two indices agree and else zero.) 
+
+author(s)  quantity  weighting factors in Eqs.  (43 ) or  (44 ) conditions 
+
+Casiraghi  [61]  𝑝 𝑠𝐷𝑆𝐵  𝑊 1,𝑘  = 𝛿 𝑘 ,2 − 𝛿 𝑘 ,4 -
+
+𝑝 𝑐𝐷𝑆𝐵  𝑊 2,𝑘  = 𝛿 𝑘 ,4 − 𝛿 𝑘 ,11  -
+
+Conte  [93]  ‡ 𝜎 𝛼  𝑊 1,𝑘  = 𝑐 1𝛿 𝑘 ,2 + 𝑐 2𝛿 𝑘 ,3 aerobic 
+
+𝑊 1,𝑘  = 𝑐 3𝛿 𝑘 ,3 + 𝑐 4𝛿 𝑘 ,4 hypoxic 
+
+𝜎 5%  𝑊 2,𝑘  = 𝑐 5𝛿 𝑘 ,2 + 𝑐 6𝛿 𝑘 ,3 aerobic 
+
+𝑊 2,𝑘  = 𝛿 𝑘 ,3 hypoxic 
+
+Grosswendt  [38]  𝑝 𝑆𝑆𝐵  𝑤 1,𝜈  = 𝛿 𝜈 ,1 -
+
+𝑝 𝐷𝑆𝐵  𝑤 2,𝜈  = 1 − 𝛿 𝜈 ,1 − 𝛿 𝜈 ,2 -
+
+Garty  [85]  𝑝 𝐷𝑆𝐵  𝑤 1,𝜈  = 1 − 2 (1 − 𝑝 𝑠 
+
+2 )
+
+> 𝜈
+
++ (1 − 𝑝 𝑠 )𝜈  -
+
+𝑝 𝑐𝐷𝑆𝐵  𝑤 2,𝜈  = 𝑤 1,𝜈  − (𝜈 
+
+2) 𝑝 𝑠 2
+
+2 (1 − 𝑝 𝑠 )𝜈 −2 -
+
+Mietelska  [42]  𝜎 5%  𝑤 1,𝜈  = 1 − (1 − 𝑝 𝑠 )𝜈  − 𝑝 𝑠 𝜈 (1 − 𝑝 𝑠 )𝜈 −1 𝜈  ≥ 2
+
+Ortiz  [116]  𝑔 𝑤  𝑊 1,𝑘  = 𝛿 𝑘 ,5 aerobic 
+
+𝑊 1,𝑘  = 𝛿 𝑘 ,7 hypoxic 
+
+Schneider  [63]  𝑝 𝐷𝑆𝐵  𝑊 2,𝑘  = 𝛿 𝑘 ,2 -
+
+Schulte  [32]  𝑞 1 𝑊 1,𝑘  = 𝛿 𝑘 ,2 − 𝛿 𝑘 ,6 -
+
+𝑞 2 𝑊 2,𝑘  = 𝛿 𝑘 ,6 − 𝛿 𝑘 ,11  -
+
+Yang  [73]  𝐷 3−10  
+
+> 𝑄
+
+𝑊 1,𝑘  = 𝛿 𝑘 ,3 − 𝛿 𝑘 ,11  - 
+
+> ‡
+
+The coefficients  𝑐 1, … , 𝑐 6 are between 0 and 1 and depend on the cell type. 34 
+
+probability between an ionization in the target volume and the occurrence of a strand break or a 
+
+base damage. In the TET and the model of Schneider et al.  [69] , the probability of repair of a DSB 
+
+is another example of such  an  auxiliary model parameter. 
+
+Other mechanistic nanodosimetric models appear to lack such additional parameters. 
+
+However, closer inspection reveals that there are implicit (fixed) parameters which have been 
+
+intentionally or unintentionally chosen to yield agreement  of  model prediction s with 
+
+radiobiological reference data.  Fig.  3 illustrate s one example of this. The nanodosimetric 
+
+parameters used in the model prediction were derived from a simulation using a beam size twice 
+
+the size of  the target volume  in both transversal dimensions. If a pencil beam pass ing  the target 
+
+centrally w ere  used instead, the model  would  not reproduce the radiobiological data 18  . This 
+
+indicates that the choice of irradiation conditions and beam size is an implicit parameter of the 
+
+model that was used to produce the predictions shown in  Fig.  3.
+
+It is worth emphasizing that among the mechanistic models, only that of Garty et al.  [92,93] 
+
+genuinely  includes indirect radiation effects. Arguments about radical recombination have also 
+
+been used in  [35]  and  [67] . However, the target cylinder diameter considered  is  2 nm , which is the 
+
+lateral  diameter of DNA double strands. Therefore,  unlike  the model of Garty et al.,  these 
+
+approaches do not consider  radicals formed outside the volume occupied by DNA and reacting 
+
+with the DNA molecule after diffusion. 
+
+## 6.3  Mechanism -agnostic models 
+
+Mechanism -agnostic models  contain adjustable parameters that  can be used to fit the model 
+
+to  radiobiological assays.  A question  that can  be  answered in this way  is  the following: F or which 
+
+site diameter  𝜃 𝑠 , and which  set of weighting factors  𝑤 𝑛 ,𝜈 , applied to  ICS distributions obtained in 
+
+spherical targets passed centrally by the primary particle , is there  the best fit  to  experimental data 
+
+for inactivation cross sections  [45,47,100,101] ? Another question  is : For which set of weighting 
+
+factors  𝑤 𝑛 ,𝜈 , applied to ICS distributions obtained in cylindrical targets  with a diameter of 2.3 nm 
+
+and  a height of 3.4 nm  with the irradiation geometry considered in  [36] , is there  the best fit  to  cell 
+
+survival data  [126] ?
+
+However , the fact that  some of the mechanism -agnostic models use  ICS probabilities in 
+
+targets corresponding to short DNA segments (e.g.  in  the cluster -dose approach) does not mean 
+
+that these models  also  neglect indirect effects. This is because no assumption is made as to 
+
+where the IC s are formed. The  ICs  can be formed in DNA or in the  surrounding  mediu m. The refore, 
+
+the  concern  that  assuming  radiation effects in a single target  to  determine  the fate of a cell 
+
+appears implausible  [3]  is not valid  for the model used in  [45,47,99] . This is because the critique 
+
+implicit ly  assum es  that the models are mechanistic, while they are not. 
+
+Similar to  the conventional LQ model of cell survival, t he mechanism -agnostic models  linking 
+
+nan odosimetry and  biological radiation effects  do not explain  why the observed dependencies 
+
+are found.  Their  contribution to  radiation physics  is that they  tak e into account  the microscopic 
+
+stochasticity of radiation action , enabl ing  new possibilities for  optimization of  ion beam 
+
+treatment planning  [67,122] , for example .
+
+It is not contradictory that different approaches identify different minim al  ICS s as being best 
+
+correlated with biological results. For example,  Conte et al.  [101]  found  the  best correlation 
+
+between nanodosimetry and biological effects  using  the  nanodosimetric probabilities  𝐹 3 and  𝐹 2  
+
+> 18 Private communication by Pavel Kundrát ,email on April 13, 2026.
+
+35 
+
+for aerobic  cells  and  𝐹 4 and  𝐹 3 for hypoxic cells.  In contrast, Ortiz et al.  [126]  reported  the  best 
+
+association between cell survival and probabilities  𝐹 5 for aerobic cells and  𝐹 7 for hypoxic cells. 
+
+In fact, these two approaches  differ greatly  in  the nanodosimetric quantity considered.  In the 
+
+work of  Conte et al.  [45,47,99 –101] , a single nanometric target  traversed centrally by an ideal 
+
+pencil  beam  is considered . In the cluster  dose  approach , all  possible nanometric target volumes 
+
+of  a given size and shape are taken into account , regardless  of whether they represent a sensitive 
+
+volume  with in a cell.  Addition ally , the first  approach sought  an optim al  target size , while  the target 
+
+geometry was fixed  in the second  approach . Both approaches (and variants thereof , such as that 
+
+of Mietelska  et al.  [46] ) allow  identification of nanodosimetry -based parameters that provide an 
+
+optim al  fit  of the model  to radiobiological data.  Since  the models do not include a mechanistic 
+
+interpretation,  it is not  possib le  to  select one as being better than the others.  All mechanism -
+
+agnostic  nanodosimetry -based  models  achieve the primary aim of providing  radiation  quantities 
+
+that  significantly reduce differences  in  the effects of different radiation  types .
+
+## 6.4  Open issues 
+
+## 6.4.1  Understanding  the performance of  mechanism -agnostic  models 
+
+From a heuristic point of view, it would be more satisf ying  to understand  why mechanism -
+
+agnostic approaches succeed in reproducing experimental data  despite their different 
+
+fundamentals . This would require  an  understanding  of  the causal relationship between 
+
+nanodosimetric quantities  and  site sizes and irradiation conditions.  One  preliminary step could 
+
+be  to explore which ICS yields best agreement with experiments  when  the cluster dose on the  x-
+
+axis of  Fig.  9 was determined using the nanodosimetric probabilities determined for the target 
+
+sizes and irradiation conditions used  by  Conte et al.  [101] . More generally , it would be interesting 
+
+to investigate the full variability of nanodosimetric quantities  as a function of all influencing 
+
+parameters.  For  instance , the impact of the distribution of impact parameters has only been 
+
+studied for a few possible choices  [52,57] . Similarly, most studies  have  used  cylinders of different 
+
+dimensions and aspect ratios (e.g.  [42,45,46,67,77,92,97] ) or spheres (e.g.  [100,101,125] ) as 
+
+target volumes. However, less common geometries , such as cylinder shell segments  [57,61,75] 
+
+or (almost spherical) dodecahedrons  [118] , were  also  employed. 
+
+How ICS distributions vary with the shape of the target volume has only been investigated  for  a
+
+few  select cases  so far : sphere s and cylinder s of the same diameter and height equal as the 
+
+sphere diameter  [24] , and  cylinder shell segments  with  different aspect ratios  [57] . The 
+
+computationally efficient associated volume clustering approach from microdosimetry  [132]  has 
+
+also been used in a few nanodosimetric studies  [55,125,133] . When used with spherical targets, 
+
+this scoring approach offers the benefit of mathematical rigor  [55] . Its extension to cylindrical 
+
+target volume  remains  a challenge. 
+
+## 6.4.2  Correlation models with pairs of targets 
+
+Radiobiological studies suggest that biological  effectiveness depend s on processes occurring 
+
+on several length scales  [134,135] , as  previously proposed  in microdosimetry  [136 –138] . Th us, 
+
+the interaction  between ICs , as considered in the TET -based models , may be another  factor  to be 
+
+considered in  nanodosimetry -based  radiation effect models  aiming at correlations . Ngcezu et al. 
+
+[118]  employed a method akin to  hierarchical clustering  to  scor e ICs in  distinct  targets . They  only 
+
+applied  their approach  to  the  model geometry  used  by Schneider et al.  [69] , but  exten ding it  to 36 
+
+other geometries  appears straightforward . Thus , databases for generaliz ed  nanodosimetric 
+
+concepts could be created , pertain ing  to  quantities such as the number of clusters of ICs formed 
+
+per  primary particle  path  length . However, fl uence -weighting will be more intricate , as  there may 
+
+be  interference between ICs formed by different particles in the same track , as suggested  by 
+
+some TET models.  Machine learning -based approaches may be useful in generatin g the 
+
+corresponding databases. 
+
+## 6.4.3  Understanding radiobiological effectiveness from nanodosimetry 
+
+The development of nanodosimetry and radiation effect models using nanodosimetric  track 
+
+structure  features was initially driven by the urge to better understand the fundamental principles 
+
+behind biological radiation effects. Sophisticated track structure codes  can  simulat e radiation 
+
+effects across all stages , from physical interactions  and  radiolysis  to  chemical reactions  and 
+
+biological consequences. However, these intricate simulations tend to have a black -box 
+
+character.  Furthermore , they do not inform the  development of physical detectors  to  measur e
+
+radiation properties relevant  to  the biological outcome. 
+
+Mechanistic models  that  predict radiation effects from nanodosimetric quantities  aim  to 
+
+address this issue . These models try  to use only a minimum set of quantities and free parameters. 
+
+As  previously mentione d, a common approach was to fix certain implicit parameters, such as the 
+
+target size, based on heuristic considerations. In  Garty et al. ’s  work, the contribution of radical 
+
+species contributing to DNA damage was somewhat mixed with the direct effects in that a joint 
+
+parameter describing the probability  of an ionization to result in a DNA strand break was used. 
+
+The rationale was to  minimize  the number of model parameters. 
+
+As  was  shown with the  TET  and derived models, the applicability of some of the model 
+
+assumptions can be tested using simulations  [118] . Similarly, machine learning approaches ha ve 
+
+been used in conjunction with simulations to inform optimal parameter choices  [111] . However, 
+
+these examples are only  the  first steps for  the  further development of mechanistic models based 
+
+on nanodosimetry. Machine learning approaches could also be used to determine weighting 
+
+approaches  that  are  more general  than  those shown in Eqs.  (43 ) and  (44 ).
+
+For instance, weighting -function  estimates  could be determined  considering the relevance of 
+
+different target sizes  to  account for radical  contributions  and their diffusion.  Data for training 
+
+these models could be produced using  adapted  simulation tools for the chemistry phase . These 
+
+tools  would have to be  employed in a way that allows parameters  to be  extract ed  for the 
+
+contribution of ICs  that  produc e only radicals or  that  only partly overlap with DNA segments. This 
+
+would refin e the model of Garty without introducing too many additional free parameters. 
+
+## 6.4.4  Uncertainties 
+
+A major  caveat  of  all  models  presented  is  that they rely on simulations. Several studies  have 
+
+revealed large  disparities of results obtained using different track structure codes for electron 
+
+transport  [139 –142] . A recent systematic analysis indicated that the results for the probability  𝐹 2
+
+in spherical targets with  a diameter of 8  nm produced by 50  eV electrons had a relative standard 
+
+deviation of 34  % among different codes . Using the same total cross -sections in all codes 
+
+reduced the standard deviation at 50  eV to about 7  %. However, disparities at larger electron 
+
+energies were only slightly  reduced  by  this substitution of cross -section data  [141] . Furthermore ,
+
+the common cross -section datasets were only  establish ed  ad -hoc  to  study  the impact of total 
+
+cross -sections on nanodosimetric re sults . There was no  claim  that  this dataset (and the results 37 
+
+produced with  them ) were  most realistic.  One  might  expect the discrepancies between codes  to 
+
+be smaller for  ion beam  simulations , as a  significant portion of  ionization s originat e from  ion 
+
+interactions.  For instance, Rabus  et al. reported  a difference of  about 10  % between the number 
+
+of targets with ionizations  in proton beam s with energies between 1  MeV and 100  MeV  for 
+
+different options  of Geant4 -DNA  [55] . Nevertheless, a thorough  investigation of the uncertainty 
+
+coming from different codes for ion beam  application s is lacking. 
+
+## 6.4.5  Re considering  the scaling relation 
+
+The scaling relation underlying nanodosimetry (see Appendix A) was initially  put forth to 
+
+address the equivalence of ICS distributions  in  gas -phase  experiments and  corresponding targets 
+
+in liquid water . However, in  irradiation scenarios  where  the  majority of primary particle 
+
+trajectories do not intersect the  nanometric target , the  rationale behind the scaling relation may 
+
+be questioned. Furthermore,  the  theoretical considerations  [42,107]  on  the analogy between the 
+
+compound Poisson process leading to ICS distributions  and the microdosimetric multi -event 
+
+distribution ha ve their  caveats  (see Appendix A) . In particular,  this analogy  may be limited to 
+
+cases  in which the ICs are predominantly  produced through  primary particle  interactions , as  with 
+
+the small target sizes used in  [101] . The  cluster dose concept  introduces  an additional 
+
+complication  because  the simulations establishing the particle fluence  are performed in 
+
+condensed -history mode  with  material compositions  that  differ from pure water . Schwarze et al. 
+
+proposed  a first approach to adapt the scaling relation to this situation  [128] . It would be 
+
+conceptually simpl e,  albeit potentially tedious , to  systematically  study the relation between ICs 
+
+in different materials  for  a wide  range of impact parameters  using  track structure  simulations  with 
+
+different target sizes.  Analy zing  such a large dataset would certainly be nefit machine learning. 
+
+## 6.4.6  Compact nanodosimeters 
+
+Conventional nanodosimeters are  comparatively complex instruments.  In a proof -of -principle 
+
+experiment,  Hilgers et al. demonstrated  that it is possible to perform measurements with a 
+
+nanodosimeter in the mixed radiation field of a therapeutic carbon ion beam  [72] . The  potential 
+
+future use of nanodosimeters in clinical practice  to  validat e simulation -based nanodosimetric 
+
+quantities used in treatment planning  necessitates  novel , more  compact  detector designs . The 
+
+feasibility of such compact  nanodosimeters has  already been  demonstrated  [20] . However, t he 
+
+most recent developments in this regard  indicate  a major  technolog ical challenge in 
+
+distinguishing individual ions in an IC  during  the measurement  process  [21,143] . In these 
+
+detectors,  an electron avalanche is produced in a gas electron multiplier setup , and the  duration 
+
+of the avalanche  interferes with the arrival time distribution of the ions to be detected . Addressing 
+
+this challenge  may require  reconsider ing  nanodosimetric  measurement  concepts . F or instance, 
+
+one could use  information  about  the temporal  pattern  of the recorded signal.  This  could entail 
+
+novel weighting functions for the different ICSs  that have not  yet  been considered in the proposed 
+
+models. However , as discussed in Section  6.1 , the generic features of the models enable 
+
+adaption  to these potential new nanodosimetric measurement quantities. 
+
+## Appendix A  The scaling relation underlying nanodosimetry 
+
+The  conditions for the equivalence  of nanodosimetric ICS distribution  for  different materials 
+
+and densities  were  first studied by  Grosswendt and Pszona  [39]  for 4.6  MeV alpha particles in 38 
+
+nitrogen and water and by  Grosswendt  [15]  considering  tracks of  5 MeV  alpha particle s and 
+
+electrons  with energies below 10  keV  in  propane  and water . The approach was  formalized  in 
+
+further  work by  Grosswendt  [40]  and extended  to also consider the non -ideal detection efficiency 
+
+of nanodosimetric counters  by Grosswendt et al.  [41,42] . It is hypothesized  that the ICS 
+
+distribution is  a unique function of the mean ICS  𝑀 1. The  equivalence of the ICS distributions is 
+
+thus  obtained if  the same  𝑀 1 is  produced  in  targets of different materials and densities . The 
+
+relation ship  between  the  corresponding target sizes  can then be expressed  by Eq.  (45 ).
+
+(𝐷 𝑠 𝜌 )(2) = (𝐷 𝑠 𝜌 )(1) × (𝜆 𝑖 𝜌 )(2)
+
+(𝜆 𝑖 𝜌 )(1) × 𝑚 1
+
+> (1)
+
+((𝑑𝜌 )(1))
+
+𝑚 1
+
+> (2)
+
+((𝑑𝜌 )(2)) × 𝜂 (1)
+
+𝜂 (2) (45 )
+
+The superscripts  denote  the material . 𝐷 𝑠  denote s the diameter of the target volume , 𝜌  represents 
+
+the mass density,  𝜆 𝑖  is the mean free path for  ionization  by the primary particle . The quantity  𝑚 1
+
+is the mean number of ionizations produced in the target per ionizing interaction of the primary 
+
+particle  in  it . This quantity  depends on the impact parameter  𝑑  of the primary particle with respect 
+
+to the  center of the target volume  (i.e., the distance between the  two lines in  Fig.  1). The  quantity 
+
+𝜂  is the  average  detection efficiency  for the registration of ions produced in the target volume of 
+
+a nanometric detector. 
+
+It  is important to  note  that  the product  𝜆 𝑖 𝜌  is independent  of  density , since it is given by the 
+
+equation  𝜆 𝑖 𝜌  = 𝑀 𝑚 /𝜎 𝑖 , where  𝑀 𝑚  is the molecular mass and  𝜎 𝑖  is the ionization cross section .
+
+Consequently , Eq.  (45 ) is  an expression for density scaling of the linear dimensions  𝐷 𝑠  and  𝑑 ,
+
+corrected for the different  cross -sections for  ionizations by the primary particle and secondary 
+
+electrons .
+
+The scaling relation is generally used to establish the  water -equivalent  diameter of the target 
+
+volume of a nanodosimeter  [44] . In this context,  the simplifying assumption is  frequently  made 
+
+that the  gain  factor  𝑚 1 from the interactions  by  secondary electrons  is almost the same for 
+
+different materials . Similarly, as long as  the  quantity of interest is  the frequency distribution of IC s
+
+produced by the radiation in a material and not that of  the ions detected  in a concrete 
+
+nanodosimeter, the last factor in Eq.  (45 ) is also often neglected. 
+
+It is worth noting that the  derivation of  Eq.  (45 ) is based on  a theoretical description of  the 
+
+synergistic generation of ionizations in a target volume by the primary particle and its secondary 
+
+electrons in a  compound  Poisson process  [42,107] . In analogy  to the  approach used in 
+
+microdosimetr y for the construction of multi -event  distributions from  single -event distribution s, 
+
+the ICS distribution  is conceived as  the  weighted  superposition of the  contributions  of multiple 
+
+ionizing interactions of the primary particle along a  “relevant ” segment of the  primary particle 
+
+path.  The weighting factor s are the probabilities of a given number of ionizations of the primary 
+
+particle to occur , which are assumed to  follow a  Poisson distribut ion . The  contribution s are 
+
+hypothesized  to be convolutions of the probability distributions of the number o f ionizations in 
+
+the target for a single ionization of the primary particle along the path segment.  As pointed out in 
+
+Supplement 1 of  [55] , this implies the assumption  that  th e probability of  obtaining  a specific 
+
+number of ionizations resulting from a single  ionization of the primary particle is independent  of 
+
+the location  along the relevant path segment  in which  this interaction occurs. 
+
+Author contributions: 
+
+HR  Writing  – original draft, Writing  – review & editing 39 
+
+Data availability :
+
+No new data was produced. 
+
+Declaration of c ompeting interests: 
+
+The author declare s no known competing interests. 
+
+Declaration of AI -assisted  technologies in the manuscript preparation process :
+
+During the preparation of this work, the tool PTB -Translate (a derivate from deepl.com) was 
+
+used to obtain suggestions for improving the quality of the language  and readability . Content 
+
+produced by this tool was reviewed and used to edit the manuscript if deemed appropriate. The 
+
+author takes full responsibility for the content of the  publication .
+
+## References 
+
+[1]  Schulte R. Nanodosimetry: Principle and Current Status. AIP Conference Proceedings 
+
+2011;1345:249. https://doi.org/10.1063/1.3576171. 
+
+[2]  Bantsar A, Colautti P, Conte V, Hilgers G, Pietrzak M, Pszona S, et al. State of The Art of 
+
+Instrumentation in Experimental Nanodosimetry. Radiat Prot Dosim 2018;180:177 –81. 
+
+https://doi.org/10.1093/rpd/ncx263. 
+
+[3]  Rabus H. Nanodosimetry  – on the “tracks” of biological radiation effectiveness. Z Med Phys 
+
+2020;30:91 –4. https://doi.org/https://doi.org/10.1016/j.zemedi.2020.01.002. 
+
+[4]  Rucinski A, Biernacka A, Schulte R. Applications of nanodosimetry in particle therapy 
+
+planning and beyond. Phys Med Biol 2021;66:24TR01. https://doi.org/10.1088/1361 -
+
+6560/ac35f1. 
+
+[5]  Goodhead DT. Initial Events in the Cellular Effects of Ionizing Radiations: Clustered 
+
+Damage in DNA. International Journal of Radiation Biology 1994;65:7 –17. 
+
+https://doi.org/10.1080/09553009414550021. 
+
+[6]  Nikjoo H, O´Neill PO, Terrissol M, Goodhead DT. Modelling of radiation -induced DNA 
+
+damage: the early physical and chemical event. International Journal of Radiation Biology 
+
+1994;66:453 –7. 
+
+[7]  Hill MA. Track to the future: historical perspective on the importance of radiation track 
+
+structure and DNA as a radiobiological target. International Journal of Radiation Biology 
+
+2017;94:759 –68. https://doi.org/10.1080/09553002.2017.1387304. 
+
+[8]  Pszona S. A Track Ion Counter. Proceedings Fifth Symposium on Microdosimetry, vol. EUR 
+
+5452 d -e-f, Luxemburg: Commission of the European Communities; 1975, p. 1107 –22. 
+
+https://doi.org/http://www.ipj.gov.pl/ p2/PFM/PAPERS/V -Sym -Mic -1975 -p1107.pdf. 
+
+[9]  Pszona S, Gajewski R. An Approach to Experimental Microdosimetry at the Nanometre 
+
+Scale. Radiation Protection Dosimetry 1994;52:427 –30. 
+
+https://doi.org/10.1093/oxfordjournals.rpd.a082228. 
+
+[10]  Shchemelinin S, Breskin A, Chechik R, Pansky A, Colautti P, Conte V, et al. Ionization 
+
+measurements in small gas samples by single ion counting. Nucl Instrum Meth A 
+
+1996;368:859 –61. https://doi.org/10.1016/0168 -9002(95)00874 -8. 
+
+[11]  Shchemelinin S, Breskin A, Chechik R, Colautti P, Schulte RWM. First measurements of 
+
+ionization clusters on the DNA scale in a wall -less sensitive volume. Radiat Prot Dosim 
+
+1999;82:43 –50. 
+
+[12]  De Nardo L, Alkaa A, Khamphan C, Conte V, Colautti P, Ségur P, et al. A detector for track -
+
+nanodosimetry. Nucl Instrum Meth A 2002;484:312 –26. https://doi.org/10.1016/S0168 -
+
+9002(01)01989 -1. 
+
+[13]  Pszona S, Kula J, Marjanska S. A new method for measuring ion clusters produced by 
+
+charged particles in nanometre track sections of DNA size. Nucl Instrum Meth A 
+
+2000;447:601 –7. https://doi.org/https://doi.org/10.1016/S0168 -9002(99)01191 -2. 40 
+
+[14]  Garty G, Shchemelinin S, Breskin A, Chechik R, Orion I, P. Guedes G, et al. Wall -less Ion -
+
+counting Nanodosimetry Applied to Protons. Radiation Protection Dosimetry 
+
+2002;99:325 –30. https://doi.org/10.1093/oxfordjournals.rpd.a006794. 
+
+[15]  Grosswendt B. On the Equivalence of Propane -based Tissue -equivalent Gas and Liquid 
+
+Water with Respect to the Ionisation -yield Formation by Electrons and a -particles. 
+
+Radiation Protection Dosimetry 2002;99:401 –4. 
+
+https://doi.org/10.1093/oxfordjournals.rpd. a006818. 
+
+[16]  Titt U, Dangendorf V, Großwendt B, Schuhmacher H. Development and application of an 
+
+optical TPC for charged particle track structure imaging in microdosimetry. Nucl Instrum 
+
+Meth A 2002;477:536 –9. https://doi.org/10.1016/S0168 -9002(01)01917 -9. 
+
+[17]  Bashkirov V, Schulte R, Breskin A, Chechik R, Schemelinin S, Garty G, et al. Ion -counting 
+
+nanodosemeter with particle tracking capabilities. Radiation Protection Dosimetry 
+
+2006;122:415 –9. https://doi.org/10.1093/rpd/ncl470. 
+
+[18]  Casiraghi M, Bashkirov VA, Hurley RF, Schulte RW. Characterisation of a track structure 
+
+imaging detector. Radiation Protection Dosimetry 2015;166:223 –7. 
+
+https://doi.org/10.1093/rpd/ncv139. 
+
+[19]  Vasi F, Casiraghi M, Bashkirov V, Giesen U, Schulte RW. Development of a single ion 
+
+detector for radiation track structure studies. Journal of Instrumentation 2016;11:C09021. 
+
+https://doi.org/10.1088/1748 -0221/11/09/c09021. 
+
+[20]  Vasi F, Kempf I, Besserer J, Schneider U. FIRE: A compact nanodosimeter detector based 
+
+on ion amplification in gas. Nucl Instrum Meth A 2021;999:165116. 
+
+https://doi.org/10.1016/j.nima.2021.165116. 
+
+[21]  Kempf I, Hoffmann TM, Besserer J, Schneider U. Development and characterization of a 
+
+compact nanodosimetric detector. Nuclear Instruments and Methods in Physics Research 
+
+Section A: Accelerators, Spectrometers, Detectors and Associated Equipment 
+
+2025;1075: 170337. https://doi.org/10.1016/j.nima.2025.170337. 
+
+[22]  Grosswendt B. Basic aspects of photon transport through matter with respect to track 
+
+structure formation. Radiat Environ Biophys 1999;38:147 –61. 
+
+https://doi.org/10.1007/s004110050151. 
+
+[23]  Grosswendt B. The Track Structure of Photons, Electrons and  α-Particles from the Point of 
+
+View of the Formation of Ionization Clusters. In: Kling A, Baräo FJC, Nakagawa M, Távora L, 
+
+Vaz P, editors. Advanced Monte Carlo for Radiation Physics, Particle Tran sport Simulation 
+
+and Applications, Berlin, Heidelberg: Springer Berlin Heidelberg; 2001, p. 237 –50. 
+
+https://doi.org/10.1007/978 -3-642 -18211 -2_39. 
+
+[24]  Grosswendt B. Formation of ionization clusters in nanometric structures of propane -based 
+
+tissue -equivalent gas or liquid water by electrons and  α-particles. Radiat Environ Biophys 
+
+2002;41:103 –12. https://doi.org/10.1007/s00411 -002 -0155 -6. 
+
+[25]  Bug M, Gargioni E, Nettelbeck H, Baek WY, Hilgers G, Rozenfeld A, et al. Ionization cross 
+
+section data of nitrogen, methane, and propane for light ions and electrons and their 
+
+suitability for use in track structure simulations. Phys Rev E 2013;88:043308 ( 21p.). 
+
+https://doi.org/10.1103/PhysRevE.88.043308. 
+
+[26]  Nikjoo H, Uehara S, Khvostunov IG, Cucinotta FA, Wilson WE, Goodhead DT. Monte Carlo 
+
+track structure for radiation biology and space applications. Physica Medica 2001;17:38 –
+
+44. 
+
+[27]  Liamsuwan T, Nikjoo H. A Monte Carlo track structure simulation code for the full -slowing -
+
+down carbon projectiles of energies 1 keV u  –1 –10 MeV u  –1 in water. Phys Med Biol 
+
+2013;58:673 –701. https://doi.org/10.1088/0031 -9155/58/3/673. 
+
+[28]  Friedland W, Dingfelder M, Kundrát P, Jacob P. Track structures, DNA targets and radiation 
+
+effects in the biophysical Monte Carlo simulation code PARTRAC. Mutat Res 2011;711:28 –
+
+40. https://doi.org/https://doi.org/10.1016/j.mrfmmm.2011.01.003. 
+
+[29]  Bug MU, Baek WY, Rabus H. Simulation of ionisation clusters formed in nanometric 
+
+volumes of the deoxyribose -substitute tetrahydrofuran. International Journal of Radiation 
+
+Biology 2012;88:137 –42. https://doi.org/10.3109/09553002.2011.610864. 41 
+
+[30]  Incerti S, Baldacchino G, Bernal M, Capra R, Champion C, Francis Z, et al. The Geant4 -DNA 
+
+project. Int J Model Simul Sci Comput 2010;1:157 –78. 
+
+https://doi.org/10.1142/S1793962310000122. 
+
+[31]  Incerti S, Ivanchenko A, Karamitros M, Mantero A, Moretto P, Tran HN, et al. Comparison 
+
+of GEANT4 very low energy cross section models with experimental data in water. Med 
+
+Phys 2010;37:4692 –708. https://doi.org/10.1118/1.3476457. 
+
+[32]  Bernal MA, Bordage MC, Brown JMC, Davídková M, Delage E, El Bitar Z, et al. Track 
+
+structure modeling in liquid water: A review of the Geant4 -DNA very low energy extension 
+
+of the Geant4 Monte Carlo simulation toolkit. Phys Medica 2015;31:861 –74. 
+
+https://do i.org/10.1016/j.ejmp.2015.10.087. 
+
+[33]  Incerti S, Kyriakou I, Bernal MA, Bordage MC, Francis Z, Guatelli S, et al. Geant4 ‐DNA 
+
+example applications for track structure simulations in liquid water: A report from the 
+
+Geant4 ‐DNA Project. Med Phys 2018;45:e722 –39. https://doi.org/10.1002/mp.13048. 
+
+[34]  Matsuya Y, Kai T, Sato T, Liamsuwan T, Sasaki K, Nikjoo H. Verification of KURBUC -based 
+
+ion track structure mode for proton and carbon ions in the PHITS code. Phys Med Biol 
+
+2021;66:06NT02. https://doi.org/10.1088/1361 -6560/abe65e. 
+
+[35]  Schulte R, Bashkirov V, Shchemelinin S, Garty G, Chechik R, Breskin A. Modeling of 
+
+radiation action based on nanodosimetric event spectra. Phys Medica 2001;17 Suppl 
+
+1:177 –80. 
+
+[36]  Faddegon B, Blakely EA, Burigo L, Censor Y, Dokic I, Domínguez Kondo N, et al. Ionization 
+
+detail parameters and cluster dose: a mathematical model for selection of nanodosimetric 
+
+quantities for use in treatment planning in charged particle radiotherapy. P hys Med Biol 
+
+2023;68:175013. https://doi.org/10.1088/1361 -6560/acea16. 
+
+[37]  Lindborg L, Grindborg JE. Nanodosimetric Results and Radiotherapy Beams: A Clinical 
+
+Application? Radiation Protection Dosimetry 1997;70:541 –6. 
+
+https://doi.org/10.1093/oxfordjournals.rpd.a032013. 
+
+[38]  Lindborg L, Hultqvist M, Tedgren  \AA Carlsson, Nikjoo H. Nanodosimetry and RBE values 
+
+in radiotherapy. Radiation Protection Dosimetry 2015;166:339 –42. 
+
+https://doi.org/10.1093/rpd/ncv196. 
+
+[39]  Grosswendt B, Pszona S. The track structure of alpha -particles from the point of view of 
+
+ionization -cluster formation in “nanometric” volumes of nitrogen. Radiat Environ Biophys 
+
+2002;41:91 –102. https://doi.org/10.1007/s00411 -002 -0144 -9. 
+
+[40]  Grosswendt B. Recent advances of nanodosimetry. Radiation Protection Dosimetry 
+
+2004;110:789 –99. https://doi.org/10.1093/rpd/nch171. 
+
+[41]  Grosswendt B, De Nardo L, Colautti P, Pszona S, Conte V, Tornielli G. Experimental 
+
+equivalent cluster -size distributions in nanometric volumes of liquid water. Radiation 
+
+Protection Dosimetry 2004;110:851 –7. https://doi.org/10.1093/rpd/nch203. 
+
+[42]  Grosswendt B. Nanodosimetry, the metrological tool for connecting radiation physics with 
+
+radiation biology. Radiat Prot Dosim 2006;122:404 –14. 
+
+https://doi.org/10.1093/rpd/ncl469. 
+
+[43]  Hilgers G. Check of the scaling procedure of track structures of ionizing radiation in 
+
+nanometric volumes. Radiat Meas 2010;45:1228 –32. 
+
+https://doi.org/10.1016/j.radmeas.2010.06.039. 
+
+[44]  Hilgers G, Braunroth T, Rabus H. Characterisation of the PTB ion counter nanodosimeter’s 
+
+target volume and its equivalent size in terms of liquid H2O. Radiat Phys Chem 
+
+2022;191:109862. https://doi.org/10.1016/j.radphyschem.2021.109862. 
+
+[45]  Conte V, Selva A, Colautti P, Hilgers G, Rabus H. Track structure characterization and its 
+
+link to radiobiology. Radiat Meas 2017;106:506 –11. 
+
+https://doi.org/10.1016/j.Radmeas.2017.06.010. 
+
+[46]  Mietelska M, Pietrzak M, Bancer A, Ruciński A, Szefliński Z, Brzozowska B. Ionization Detail 
+
+Parameters for DNA Damage Evaluation in Charged Particle Radiotherapy: Simulation 
+
+Study Based on Cell Survival Database. IJMS 2024;25:5094. 
+
+https://doi.org/10.339 0/ijms25105094. 42 
+
+[47]  Conte V, Selva A, Colautti P, Hilgers G, Rabus H, Bantsar A, et al. Nanodosimetry: towards 
+
+a new concept of radiation quality. Radiat Prot Dosim 2018;180:150 –6. 
+
+https://doi.org/10.1093/rpd/ncx175. 
+
+[48]  Conte V, Colautti P, Grosswendt B, Moro D, Nardo LD. Track structure of light ions: 
+
+experiments and simulations. New Journal of Physics 2012;14:093010. 
+
+https://doi.org/10.1088/1367 -2630/14/9/093010. 
+
+[49]  Hilgers G, Bug M, Rabus H. Measurement of track structure parameters of low and medium 
+
+energy helium and carbon ions in nanometric volumes. Phys Med Biol 2017;62:7569 –97. 
+
+[50]  Pietrzak M. On the two modes of nanodosimetric experiment. Radiat Prot Dosim 
+
+2019;183:187 –91. https://doi.org/10.1093/rpd/ncy233. 
+
+[51]  Bueno M, Schulte R, Meylan S, Villagrasa C. Influence of the geometrical detail in the 
+
+description of DNA and the scoring method of ionization clustering on nanodosimetric 
+
+parameters of track structure: a Monte Carlo study using Geant4 -DNA. Phys Med Biol 
+
+2015;60:8583 –99. https://doi.org/10.1088/0031 -9155/60/21/8583. 
+
+[52]  Ramos -Méndez J, Burigo LN, Schulte R, Chuang C, Faddegon B. Fast calculation of 
+
+nanodosimetric quantities in treatment planning of proton and ion therapy. Phys Med Biol 
+
+2018;63:235015. https://doi.org/10.1088/1361 -6560/aaeeee. 
+
+[53]  Dai T, Li Q, Liu X, Dai Z, He P, Ma Y, et al. Nanodosimetric quantities and RBE of a clinically 
+
+relevant carbon ‐ion beam. Med Phys 2020;47:772 –80. https://doi.org/10.1002/mp.13914. 
+
+[54]  Yang J -F, Liu X -G, Zhang H, He P -B, Ma Y -Y, Shen G -S, et al. Modified logistic nanodosimetry 
+
+model for calculating relative biological effectiveness. NUCL SCI TECH 2025;36:61. 
+
+https://doi.org/10.1007/s41365 -025 -01646 -y. 
+
+[55]  Rabus H, Thomas L. On a revised concept of an event that allows linking nanodosimetry 
+
+and microdosimetry in nanometric sites with macroscopic dosimetry. Radiat Phys Chem 
+
+2025;232:112640. https://doi.org/10.1016/j.radphyschem.2025.112640. 
+
+[56]  Selva A, Conte V, Colautti P. A Monte Carlo tool for multi -target nanodosimetry. Radiat Prot 
+
+Dosim 2018;180:182 –6. https://doi.org/10.1093/rpd/ncy027. 
+
+[57]  Braunroth T, Nettelbeck H, Ngcezu SA, Rabus H. Three -dimensional nanodosimetric 
+
+characterisation of proton track structure. Radiat Phys Chem 2020;176:109066. 
+
+https://doi.org/10.1016/j.radphyschem.2020.109066. 
+
+[58]  Braunroth T, Nettelbeck H, Ngcezu SA, Rabus H. Corrigendum to 'Three -dimensional 
+
+nanodosimetric characterisation of proton track structure’ [Radiation Physics and 
+
+Chemistry 176 (2020) 109066]. Radiat Phys Chem 2021;186:109535. 
+
+https://doi.org/https://doi. org/10.1016/j.radphyschem.2021.109535. 
+
+[59]  Braunroth T, Nettelbeck H, Ngcezu SA, Rabus H. Corrigendum to “Three -dimensional 
+
+nanodosimetric characterisation of proton track structure”, [Braunroth et al. Radiation 
+
+Physics and Chemistry 176 (2020) 109066]. Radiation Physics and Chemistry 
+
+2025;235:112 826. https://doi.org/10.1016/j.radphyschem.2025.112826. 
+
+[60]  Braunroth T, Nettelbeck H, Ngcezu SA, Rabus H. Corrigendum to “Three -dimensional 
+
+nanodosimetric characterisation of proton track structure” [Radiat. Phys. Chem. 176 
+
+109066]. Radiation Physics and Chemistry 2026;247:114009. 
+
+https://doi.org/10.1016/j.radphy schem.2026.114009. 
+
+[61]  Rabus H, Ngcezu SA, Braunroth T, Nettelbeck H. “Broadscale” nanodosimetry: 
+
+Nanodosimetric track structure quantities increase at distal edge of spread -out proton 
+
+Bragg peaks. Radiat Phys Chem 2020;166:108515. 
+
+https://doi.org/https://doi.org/10.1016/j.radp hyschem.2019.108515. 
+
+[62]  Rabus H, Ngcezu SA, Braunroth T, Nettelbeck H. Corrigendum to “Broadscale” 
+
+nanodosimetry: Nanodosimetric track structure quantities increase at distal edge of 
+
+spread -out proton Bragg peaks [Radiat. Phys. Chem. 166 108515]. Radiation Physics and 
+
+Chemistry  2026;247:114008. https://doi.org/10.1016/j.radphyschem.2026.114008. 
+
+[63]  Selva A, Bolst D, Bianchi A, Guatelli S, Conte V. Energy imparted and ionisation yield at the 
+
+nanometre scale: results for extended beams. Radiat Prot Dosim 2023;199:1984 –8. 
+
+https://doi.org/10.1093/rpd/ncac253. 43 
+
+[64]  Hilgers G, Rabus H. Correlated ionisations in two spatially separated nanometric volumes 
+
+in the track structure of 241Am alpha particles: Measurements with the PTB ion counter. 
+
+Radiat Phys Chem 2020;176:109025. 
+
+https://doi.org/https://doi.org/10.1016/j.ra dphyschem.2020.109025. 
+
+[65]  Hilgers G, Braunroth T, Rabus H. Correlated ionisations in two spatially separated 
+
+nanometric volumes within the track structure of 241Am alpha particles: comparison with 
+
+Monte Carlo simulations. Radiat Phys Chem 2022;201:110488. 
+
+https://doi.org/10.1016/j .radphyschem.2022.110488. 
+
+[66]  Alexander F, Villagrasa C, Rabus H, Wilkens J. Energy dependent track structure 
+
+parametrisations for protons and carbon ions based on nanometric simulations. Eur Phys 
+
+J D 2015;69:216 -1-216 –7. https://doi.org/10.1140/epjd/e2015 -60206 -5. 
+
+[67]  Casiraghi M, Schulte R. Nanodosimetry -based plan optimization for particle therapy. 
+
+Computational and Mathematical Methods in Medicine 2015;2015:1 –13. 
+
+https://doi.org/10.1155/2015/908971. 
+
+[68]  Palmans H, Rabus H, Belchior A, Bug M, Galer S, Giesen U, et al. Future development of 
+
+biologically relevant dosimetry. Brit J Radiol 2015;88:20140392. 
+
+https://doi.org/10.1259/bjr.20140392. 
+
+[69]  Schneider U, Vasi F, Schmidli K, Besserer J. A model of radiation action based on 
+
+nanodosimetry and the application to ultra -soft X-rays. Radiat Environ Biophys 
+
+2020;59:439 –50. https://doi.org/10.1007/s00411 -020 -00842 -1. 
+
+[70]  Laczko G, Dangendorf V, Kramer M, Schardt D, Tittelmeier K. High -resolution heavy ion 
+
+track structure imaging. Nuclear Instruments and Methods in Physics Research Section A: 
+
+Accelerators, Spectrometers, Detectors and Associated Equipment 2004;535:216 –20. 
+
+https://doi.org/10.1016/S0168 -9002(04)01606 -7. 
+
+[71]  Pietrzak M, Pszona S, Bantsar A. Measurements of spatial correlations of ionisation 
+
+clusters in the track of carbon ions  - First results. Radiat Prot Dosim 2018;180:162 –7. 
+
+https://doi.org/10.1093/rpd/ncy079. 
+
+[72]  Hilgers G, Schwarze M, Rabus H. Nanodosimetric investigation of the track structure of 
+
+therapeutic carbon ion radiation part 1: measurement of ionization cluster size 
+
+distributions. Biomed Phys Eng Express 2024;10:065030. https://doi.org/10.1088/2057 -
+
+1976 /ad7bc1. 
+
+[73]  Schwarze M, Hilgers G, Rabus H. Nanodosimetric investigation of the track structure of 
+
+therapeutic carbon ion radiation part2: detailed simulation. Biomed Phys Eng Express 
+
+2025;11:015018. https://doi.org/10.1088/2057 -1976/ad9152. 
+
+[74]  Alexander F, Villagrasa C, Rabus H, Wilkens J. Local weighting of nanometric track 
+
+structure properties in macroscopic voxel geometries for particle beam treatment 
+
+planning. Phys Med Biol 2015;60:9145 –56. https://doi.org/10.1088/0031 -
+
+9155/60/23/9145. 
+
+[75]  Schwarze M, Looe HK, Poppe B, Tappayuthpijarn P, Thomas L, Rabus H. Cluster Dose 
+
+Prediction in Carbon Ion Therapy: Using Transfer Learning from a Pretrained Dose 
+
+Prediction U -Net. Biom Phys Eng Express 2026;12. 
+
+[76]  Yang J, Liu X, Zhang H, Dai Z, He P, Ma Y, et al. Nanodosimetric quantity -weighted dose 
+
+optimization for carbon -ion treatment planning. Phys Eng Sci Med 2024;47:703 –15. 
+
+https://doi.org/10.1007/s13246 -024 -01399 -9. 
+
+[77]  Grosswendt B. Nanodosimetry, from radiation physics to radiation biology. Radiat Prot 
+
+Dosim 2005;115:1 –9. https://doi.org/10.1093/rpd/nci152. 
+
+[78]  Grosswendt B, Pszona S, Bantsar A. New descriptors of radiation quality based on 
+
+nanodosimetry, a first approach. Radiation Protection Dosimetry 2007;126:432 –44. 
+
+https://doi.org/10.1093/rpd/ncm088. 
+
+[79]  Friedland W, Jacob P, Paretzke HG, Stork T. Monte Carlo Simulation of the Production of 
+
+Short DNA Fragments by Low -Linear Energy Transfer Radiation Using Higher -Order DNA 
+
+Models. Radiat Res 1998;150:170. https://doi.org/10.2307/3579852. 44 
+
+[80]  Folkard M, Prise KM, Vojnovic B, Davies S, Roper MJ. Measurement of DNA damage by 
+
+electrons with energies between 25 and 4000 eV. International Journal of Radiation Biology 
+
+1993;64:651 –8. 
+
+[81]  Simmons JA, Watt DE. Radiation protection dosimetry: a radical reappraisal. Madison, 
+
+Wis: Medical Physics Pub; 1999. 
+
+[82]  Charlton DE, Nikjoo H, Humm JL. Calculation of Initial Yields of Single - and Double -strand 
+
+Breaks in Cell Nuclei from Electrons, Protons and Alpha Particles. International Journal of 
+
+Radiation Biology 1989;56:1 –19. https://doi.org/10.1080/0955300891455114 1. 
+
+[83]  Friedland W, Jacob P, Bernhardt P, Paretzke HG, Dingfelder M. Simulation of DNA Damage 
+
+after Proton Irradiation. Radiat Res 2003;159:401 –10. https://doi.org/10.1667/0033 -
+
+7587(2003)159%5B0401:SODDAP%5D2.0.CO;2. 
+
+[84]  Nikjoo H, Bolton CE, Watanabe R, Terrissol M, O’Neill P, Goodhead DT. Modelling of DNA 
+
+damage induced by energetic electrons (100 eV to 100 keV). Radiat Prot Dosim 
+
+2002;99:77 –80. https://doi.org/10.1093/oxfordjournals.rpd.a006843. 
+
+[85]  Friedland W, Dingfelder M, Jacob P, Paretzke HG. Calculated DNA double -strand break 
+
+and fragmentation yields after irradiation with He ions. Radiat Phys Chem 2005;72:279 –86. 
+
+[86]  Nikjoo H, O’Neill P, Wilson WE, Goodhead DT. Computational approach for determining 
+
+the spectrum of DNA damage induced by ionizing radiation. Radiat Res 2001;156:577 –83. 
+
+[87]  Friedrich T, Scholz U, ElsaSser T, Durante M, Scholz M. Systematic analysis of RBE and 
+
+related quantities using a database of cell survival experiments with ion beam irradiation. 
+
+Journal of Radiation Research 2013;54:494 –514. https://doi.org/10.1093/jrr/r rs114. 
+
+[88]  Nettelbeck H, Rabus H. Nanodosimetry: The missing link between radiobiology and 
+
+radiation physics? Radiat Meas 2011;46:893 –7. 
+
+https://doi.org/10.1016/j.radmeas.2011.03.029. 
+
+[89]  Rabus H, Nettelbeck H. Nanodosimetry: Bridging the gap to radiation biophysics. Radiat 
+
+Meas 2011;46:1522 –8. https://doi.org/10.1016/j.radmeas.2011.02.009. 
+
+[90]  Rabus H, Nettelbeck H. Corrigendum on: H. Rabus and H. Nettelbeck, Nanodosimetry: 
+
+Bridging the Gap to Radiation Biophysics, Radiat. Meas. 46, (2011), 1522 -1528. Radiation 
+
+Measurements 2026:107731. https://doi.org/10.1016/j.radmeas.2026.107731. 
+
+[91]  Taucher -Scholz G, Kraft G. Influence of radiation quality on the yield of DNA strand breaks 
+
+in SV40 DNA irradiated in solution. Radiat Res 1999;151:595 –604. 
+
+https://doi.org/10.2307/3580036. 
+
+[92]  Garty G, Schulte R, Shchemelinin S, Grosswendt B, Leloup C, Assaf G, et al. First attempts 
+
+at prediction of DNA strand -break yields using nanodosimetric data. Radiation Protection 
+
+Dosimetry 2006;122:451 –4. https://doi.org/10.1093/rpd/ncl515. 
+
+[93]  Garty G, Schulte R, Shchemelinin S, Leloup C, Assaf G, Breskin A, et al. A nanodosimetric 
+
+model of radiation -induced clustered DNA damage yields. Phys Med Biol 2010;55:761 –81. 
+
+https://doi.org/10.1088/0031 -9155/55/3/015. 
+
+[94]  Bug MU, Hilgers G, Baek WY, Rabus H. Nanodosimetric characterization of ion beams. Eur 
+
+Phys J D 2014;68:217. https://doi.org/10.1140/epjd/e2014 -50015 -9. 
+
+[95]  Shchemelinin S, Garty G, Breskin A, Chechik R, Schulte RWM. Ion -counting 
+
+nanodosimetry: a new method for assessing radiation damage to DNA. Nucl Instrum Meth 
+
+A 2002;477:527 –30. 
+
+[96]  Leloup C, Garty G, Assaf G, Cristovão A, Breskin A, Chechik R, et al. Evaluation of lesion 
+
+clustering in irradiated plasmid DNA. International Journal of Radiation Biology 
+
+2005;81:41 –54. https://doi.org/10.1080/09553000400017895. 
+
+[97]  Schulte RW, Wroe AJ, Bashkirov VA, Garty GY, Breskin A, Chechik R, et al. Nanodosimetry -
+
+based quality factors for radiation protection in space. Z Med Phys 2008;18:286 –96. 
+
+https://doi.org/https://doi.org/10.1016/j.zemedi.2008.06.011. 
+
+[98]  Garty G, Shchemelinin S, Breskin A, Chechik R, Assaf G, Orion I, et al. The performance of 
+
+a novel ion -counting nanodosimeter. Nuclear Instruments and Methods in Physics 
+
+Research Section A: Accelerators, Spectrometers, Detectors and Associated Equipment 
+
+2002;492:212 –35. https://doi.org/10.1016/S0168 -9002(02)01278 -0. 45 
+
+[99]  Selva A, Nadal VD, Cherubini R, Colautti P, Conte V. Towards the use of nanodosimetry to 
+
+predict cell survival. Radiat Prot Dosim 2019;183:192 –6. 
+
+https://doi.org/10.1093/rpd/ncy274. 
+
+[100]  Conte V, Bianchi A, Selva A. Track Structure of Light Ions: The Link to Radiobiology. IJMS 
+
+2023;24:5826. https://doi.org/10.3390/ijms24065826. 
+
+[101]  Conte V, Bianchi A, Rabus H, Selva A. Nanodosimetry applied to aerobic and hypoxic cells. 
+
+Radiat Phys Chem 2024;222:111835. 
+
+https://doi.org/10.1016/j.radphyschem.2024.111835. 
+
+[102]  Rabus H, Palmans H, Hilgers G, Sharpe P, Pinto M, Villagrasa C, et al. Biologically Weighted 
+
+Quantities in Radiotherapy: an EMRP Joint Research Project. EPJ Web Conf 2014;77:00021. 
+
+https://doi.org/10.1051/epjconf/20147700021. 
+
+[103]  Conte V, Colautti P, Moro D, Grosswendt B. Track structure of carbon ions: measurements 
+
+and simulations. Radiation Protection Dosimetry 2014;161:445 –8. 
+
+https://doi.org/10.1093/rpd/nct266. 
+
+[104]  Hilgers G, Bug M, Gargioni E, Rabus H. Comparison of measured and Monte -Carlo 
+
+simulated track structure parameters in nanometric volumes. Radiat Prot Dosim 
+
+2014;161:441 –4. https://doi.org/10.1093/rpd/nct265. 
+
+[105]  Pszona S, Bantsar A, Nikjoo H. Ionization cluster size distribution for alpha particles: 
+
+experiment, modelling. Radiation Protection Dosimetry 2006;122:28 –31. 
+
+https://doi.org/10.1093/rpd/ncl421. 
+
+[106]  Belloni F, Bettega D, Calzolari P, Cherubini R, Massariello P, Tallone L. Inactivation Cross 
+
+Sections for Mammalian Cells Exposed to Charged Particles: A Phenomenological 
+
+Approach. Radiation Protection Dosimetry 2002;99:199 –202. 
+
+https://doi.org/10.1093/ox fordjournals.rpd.a006761. 
+
+[107]  De Nardo L, Colautti P, Conte V, Baek WY, Grosswendt B, Tornielli G. Ionization -cluster 
+
+distributions of alpha -particles in nanometric volumes of propane: measurement and 
+
+calculation. Radiat Environ Biophys 2002;41:235 –56. https://doi.org/10.1007/s00411 -002 -
+
+0171 -6. 
+
+[108]  Barkas HW. Nuclear Research Emulsions, vol. I. New York and London: Academic Press; 
+
+1963. 
+
+[109]  Friedrich T, Pfuhl T, Scholz M. Update of the particle irradiation data ensemble (PIDE) for 
+
+cell survival. Journal of Radiation Research 2021;62:645 –55. 
+
+https://doi.org/10.1093/jrr/rrab034. 
+
+[110]  Furusawa Y, Fukutsu K, Aoki M, Itsukaichi H, Eguchi -Kasai K, Ohara H, et al. Inactivation of 
+
+Aerobic and Hypoxic Cells from Three Different Cell Lines by Accelerated 3He -, 12C - and 
+
+20Ne -Ion Beams. Radiation Research 2000;154. https://doi.org/10.1667/0033 -
+
+7587(2000)154%5B0485:IOAAHC%5D2.0.CO;2. 
+
+[111]  Bordieri G, Cartechini G, Bianchi A, Selva A, Conte V, Missiaggia M, et al. One scale to rule 
+
+them all: interpretable multi -scale Deep Learning for predicting cell survival after proton 
+
+and carbon ion irradiation. arXiv:260115106 [PhysicsBio -Ph] 2026. 
+
+htt ps://doi.org/10.48550/ARXIV.2601.15106. 
+
+[112]  Bird RP, Rohrig N, Colvett RD, Geard CR, Marino SA. Inactivation of synchronized Chinese 
+
+Hamster V79 cells with charged -particle track segments. Radiat Res 1980;82:277 –89. 
+
+[113]  Besserer J, Schneider U. A track -event theory of cell survival. Z Med Phys 2015;25:168 –75. 
+
+https://doi.org/https://doi.org/10.1016/j.zemedi.2014.10.001. 
+
+[114]  Besserer J, Schneider U. Track -event theory of cell survival with second -order repair. 
+
+Radiat Environ Biophys 2015;54:167 –74. https://doi.org/10.1007/s00411 -015 -0584 -7. 
+
+[115]  Schneider U, Vasi F, Besserer J. The probabilities of one - and multi -track events for 
+
+modeling radiation -induced cell kill. Radiat Environ Biophys 2017;56:249 –54. 
+
+https://doi.org/10.1007/s00411 -017 -0697 -2. 
+
+[116]  Schneider U, Vasi F, Schmidli K, Besserer J. Track Event Theory: A cell survival and RBE 
+
+model consistent with nanodosimetry. Radiat Prot Dosim 2019;183:17 –21. 
+
+https://doi.org/10.1093/rpd/ncy236. 46 
+
+[117]  Hug O, Kellerer A. Zur Interpretation der Dosiswirkungsbeziehungen in der 
+
+Strahlenbiologie. Biophysik 1963;1:20 –32. https://doi.org/10.1007/BF01192565. 
+
+[118]  Ngcezu SA, Rabus H. Investigation into the foundations of the track -event theory of cell 
+
+survival and the radiation action model based on nanodosimetry. Radiat Environ Biophys 
+
+2021;60:559 –78. https://doi.org/10.1007/s00411 -021 -00936 -4. 
+
+[119]  Schneider U, Vasi F, Besserer J. The Impact of the Geometrical Structure of the DNA on 
+
+Parameters of the Track -Event Theory for Radiation Induced Cell Kill. PLoS One 2016;11:1 –
+
+13. https://doi.org/10.1371/journal.pone.0164929. 
+
+[120]  Semenenko VA, Turner JE, Borak TB. NOREC, a Monte Carlo code for simulating electron 
+
+tracks in liquid water. Radiation and Environmental Biophysics 2003;42:213 –7. 
+
+https://doi.org/10.1007/s00411 -003 -0201 -z. 
+
+[121]  Burigo LN, Ramos -Méndez J, Bangert M, Schulte RW, Faddegon B. Simultaneous 
+
+optimization of RBE -weighted dose and nanometric ionization distributions in treatment 
+
+planning with carbon ions. Phys Med Biol 2019;64:015015. https://doi.org/10.1088/1361 -
+
+6560/aa f400. 
+
+[122]  Ortiz R, Faddegon B. Creating uniform cluster dose spread -out Bragg peaks for proton and 
+
+carbon beams. Medical Physics 2024;51:4482 –8. https://doi.org/10.1002/mp.16991. 
+
+[123]  Facchiano S, Ortiz R, Cristoforetti R, D -Kondo N, Jaekel O, Faddegon B, et al. An ion 
+
+treatment planning framework for inclusion of nanodosimetric ionization detail through 
+
+cluster dose. arXiv:250509667 2025. https://doi.org/10.48550/arXiv.2505.09667. 
+
+[124]  Ortiz R, Ramos -Méndez J, D -Kondo N, Faddegon B. A refined approach to compute 
+
+nanodosimetric quantities for proton and ion radiotherapy treatment planning. Phys Med 
+
+Biol 2025;70:235023. https://doi.org/10.1088/1361 -6560/ae2230. 
+
+[125]  Thomas L, Schwarze M, Rabus H. Radial dependence of ionization clustering around a gold 
+
+nanoparticle irradiated by x -rays under charged particle equilibrium. Phys Med Biol 
+
+2024;69:185014. https://doi.org/10.1088/1361 -6560/ad6e4f. 
+
+[126]  Ortiz R, Ramos -Méndez J, Mao J -H, Schulte R, Faddegon B. Evaluation of nanodosimetric 
+
+quantities for ion radiotherapy treatment planning based on the degree of association of 
+
+survival with cluster dose. Phys Med Biol 2025;70:195004. https://doi.org/10.108 8/1361 -
+
+6560/ae07a3. 
+
+[127]  Schwarze M, Looe HK, Poppe B, Thomas L, Rabus H. Cluster Dose Prediction in Carbon Ion 
+
+Therapy: Using Transfer Learning from a Pretrained Dose Prediction U-Net. 
+
+arXiv:251024703 [PhysicsMed -Ph] 2025. https://doi.org/10.48550/ARXIV.2510.24703. 
+
+[128]  Schwarze M, Looe HK, Poppe B, Thomas L, Rabus H. Cross -Section -Based Scaling Method 
+
+for Material -Specific Cluster Dose Calculations. Biom Phys Eng Express 2025;11:067001. 
+
+https://doi.org/10.1088/2057 -1976/ae1a8d. 
+
+[129]  Blakely EA, Tobias CA, Yang TCH, Smith KC, Lyman JT. Inactivation of Human Kidney Cells 
+
+by High -Energy Monoenergetic Heavy -Ion Beams. Radiation Research 1979;80:122. 
+
+https://doi.org/10.2307/3575121. 
+
+[130]  Dokic I, Mairani A, Niklas M, Zimmermann F, Chaudhri N, Krunic D, et al. Next generation 
+
+multi -scale biophysical characterization of high precision cancer particle radiotherapy 
+
+using clinical proton, helium -, carbon - and oxygen ion beams. Oncotarget 2016; 7:56676 –
+
+89. https://doi.org/10.18632/oncotarget.10996. 
+
+[131]  Braby LA, Conte V, Dingfelder M, Goodhead DT, Pinsky LS, Rosenfeld AB, et al. ICRU Report 
+
+98, Stochastic Nature of Radiation Interactions: Microdosimetry. J ICRU 2023;23:1 –168. 
+
+https://doi.org/10.1177/14736691231211380. 
+
+[132]  Kellerer AM. Fundamentals of Microdosimetry. The Dosimetry of Ionizing Radiation, 
+
+Academic Press; 1985, p. 77 –162. https://doi.org/10.1016/B978 -0-12 -400401 -6.50007 -3. 
+
+[133]  Canhoto JF. Nanodosimetric characterisation of proton track structure: a comparison of 
+
+sampling and clustering algorithms using Geant4DNA. arXiv:240604495 [PhysicsComp -
+
+Ph] 2024. https://doi.org/https://doi.org/10.48550/arXiv.2406.04495. 47 
+
+[134]  Friedrich T, Ilicic K, Greubel C, Girst S, Reindl J, Sammer M, et al. DNA damage interactions 
+
+on both nanometer and micrometer scale determine overall cellular damage. Scientific 
+
+Reports 2018;8:16063. https://doi.org/10.1038/s41598 -018 -34323 -9. 
+
+[135]  Baiocco G, Bartzsch S, Conte V, Friedrich T, Jakob B, Tartas A, et al. A matter of space: how 
+
+the spatial heterogeneity in energy deposition determines the biological outcome of 
+
+radiation exposure. Radiat Environ Biophys 2022. https://doi.org/10.1007/s004 11 -022 -
+
+00989 -z. 
+
+[136]  Kellerer AM, Rossi HH. The theory of dual radiation action. Current Topics in Radiation 
+
+Research 1974;8:85 –158. 
+
+[137]  Kellerer AM, Rossi HH. A Generalized Formulation of Dual Radiation Action. Radiat Res 
+
+1978;75:471 –88. 
+
+[138]  Rossi HH, Zaider M. Compound dual radiation action. I. General aspects. Radiat Res 
+
+1992;132:178 –83. 
+
+[139]  Villagrasa C, Bordage M -C, Bueno M, Bug M, Chiriotti S, Gargioni E, et al. Assessing the 
+
+contribution of cross -sections to the uncertainty of Monte Carlo calculations in micro - and 
+
+nanodosimetry. Radiat Prot Dosim 2019;183:11 –6. https://doi.org/10.1093/rp d/ncy240. 
+
+[140]  Villagrasa C, Rabus H, Baiocco G, Perrot Y, Parisi A, Struelens L, et al. Intercomparison of 
+
+micro - and nanodosimetry Monte Carlo simulations: An approach to assess the influence 
+
+of different cross -sections for low -energy electrons on the dispersion of re sults. Radiat 
+
+Meas 2022;150:106675. https://doi.org/10.1016/j.radmeas.2021.106675. 
+
+[141]  Villagrasa C, Baiocco G, Chaoui Z -E-A, Dingfelder M, Incerti S, Kundrát P, et al. Evaluation 
+
+of the uncertainty in calculating nanodosimetric quantities due to the use of different 
+
+interaction cross sections in Monte Carlo track structure codes. PLoS One 
+
+2026;21:e0340500. https://doi.org/10.1371/journal.pone.0340500. 
+
+[142]  Kyriakou I, Papadopoulos A, Polopetrakis I, Kotroumpelou C, Plante I, Matsuya Y, et al. 
+
+Intercomparison of low -energy electron transport calculations by different Monte Carlo 
+
+track -structure simulation codes. Phys Med Biol 2026;71:085009. 
+
+https://doi.org/ 10.1088/1361 -6560/ae5758. 
+
+[143]  Merza V, Bancer A, Bashkirov V, Belchior A, Brzozowska B, Canhoto JF, et al. Experimental 
+
+and Monte Carlo Simulation Studies to Investigate the Working Principle of Compact 
+
+Nanodosimeters. arXiv:251211126 [PhysicsIns -Det] 2025. 
+
+https://doi.org/10.48550/AR XIV.2512.11126. 48 
+
+## 7 Supplement ary Figures 
+
+0
+
+Supplementary Fig.  1: Complementary cumulative frequency  𝐹 2 of ionization clusters containing  two  or 
+
+more ionizations in the target volume of a nanodosimeter as a function of the corresponding mean number 
+
+of ionizations,  𝑀 1 . The data  corresponds  to measurements with three different nanodosimeters and 
+
+different ions as primary particles (see legend). Different data points for the same ion and instrument 
+
+correspond to different energies of the ion. The Startrack nanodosimeter was always operated wi th 
+
+propane ( 𝐶 3𝐻 8), the Jet Counter always with nitrogen ( 𝑁 2). The simulated target size in liquid water varied 
+
+between about 2  nm for the Ion Counter and 20  nm for the Startrack nanodosimeter.  (Reprinted from 
+
+Radiotherapy and Oncology 119 (Suppl. 1), H. Rabus and V. Conte, Nanodosimetry: from radiation physics 
+
+to radiation biology, S182 -S183, Copyright (2016), with permission from Elsevier. )49 
+
+Supplementary Fig.  2: Comparison of the  inactivation cross sections for HSG and CHO cells  at (a) 5  %
+
+survival rate ( 𝜎 5% ) and (b) low doses  (𝜎 𝛼 ) as a function of  LET  (upper x -axis)  with  the  scaled nanodosimetric 
+
+probabilit y F2 as a function of the mean  ionization  cluster size  M1 (lower x -axis ). To facilitate  distinguishing 
+
+the data of the two cell lines , the HSG data (and corresponding  𝐶 5%  × 𝐹 2 and  𝐶 𝛼  × 𝐹 2) have been multiplied 
+
+by 10.  Colored symbols represent biological data; grey symbols and solid lines represent the physical 
+
+experimental data.  (Reprinted from Radiation Measurements 106 (1), V. Conte et al., Track structure 
+
+characterization and its link to radiobiology, 506 -511, Copyright (2017), with permission from Elsevier. )50 
+
+Supplementary Fig.  3Inactivation cross sections for  hypoxic  V79 (panels (a) and (b)) and HSG cells (panels 
+
+(c) and (d)) at 5% survival (panels (a) and (c)) and at low doses (panels (b) and (d)). Experimental data are 
+
+drawn with 20% uncertainty bars. The red lines represent the nanodosimetric quantities specified i n the 
+
+legends. Note that the quantities  𝐹 ∗(𝑘 ) in the notation used by Conte et al.  are the probabilities of 
+
+ionization -cluster size exceeding  𝑘  , i.e. , they are identical to the quantities  𝐹 𝑘 +1 in the not ation of this 
+
+paper . Also note that  𝑝 (𝜈 ) is identical to  𝑃 𝜈 , so that  𝑝 (3) + 𝐹 ∗(3) = 𝐹 3. (Reprinted from Radiation Physics 
+
+and Chemistry 222, V. Conte et al., Nanodosimetry applied to aerobic and hypoxic cells, 111835, Copyright 
+
+(2024), with permission from Elsevier. )51 
+
+Supplementary Fig.  4Inactivation cross sections for  aerobic  V79 (panels (a) and (b)) and HSG cells (panels 
+
+(c) and (d)) at 5% survival (panels (a) and (c)) and at low doses (panels (b) and (d)). Experimental data are 
+
+drawn with 20% uncertainty bars. The red lines represent the nanodosimetric quantities specified i n the 
+
+legends.  Note that the quantities  𝐹 ∗(𝑘 ) in the notation used by Conte et al. are the probabilities of 
+
+ionization -cluster size exceeding  𝑘  , i.e., they are identical to the quantities  𝐹 𝑘 +1 in the notation of this 
+
+paper. Also note that  𝑝 (𝜈 ) is identical to  𝑃 𝜈 , so that  𝑝 (3) + 𝐹 ∗(3) = 𝐹 3. (Reprinted from Radiation Physics 
+
+and Chemistry 222, V. Conte et al., Nanodosimetry applied to aerobic and hypoxic cells, 111835, Copyright 
+
+(2024), with permission from Elsevier. )52 
+
+Supplementary Fig.  5: Variation of the three statistical metrics for the deviation of the survival data with all 
+
+ion types from  the best fit  to the linear -quadratic model (as a function of the cluster dose). The  x-axis of the 
+
+plots is the minimum number of ions in an IC. The rows correspond to the three different metrics. The left 
+
+and middle  panels  of each row are results for survival data under heavy ion irradiation from  [129]  under 
+
+aerobic and hypoxic conditions, respectively. The right panel is for data of aerobic A549 cells 
+
+[130] Reproduced under the CC BY 4.0 license (https://creativecommons.org/licenses/by/4.0/)  from  [126] .
+
+Copyright Ortiz et al. (2025). )

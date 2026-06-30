@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-06-30 <!--dpr-date:20260630-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202606/30/2606.29945v1-prediction-of-biological-radiation-effects-based-on-ionization-clusters-nanodosimetry" data-sidebar-item="{&quot;title&quot;: &quot;Prediction of biological radiation effects based on ionization clusters (nanodosimetry)&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2606.29945v1-prediction-of-biological-radiation-effects-based-on-ionization-clusters-nanodosimetry&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;基于电离簇的纳米剂量学生物辐射效应预测&quot;}">Prediction of biological radiation effects based on ionization clusters (nanodosimetry)</a>
   * 2026-06-27 <!--dpr-date:20260627-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202606/27/biorxiv-10-64898-2026-06-24-733995-v1-dose-optimisation-of-favipiravir-against-rna-viruses-using-physiologically-based-pharmacokinetic-modelling" data-sidebar-item="{&quot;title&quot;: &quot;Dose optimisation of favipiravir against RNA viruses using physiologically-based pharmacokinetic modelling.&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/biorxiv-10-64898-2026-06-24-733995-v1-dose-optimisation-of-favipiravir-against-rna-viruses-using-physiologically-based-pharmacokinetic-modelling&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;基于生理的药代动力学模型用于剂量优化&quot;}">Dose optimisation of favipiravir against RNA viruses using physiologically-based pharmacokinetic modelling.</a>

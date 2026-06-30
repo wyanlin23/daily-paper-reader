@@ -1,0 +1,52 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-30T20:40:08.211838+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.29945v1",
+      "source": "arxiv",
+      "title": "Prediction of biological radiation effects based on ionization clusters (nanodosimetry)",
+      "abstract": "This article reviews approaches that link the formation of ionization clusters in nanometric volumes to radiobiological effectiveness. The corresponding models are presented using harmonized terminology and notation. They are categorized into three classes according to the most important, often implicit model rationale: (a) models that use a nanodosimetric weighting factor for biological effectiveness derived from frequency distributions of ionization clusters in a single target; (b) models that account for the synergistic effects of pairs of ionization clusters formed in different targets; (c) models that account for 'macroscopic' situations involving many nanometric targets and derive radiation quantities from the particle fluence. Further conceptual differences between the models and their underlying assumptions are discussed, such as the fact that some models are mechanistic while others only aim to elucidate correlations. Eventually, an attempt is made to identify the key open questions in this field that still need to be addressed.",
+      "authors": [
+        "Hans Rabus"
+      ],
+      "primary_category": "physics.med-ph",
+      "categories": [
+        "physics.med-ph"
+      ],
+      "published": "2026-06-29T08:21:28+00:00",
+      "link": "https://arxiv.org/pdf/2606.29945v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "ionization cluster nanodosimetry for biological radiation effects",
+      "llm_evidence_cn": "基于电离簇的纳米剂量学生物辐射效应预测",
+      "llm_evidence": "基于电离簇的纳米剂量学生物辐射效应预测",
+      "canonical_evidence": "基于电离簇的纳米剂量学生物辐射效应预测",
+      "llm_tldr_en": "Reviews nanodosimetric models linking ionization clusters to radiobiological effectiveness, categorized into single-target, synergistic, and macroscopic approaches.",
+      "llm_tldr_cn": "本文综述了将纳米尺度电离簇形成与放射生物学有效性相关联的模型。模型分为三类：单靶点电离簇频率分布加权、双靶点协同效应以及多靶点宏观情形。这些模型为微剂量学计算和辐射效应预测提供了理论框架，可应用于α粒子等辐射类型的生物学效应评估。",
+      "llm_tldr": "本文综述了将纳米尺度电离簇形成与放射生物学有效性相关联的模型。模型分为三类：单靶点电离簇频率分布加权、双靶点协同效应以及多靶点宏观情形。这些模型为微剂量学计算和辐射效应预测提供了理论框架，可应用于α粒子等辐射类型的生物学效应评估。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "microdosimetric calculations for alpha particles in cellular and subcellular scales",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
