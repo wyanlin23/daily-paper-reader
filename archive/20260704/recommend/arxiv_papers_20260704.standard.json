@@ -1,0 +1,98 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-04T20:58:00.245943+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.30978v1",
+      "source": "arxiv",
+      "title": "An Enhanced RPA-LDA Model for Ion Stopping Power from Cold Matter to High-Energy Density Plasmas: A Unified, Open-Source Framework",
+      "abstract": "We present an enhanced random-phase-approximation--local-density-approximation (e-RPA-LDA) model for the stopping power of ions that is valid over a wide range of conditions, from cold solids through warm dense matter to high-energy-density plasmas. The electronic stopping is computed from the RPA dielectric response in the local-density approximation over an average-atom electron density obtained in a muffin-tin potential with the Flexible Atomic Code, augmented by four corrections to the earlier RPA-LDA model of Wang et al.: a strong-collision correction for large-momentum-transfer events, a static local-field correction for electron correlations, an electron-binding correction, and the higher-order Barkas and Bloch terms. The resulting proton stopping powers agree with the NIST PSTAR and IAEA databases across the periodic table and for compounds -- providing a physics-based alternative to semi-empirical codes such as SRIM -- and reproduce the limited published plasma data, including charged-particle transport-workshop benchmarks, time-dependent DFT calculations, and the first measurements of enhanced light-ion stopping in plasmas. We further extend the model to a complete total stopping power for protons and alpha particles by adding nuclear and ionic (elastic ion-ion) stopping to the electronic term, yielding a continuous, self-consistent description of energy deposition from cold matter to hot dense plasmas. Because the average-atom treatment includes contributions from all electrons -- unlike Kohn-Sham DFT -- while remaining computationally efficient and applicable to low- and high-Z targets at arbitrary temperature and degeneracy, the model is well suited to inertial fusion and high-energy-density science. The computational framework is available on GitHub (https://github.com/dedx-erpa/dedx), with tabulated stopping powers and ranges in the data/ subdirectory.",
+      "authors": [
+        "Thomas A. Mehlhorn",
+        "Ming Feng Gu",
+        "Igor Golovkin"
+      ],
+      "primary_category": "physics.plasm-ph",
+      "categories": [
+        "physics.plasm-ph",
+        "cond-mat.mtrl-sci",
+        "physics.atom-ph",
+        "physics.comp-ph"
+      ],
+      "published": "2026-06-29T23:25:54+00:00",
+      "link": "https://arxiv.org/pdf/2606.30978v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "provides an ion stopping power model applicable to alpha particle energy deposition in matter",
+      "llm_evidence_cn": "提供了一个离子阻止本领模型，可用于阿尔法粒子在物质中的能量沉积计算",
+      "llm_evidence": "提供了一个离子阻止本领模型，可用于阿尔法粒子在物质中的能量沉积计算",
+      "canonical_evidence": "提供了一个离子阻止本领模型，可用于阿尔法粒子在物质中的能量沉积计算",
+      "llm_tldr_en": "Enhanced RPA-LDA model for ion stopping power from cold to plasma, applicable to alpha particle track structure calculations.",
+      "llm_tldr_cn": "现有离子阻止本领模型适用范围有限。该文提出了增强型RPA-LDA模型，通过强碰撞修正、静态局域场修正、电子结合修正和高温修正，使其从冷物质到高能量密度等离子体均适用。该模型可为阿尔法粒子在生物介质中的能量沉积模拟提供基础，有助于微剂量学和细胞尺度剂量计算。",
+      "llm_tldr": "现有离子阻止本领模型适用范围有限。该文提出了增强型RPA-LDA模型，通过强碰撞修正、静态局域场修正、电子结合修正和高温修正，使其从冷物质到高能量密度等离子体均适用。该模型可为阿尔法粒子在生物介质中的能量沉积模拟提供基础，有助于微剂量学和细胞尺度剂量计算。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "microdosimetric calculations for alpha particles in cellular and subcellular scales",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.00733v1",
+      "source": "arxiv",
+      "title": "LLM-Guided ODE Discovery and Parameter Inference from Small-Cohort Aggregate Data",
+      "abstract": "Mechanistic modeling via ordinary differential equations (ODEs) provides interpretable descriptions of complex dynamics and enables inference of underlying mechanisms, which is particularly valuable in clinical settings. However, in rare diseases, both the structure and parameters of the model are typically unknown, while individual-level data is scarce, noisy, heterogeneous, and subject to privacy constraints. In such settings, population-level summary statistics provide a practical privacy-preserving data representation, while capturing heterogeneity further requires modeling parameters as distributions rather than fixed values. Yet no existing method jointly discovers ODE structure and refines parameter distributions solely from summary statistics. We present AgentODE, an end-to-end framework that addresses this gap. An LLM proposes candidate ODE structures, while a tool-augmented inference agent iteratively refines parameter distributions through a diagnosis--update loop, operating on population-level summary statistics alone. We evaluate AgentODE on three benchmark problems across different fields and two clinical datasets, including the rare disease recessive dystrophic epidermolysis bullosa (RDEB), with only 231 observations across 46 patients. AgentODE recovers functionally consistent ODE structures across all settings, and experiments on RDEB demonstrates that in sparse and noisy data settings reasoning from summary statistics promotes mechanistically principled structure discovery, whereas baselines with individual-level data access recover implausible structures despite better predictive performance. AgentODE opens new possibilities for mechanistic modeling of rare diseases directly from population-level summary statistics, where data scarcity and privacy constraints have traditionally limited such analyses.",
+      "authors": [
+        "Hanning Yang",
+        "Meropi Karakioulaki",
+        "Lennart Purucker",
+        "Tim Litwin",
+        "Cristina Has",
+        "Moritz Hess"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-01T10:17:46+00:00",
+      "link": "https://arxiv.org/pdf/2607.00733v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "ODE-based mechanistic modeling for clinical pharmacokinetics",
+      "llm_evidence_cn": "基于ODE的临床药代动力学机制建模",
+      "llm_evidence": "基于ODE的临床药代动力学机制建模",
+      "canonical_evidence": "基于ODE的临床药代动力学机制建模",
+      "llm_tldr_en": "Proposes LLM-guided ODE discovery and parameter inference from aggregate data, directly applicable to pharmacokinetic modeling for radiopharmaceutical distribution in organs.",
+      "llm_tldr_cn": "针对罕见病临床数据稀缺且存在隐私约束的问题，本文提出一种基于大语言模型引导的常微分方程结构发现与参数推断方法。该方法仅利用群体层面的汇总统计量，即可自动发现ODE结构并优化参数分布，从而在保护隐私的同时为药物分布动力学建模提供可解释的机制描述。在模拟和真实数据实验中，该方法能准确恢复动力学方程并捕捉患者异质性，有望推广至α放射性药物的药代动力学建模。",
+      "llm_tldr": "针对罕见病临床数据稀缺且存在隐私约束的问题，本文提出一种基于大语言模型引导的常微分方程结构发现与参数推断方法。该方法仅利用群体层面的汇总统计量，即可自动发现ODE结构并优化参数分布，从而在保护隐私的同时为药物分布动力学建模提供可解释的机制描述。在模拟和真实数据实验中，该方法能准确恢复动力学方程并捕捉患者异质性，有望推广至α放射性药物的药代动力学建模。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "pharmacokinetic modeling for alpha radiopharmaceutical distribution in human organs",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

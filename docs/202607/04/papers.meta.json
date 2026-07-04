@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-04",
+  "date": "2026-07-04",
+  "generated_at": "2026-07-04T21:00:53",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/04/2606.30978v1-an-enhanced-rpa-lda-model-for-ion-stopping-power-from-cold-matter-to-high-energy-density-plasmas-a-unified-open-source-framework",
+      "section": "quick",
+      "title_en": "An Enhanced RPA-LDA Model for Ion Stopping Power from Cold Matter to High-Energy Density Plasmas: A Unified, Open-Source Framework",
+      "authors": "Thomas A. Mehlhorn, Ming Feng Gu, Igor Golovkin",
+      "date": "2026-06-29",
+      "pdf": "https://arxiv.org/pdf/2606.30978v1",
+      "score": "7.0",
+      "evidence": "提供了一个离子阻止本领模型，可用于阿尔法粒子在物质中的能量沉积计算",
+      "tldr": "现有离子阻止本领模型在冷物质到高能量密度等离子体的宽条件范围内缺乏统一物理描述。本文提出增强的RPA-LDA模型，基于平均原子电子密度和RPA介电响应，通过强碰撞、静态局域场、电子束缚及高阶Barkas与Bloch四项修正，实现从冷固体到热稠密等离子体的连续、自洽能量沉积计算。质子阻止本领与NIST PSTAR和IAEA数据库吻合，并重现了有限等离子体实验及TDDFT基准数据。该开源框架可计算质子与α粒子的总阻止本领，为惯性聚变等高能量密度科学提供物理基础的替代方案。",
+      "tags": "query:ad",
+      "abstract_en": "We present an enhanced random-phase-approximation--local-density-approximation (e-RPA-LDA) model for the stopping power of ions that is valid over a wide range of conditions, from cold solids through warm dense matter to high-energy-density plasmas. The electronic stopping is computed from the RPA dielectric response in the local-density approximation over an average-atom electron density obtained in a muffin-tin potential with the Flexible Atomic Code, augmented by four corrections to the earlier RPA-LDA model of Wang et al.: a strong-collision correction for large-momentum-transfer events, a static local-field correction for electron correlations, an electron-binding correction, and the higher-order Barkas and Bloch terms. The resulting proton stopping powers agree with the NIST PSTAR and IAEA databases across the periodic table and for compounds -- providing a physics-based alternative to semi-empirical codes such as SRIM -- and reproduce the limited published plasma data, including charged-particle transport-workshop benchmarks, time-dependent DFT calculations, and the first measurements of enhanced light-ion stopping in plasmas. We further extend the model to a complete total stopping power for protons and alpha particles by adding nuclear and ionic (elastic ion-ion) stopping to the electronic term, yielding a continuous, self-consistent description of energy deposition from cold matter to hot dense plasmas. Because the average-atom treatment includes contributions from all electrons -- unlike Kohn-Sham DFT -- while remaining computationally efficient and applicable to low- and high-Z targets at arbitrary temperature and degeneracy, the model is well suited to inertial fusion and high-energy-density science. The computational framework is available on GitHub (https://github.com/dedx-erpa/dedx), with tabulated stopping powers and ranges in the data/ subdirectory.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/04/2607.00733v1-llm-guided-ode-discovery-and-parameter-inference-from-small-cohort-aggregate-data",
+      "section": "quick",
+      "title_en": "LLM-Guided ODE Discovery and Parameter Inference from Small-Cohort Aggregate Data",
+      "authors": "Hanning Yang, Meropi Karakioulaki, Lennart Purucker, Tim Litwin, Cristina Has, Moritz Hess",
+      "date": "2026-07-01",
+      "pdf": "https://arxiv.org/pdf/2607.00733v1",
+      "score": "7.0",
+      "evidence": "基于ODE的临床药代动力学机制建模",
+      "tldr": "稀有疾病中数据稀缺且隐私受限，传统ODE建模难以进行。提出AgentODE框架，利用LLM生成候选ODE结构，并借助工具增强的推理代理，仅从群体级汇总统计迭代优化参数分布。在基准和临床数据集上验证，尤其RDEB数据中，基于汇总统计的推理可发现机制合理的结构，而使用个体级数据的基线预测虽优但结构不可靠。该方法为稀有疾病的机械建模开辟了新途径。",
+      "tags": "query:ad",
+      "abstract_en": "Mechanistic modeling via ordinary differential equations (ODEs) provides interpretable descriptions of complex dynamics and enables inference of underlying mechanisms, which is particularly valuable in clinical settings. However, in rare diseases, both the structure and parameters of the model are typically unknown, while individual-level data is scarce, noisy, heterogeneous, and subject to privacy constraints. In such settings, population-level summary statistics provide a practical privacy-preserving data representation, while capturing heterogeneity further requires modeling parameters as distributions rather than fixed values. Yet no existing method jointly discovers ODE structure and refines parameter distributions solely from summary statistics. We present AgentODE, an end-to-end framework that addresses this gap. An LLM proposes candidate ODE structures, while a tool-augmented inference agent iteratively refines parameter distributions through a diagnosis--update loop, operating on population-level summary statistics alone. We evaluate AgentODE on three benchmark problems across different fields and two clinical datasets, including the rare disease recessive dystrophic epidermolysis bullosa (RDEB), with only 231 observations across 46 patients. AgentODE recovers functionally consistent ODE structures across all settings, and experiments on RDEB demonstrates that in sparse and noisy data settings reasoning from summary statistics promotes mechanistically principled structure discovery, whereas baselines with individual-level data access recover implausible structures despite better predictive performance. AgentODE opens new possibilities for mechanistic modeling of rare diseases directly from population-level summary statistics, where data scarcity and privacy constraints have traditionally limited such analyses.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
