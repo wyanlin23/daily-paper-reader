@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-07T21:45:10.644668+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.04506v1",
+      "source": "arxiv",
+      "title": "Comparison of accuracy and efficiency of three-dimensional discrete ordinates and voxel-scoring Monte Carlo dose calculations for an $I^{125}$ seed",
+      "abstract": "This study compares the efficiency of three-dimensional deterministic discrete-ordinates calculations and voxel-based Monte Carlo simulations of the dose distribution around a model 6702 125I seed in a homogeneous water phantom. The computational efficiency of the PARTISN multigroup discrete ordinates neutral particle transport code is compared to the most efficient Monte Carlo voxel-scoring computer code available to us at the time, which was developed specifically for brachytherapy. The difficulties of such comparisons from the fact that the Monte Carlo and discrete ordinates method exhibit stochastic and systematic errors of different origins. To address this problem, we propose a parametric model for separating the systematic and stochastic error components of each method. Based on this model, a procedure for assessing efficiency of the two methods is proposed consisting of the following steps: (i)-apply the developed error model to evaluate the accuracy of each method relative to unbiased and accurate Monte Carlo point estimator calculations in the same phantom geometry; (ii)-develop systematic and stochastic error criteria which specifies equivalent accuracy of the two methods; and (iii) determine the relative efficiency of two methods by taking the ratio of CPU times required to satisfy these accuracy criteria. This process demostrates that three-dimensional PARTISN discrete ordinate simulations is a factor-of-two more efficient than our voxel-based Monte Carlo code in the 125I energy range. This suggests that discrete ordinates simulations can support efficiency competitive with that of Monte Carlo in three-dimensional geometries and can serve as an efficient and accurate dose-calculation engine in treatment planning for brachytherapy and other treatment modalities utilizing low energy photon fields.",
+      "authors": [
+        "George M. Daskalov",
+        "Randall S. Baker",
+        "David W. O. Rogers",
+        "Jeffrey F. Williamson"
+      ],
+      "primary_category": "physics.med-ph",
+      "categories": [
+        "physics.med-ph"
+      ],
+      "published": "2026-07-05T21:17:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.04506v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Monte Carlo dose calculation for radionuclide I-125 brachytherapy",
+      "llm_evidence_cn": "针对I-125放射性核素近距离治疗的蒙特卡洛剂量计算",
+      "llm_evidence": "针对I-125放射性核素近距离治疗的蒙特卡洛剂量计算",
+      "canonical_evidence": "针对I-125放射性核素近距离治疗的蒙特卡洛剂量计算",
+      "llm_tldr_en": "Compares discrete ordinates and Monte Carlo dose calculations for an I-125 seed, offering methods transferable to alpha emitter dosimetry.",
+      "llm_tldr_cn": "该论文比较了三维离散纵标法与体素蒙特卡洛模拟在I-125种子周围水模体中的剂量计算精度与效率。尽管针对的是光子发射体，但所研究的蒙特卡洛剂量计算方法对于阿尔法发射体剂量计算具有借鉴意义。作者分析了随机误差与系统误差，强调了蒙特卡洛方法在放射治疗剂量评估中的可靠性。该工作为核素治疗剂量学提供了有价值的方法学比较。",
+      "llm_tldr": "该论文比较了三维离散纵标法与体素蒙特卡洛模拟在I-125种子周围水模体中的剂量计算精度与效率。尽管针对的是光子发射体，但所研究的蒙特卡洛剂量计算方法对于阿尔法发射体剂量计算具有借鉴意义。作者分析了随机误差与系统误差，强调了蒙特卡洛方法在放射治疗剂量评估中的可靠性。该工作为核素治疗剂量学提供了有价值的方法学比较。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "radionuclide therapy",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
