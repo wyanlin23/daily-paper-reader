@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-16T20:08:41.702413+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.13589v1",
+      "source": "arxiv",
+      "title": "Using backscattered thermal neutrons to monitor boron concentration during BNCT: a Monte Carlo feasibility study",
+      "abstract": "Boron neutron capture therapy (BNCT) requires knowledge of patient-specific $^{10}$B concentration for accurate dose estimation, yet no established method provides real-time boron-sensitive information during irradiation. Backscattered thermal neutrons carry a $^{10}$B-dependent intensity modulation through the $^{10}$B(n,$α$)$^{7}$Li reaction, documented in BNCT treatment rooms for three decades but not yet developed as a measurement signal. This paper uses Monte Carlo simulation to assess the feasibility of backscattered thermal neutrons as a measurement channel for $^{10}$B concentration. A thin $^{nat}$LiF-converter detector placed at the beam exit captures the composite forward-plus-backscatter field; differential imaging against a $^{10}$B-free baseline isolates the $^{10}$B-dependent component, quantified by the fractional reduction in the $^{6}$Li capture rate, termed Relative Detector Signal Reduction (RDSR). In homogeneous phantoms, RDSR shows linear concentration dependence ($R^2 = 0.997$) with a practical depth limit of approximately 6 cm. Edge-response analysis yields a diffusion-limited FWHM of 32-176 mm over 1-5 cm depth, with weak concentration dependence. In a voxelized patient phantom across 12 boron configurations, the $^{6}$Li capture cross-section provides intrinsic thermal neutron energy selectivity that preferentially weights the band where $^{10}$B absorption is concentrated. Region-of-interest integration achieves counting-statistics sensitivity below 10 ppm; the systematic detection floor (~22-28 ppm at $\\pm$1% baseline uncertainty) identifies baseline-reference precision as the dominant constraint. The modeled detector produces limited dose perturbation (+11.6% treatment-time increase). These results establish the physical basis for a boron-sensitive backscattered neutron measurement concept in BNCT.",
+      "authors": [
+        "Zirui Ye",
+        "Yuxin Wang",
+        "Meitong Wei",
+        "Xie George Xu"
+      ],
+      "primary_category": "physics.med-ph",
+      "categories": [
+        "physics.med-ph"
+      ],
+      "published": "2026-07-15T08:31:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.13589v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Monte Carlo feasibility study for BNCT involving alpha particles",
+      "llm_evidence_cn": "针对BNCT中涉及α粒子的蒙特卡洛可行性研究",
+      "llm_evidence": "针对BNCT中涉及α粒子的蒙特卡洛可行性研究",
+      "canonical_evidence": "针对BNCT中涉及α粒子的蒙特卡洛可行性研究",
+      "llm_tldr_en": "This paper uses Monte Carlo simulation to assess backscattered thermal neutrons for monitoring boron concentration during BNCT, a therapy that produces alpha particles. It directly applies Monte Carlo methods to alpha-emitter related dosimetry.",
+      "llm_tldr_cn": "该论文利用蒙特卡洛模拟评估背散射热中子监测硼浓度的可行性，用于硼中子俘获治疗（BNCT）。BNCT通过硼俘获中子产生α粒子，该研究直接使用蒙特卡洛方法进行与α发射体相关的剂量学可行性分析，为实时剂量监测提供了新思路。",
+      "llm_tldr": "该论文利用蒙特卡洛模拟评估背散射热中子监测硼浓度的可行性，用于硼中子俘获治疗（BNCT）。BNCT通过硼俘获中子产生α粒子，该研究直接使用蒙特卡洛方法进行与α发射体相关的剂量学可行性分析，为实时剂量监测提供了新思路。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "absorbed dose distribution calculation using Monte Carlo software for alpha emitters",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
