@@ -6,24 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-16
-- 运行时间：2026-07-16 20:10:08 UTC
+- 最新运行日期：2026-07-17
+- 运行时间：2026-07-17 21:17:41 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：0
 - 精读区：0
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日速读一篇蒙特卡洛可行性研究。该研究探索了利用背散射热中子实时监测硼浓度，为BNCT治疗监测提供了新思路。对中子俘获治疗剂量验证感兴趣的读者可重点关注。
-- 详情：[/202607/16/README](/202607/16/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202607/17/README](/202607/17/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Using backscattered thermal neutrons to monitor boron concentration during BNCT: a Monte Carlo feasibility study](/202607/16/2607.13589v1-using-backscattered-thermal-neutrons-to-monitor-boron-concentration-during-bnct-a-monte-carlo-feasibility-study)  
-   标签：评分：7.0/10、query:ad
-   evidence：针对BNCT中涉及α粒子的蒙特卡洛可行性研究
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
