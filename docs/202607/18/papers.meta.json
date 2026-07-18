@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-18",
+  "date": "2026-07-18",
+  "generated_at": "2026-07-18T20:44:08",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/18/2607.10758v1-functional-expansion-tallies-of-matrix-operators-for-prediction-for-integrated-autocorrelation-time-in-batch-monte-carlo-an-analytic-2d-scattering-chain-benchmark",
+      "section": "quick",
+      "title_en": "Functional Expansion Tallies of Matrix Operators for Prediction for Integrated Autocorrelation Time in Batch Monte Carlo: an Analytic 2D Scattering Chain Benchmark",
+      "authors": "Jilang Miao, Guillaume L. Giudicelli, William Reed Kendrick",
+      "date": "2026-07-12",
+      "pdf": "https://arxiv.org/pdf/2607.10758v1",
+      "score": "6.0",
+      "evidence": "利用函数展开计数的蒙特卡洛输运方法减少自相关时间，可应用于α粒子剂量模拟",
+      "tldr": "在蒙特卡洛临界计算中，预测周期间相关性通常需要构建大型离散转移矩阵，计算成本高。本文提出功能展开计数作为约化基表示，通过直接从蒙特卡洛计数中构建Galerkin降阶模型来估计集成自相关时间。在二维各向同性散射链基准上，余弦基快速收敛到精确解，多项式基随阶数增加系统收敛。相比离散分箱，该方法在相当或更低的求解成本下实现了更低的偏差，为相关性预测和方差缩减提供了高效新路径。",
+      "tags": "query:ad",
+      "abstract_en": "We investigate functional expansion tallies as a reduced-basis representation for predicting inter-cycle correlations in Monte Carlo transport. Using an analytic two-dimensional isotropic scattering-chain benchmark with reflective boundaries, we compare a conventional discrete-cell Markov-chain estimator with a Galerkin reduced-order model built directly from Monte Carlo tallies of basis-function products. The reduced model estimates integrated autocorrelation time without first constructing a large discrete transition matrix. For the benchmark problem, the cosine basis converges rapidly to the exact result, while polynomial bases show systematic convergence with increasing order. Compared with discrete binning, the reduced-basis approach achieves lower bias at comparable or lower solve cost, suggesting that functional-expansion representations can provide an efficient path toward correlation prediction, uncertainty quantification, and future variance-reduction methods in Monte Carlo criticality calculations.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
