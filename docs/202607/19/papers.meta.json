@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-19",
+  "date": "2026-07-19",
+  "generated_at": "2026-07-19T20:02:12",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/19/2607.11101v1-quantum-generalized-equivalent-uniform-dose-qgeud-a-simulation-method-for-phase-dependent-radiobiological-dose-effects",
+      "section": "quick",
+      "title_en": "Quantum Generalized Equivalent Uniform Dose (QgEUD): A Simulation Method for Phase-Dependent Radiobiological Dose Effects",
+      "authors": "Yusuke Anetai",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11101v1",
+      "score": "6.0",
+      "evidence": "具有相位依赖效应的放射生物学剂量建模",
+      "tldr": "传统广义等效均匀剂量(gEUD)仅依赖剂量大小，忽略细胞相互作用和相位依赖效应。为此提出量子广义等效均匀剂量(QgEUD)，将核函数扩展至复域，引入相位变量，构建二维响应曲面。通过Kähler度量刻画局部敏感性，并采用Ising哈密顿量和蒙特卡洛模拟在虚拟放疗模体中生成平衡响应图。结果表明QgEUD能捕捉剂量大小之外的空间调制生物效应，参数敏感度分析验证了稳定收敛，为交互感知放射生物学建模和量子兼容优化提供了新框架。",
+      "tags": "query:ad",
+      "abstract_en": "The generalized equivalent uniform dose (gEUD) provides a biologically interpretable measure of heterogeneous dose distributions and is widely used in radiobiological modeling. However, because gEUD depends solely on dose magnitude, it does not explicitly account for collective cellular interactions or phase-dependent biological responses. Here, we propose a quantum generalized equivalent uniform dose (QgEUD), which extends the conventional gEUD kernel into the complex domain by introducing a phase variable while preserving the original dose-weighting formalism. This formulation yields a two-dimensional response surface that recovers conventional gEUD on the real axis and incorporates interaction-dependent radiobiological effects through phase modulation. The local response of the surface is characterized by a Kähler metric, providing an intrinsic measure of sensitivity to dose weighting and phase perturbations. To demonstrate the framework, local dose elements are modeled by an Ising Hamiltonian with dose- and phase-dependent interactions, and equilibrium response maps are obtained using Metropolis Monte Carlo simulations. Simulations in a virtual radiotherapy phantom preserve the overall dose distribution while producing spatially modulated biological-effect maps governed by collective interactions. The corresponding Kähler response identifies regions exhibiting enhanced sensitivity beyond dose magnitude alone, and parameter sensitivity analysis confirms stable convergence under practical simulation conditions. These results establish QgEUD as a quantum-inspired extension of gEUD that integrates heterogeneous dose aggregation, phase-dependent interactions, and geometric response within a unified mathematical framework, providing a basis for interaction-aware radiobiological modeling and future quantum-compatible optimization.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/19/2607.11309v1-toward-ai-agent-driven-particle-transport-simulations-implementation-of-ai-assisted-workflows-for-phits",
+      "section": "quick",
+      "title_en": "Toward AI-Agent-Driven Particle Transport Simulations: Implementation of AI-Assisted Workflows for PHITS",
+      "authors": "Tatsuhiko Sato, Shintaro Hashimoto, Tatsuhiko Ogawa, Takuya Furuta, Yuho Hirata, Seiki Ohnishi, Yasuhito Sakaki, Nobuhiro Shigyo",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11309v1",
+      "score": "6.0",
+      "evidence": "用于PHITS蒙特卡洛代码的AI辅助工作流",
+      "tldr": "蒙特卡洛粒子输运代码PHITS使用门槛较高，需要专业知识准备输入、执行和分析。本研究从手册、教材等资料中构建了检索增强生成知识库和紧凑的智能体参考，使通用AI助手能支持PHITS。通过NotebookLM提供对话支持，Claude Code等智能体可编辑输入文件、执行计算、分析结果。五个演示任务表明，智能体在适当规则下能处理复杂工作流，但需精确提示、人工验证和良好文档。最终建议将AI就绪资源与输运代码捆绑，无需专用应用即可使用通用AI工具。",
+      "tags": "query:ad",
+      "abstract_en": "Monte Carlo particle transport codes are powerful tools, but their use requires substantial knowledge of input preparation, execution, and result analysis. In this study, we present a code-side strategy for applying existing AI assistants and AI agents to PHITS. Two complementary sets of AI-ready resources were prepared from manuals, lecture materials, sample inputs, utility information, and developer-curated cautions: a bundled knowledge base for retrieval-augmented generation (RAG)-based assistants and a compact agent reference for direct use by AI agents. The knowledge base was loaded into NotebookLM to provide conversational PHITS support, while the agent reference was combined with PHITS-specific policies and execution rules to enable Codex and Claude Code to edit input files, execute calculations, inspect errors, analyze results, and assist with source-code modification and compilation. Five demonstration tasks covered input modification, repeated simulations, parameter optimization, program compilation, post-processing, and result interpretation. The results showed that AI agents could handle complex PHITS workflows when appropriate resources and rules were provided. Practical lessons included precise prompts, human verification, well-documented sample files, explicit execution policies, and command-line-accessible tools. These findings support bundling AI-ready resources with particle transport codes to enable the use of general-purpose AI tools without requiring dedicated code-specific applications.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
