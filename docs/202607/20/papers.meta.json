@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-20",
+  "date": "2026-07-20",
+  "generated_at": "2026-07-20T21:37:38",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/20/biorxiv-10-64898-2026-07-09-737638-v1-development-and-validation-of-thalia-a-high-resolutionpediatric-computational-model-of-a-10-month-old-infant",
+      "section": "quick",
+      "title_en": "Development and Validation of Thalia: A High-ResolutionPediatric Computational Model of a 10-Month-Old Infant",
+      "authors": "Albrecht, A., Ntolkeras, G., Zollei, L., Sideris, G., Marturano, F., Lev, M. H., Grant, E., Bonmassar, G.",
+      "date": "2026-07-16",
+      "pdf": "https://www.biorxiv.org/content/10.64898/2026.07.09.737638v1.full.pdf",
+      "score": "7.0",
+      "evidence": "高分辨率儿科计算模型用于剂量测定",
+      "tldr": "当前缺少高分辨率、非变形的1岁左右儿童全身计算模型，研究基于MRI数据构建了10个月女婴Thalia模型，分割442个组织并验证。该模型为儿科医疗设备开发、剂量学和生物电磁仿真提供准确解剖基础，已作为开源资源公开。",
+      "tags": "query:ad",
+      "abstract_en": "Numerical human models are essential to advance medical device design, safety assessment, and study how anatomical development influences physiological processes. Despite increasing availability of pediatric models, a critical gap remains in high-resolution, non-morphed whole-body models representing children around one year of age. Existing pediatric models are often derived from morphing older anatomies or lack sufficient tissue segmentation to accurately capture early developmental anatomy.\n\nThis study introduces Thalia, a non-morphed, high-resolution numerical model of a healthy 10-month-old female. The model was constructed by segmenting 442 tissues from Magnetic Resonance Imaging data. Brain tissues were automatically segmented using an infant-specific FreeSurfer framework, followed by semi-automated and manual refinement in 3DSlicer. The model was validated by expert review and quantitative comparison with age-matched anatomical values reported in the literature. The resulting whole-body model provides detailed anatomical representation across the brain, musculoskeletal system, vasculature, and internal organs, enabling realistic assignment of tissue-specific properties for computational studies. It provides a versatile platform for pediatric medical device development, dosimetry, safety assessment, and bioelectromagnetic simulations. This pediatric numerical anatomical model is openly available as an open-source resource.\n\nHighlightsO_LIHigh-resolution model of a 10-month-old child developed from MRI data\nC_LIO_LI442 tissues segmented to capture early anatomical development accurately\nC_LIO_LIModel validated against expert review and age-matched anatomical data\nC_LIO_LIIllustrative Example of a pediatric transcranial magnetic stimulation use case\nC_LI",
+      "source": "biorxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/20/2607.13984v1-multimodal-empirical-bayes-variational-autoencoders-for-joint-longitudinal-and-time-to-event-modeling",
+      "section": "quick",
+      "title_en": "Multimodal Empirical Bayes Variational Autoencoders for Joint Longitudinal and Time-to-Event Modeling",
+      "authors": "Anders Sjöberg, Nils Olsson, Marcus Baaz, Mats Jirstrand",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13984v1",
+      "score": "6.0",
+      "evidence": "纵向和时间事件联合建模用于肿瘤生长",
+      "tldr": "纵向肿瘤测量、脱落信息和遗传协变量提供了治疗反应的互补信息，但整合到单一模型存在挑战。本文扩展经验贝叶斯变分自编码器（EB-VAE）框架，联合建模肿瘤生长轨迹与脱落时间，采用协变量条件经验贝叶斯先验正则化潜在个体效应。半机制解码器恢复治疗效应参数与非线性混合效应估计一致，且联合模型准确预测肿瘤体积分布和脱落模式。基因条件先验改善了黑色素瘤和乳腺癌的个体预测，稳定性选择识别了BRAF、NRAS等生物学合理遗传指标。",
+      "tags": "query:ad",
+      "abstract_en": "Longitudinal tumor measurements, dropout information, and genetic covariates provide complementary information about treatment response, but integrating these data sources within a single population modeling framework remains challenging. We extend the empirical Bayes variational autoencoder (EB-VAE) framework to joint longitudinal and time-to-event modeling and evaluate it on tumor growth data. The framework represents inter-individual variability using latent individual effects regularized by a covariate-conditioned empirical Bayes prior, while a decoder maps these latent effects to tumor-volume trajectories. To account for informative dropout, the decoder was augmented with a hazard model, yielding joint predictions of tumor growth and time to dropout. We further compared fully neural and hybrid semi-mechanistic decoder formulations and incorporated genomic covariates through a genetics-conditioned prior adaptation. The hybrid decoder recovered treatment-effect parameters broadly consistent with previously reported nonlinear mixed-effects estimates, while achieving prior predictive performance comparable to the neural decoder. The joint model reproduced both tumor-volume distributions and dropout patterns in held-out individuals, and genetic conditioning improved individual-level prior predictions in both cutaneous melanoma and breast cancer experiments. Stability selection identified several biologically plausible genetic indicators, including alterations in BRAF, NRAS, NF1, and MDM2. These results demonstrate that EB-VAE provides a flexible probabilistic framework for combining neural dynamics, mechanistic structure, time-to-event modeling, and high-dimensional covariates in pharmacometric applications.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
