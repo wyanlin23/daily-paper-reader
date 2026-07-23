@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-23",
+  "date": "2026-07-23",
+  "generated_at": "2026-07-23T20:07:25",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/23/biorxiv-10-64898-2026-07-17-739177-v1-lift-live-foci-tracking-for-quantitative-analysis-of-dna-damage-dynamics",
+      "section": "quick",
+      "title_en": "LiFT: Live foci tracking for quantitative analysis of DNA damage dynamics",
+      "authors": "de Wolf, T. H., Engbers, P. A. M., Perrin, J., van der Steen, K. H., van Beuningen, S. F. B., Smal, I., Nonnekens, J.",
+      "date": "2026-07-19",
+      "pdf": "https://www.biorxiv.org/content/10.64898/2026.07.17.739177v1.full.pdf",
+      "score": "6.0",
+      "evidence": "活细胞DNA损伤焦点自动追踪，可用于定量α粒子诱导的DSBs以评估治疗效果",
+      "tldr": "放射治疗中DNA双链断裂(DSB)的动力学定量分析至关重要，但传统手工追踪病灶耗时且主观。本文提出LiFT自动化图像分析流程，通过无核染色的细胞核分割跟踪、图像配准和病灶检测追踪，实现单个修复事件的直接量化。在PLC/PRF/5和U2OS-SSTR2细胞上验证了可重复性和可扩展性。该开源工具为癌症活细胞成像研究提供了广泛适用的分析框架。",
+      "tags": "query:ad",
+      "abstract_en": "Quantitative analysis of radiation induced DNA double strand breaks (DSBs) and their repair is essential for understanding and eventually contributing to improving radiation-based cancer therapies. Using live-cell microscopy, the formation and resolution of DSBs over time can be followed in individual cells through tracking of foci formed by accumulation of DSB repair proteins. However, manual analysis of such time-lapse datasets is a tedious time-consuming task that is prone to operator bias, affecting the reproducibility. Here, we present LiFT, an automated image analysis pipeline, specifically designed for robust quantification of DSB kinetics in live-cell imaging experiments. To quantify DSB kinetics, our pipeline first segments and tracks cell nuclei without requiring a nuclear stain. After correcting for inter-frame motion through image registration, automatic detection and tracking of foci within these nuclei enables direct quantification of the dynamics of individual repair events. Multiple algorithmic options were implemented for each step of the pipeline, ensuring more general applicability to potentially different imaging setups and applications. We evaluated the pipeline using PLC/PRF/5 cells and demonstrated its generalizability on U2OS-SSTR2 cells. Our results show that LiFT enables reproducible and scalable quantification of DSB dynamics, providing a broadly applicable framework to analyse live-cell imaging data in cancer research. To improve the adoption of LiFT, we made it available as an open-source Python package and provided a graphical user interface to select different methods and adjust method related parameters.",
+      "source": "biorxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

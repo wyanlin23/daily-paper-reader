@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-07-23 <!--dpr-date:20260723-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/23/biorxiv-10-64898-2026-07-17-739177-v1-lift-live-foci-tracking-for-quantitative-analysis-of-dna-damage-dynamics" data-sidebar-item="{&quot;title&quot;: &quot;LiFT: Live foci tracking for quantitative analysis of DNA damage dynamics&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/biorxiv-10-64898-2026-07-17-739177-v1-lift-live-foci-tracking-for-quantitative-analysis-of-dna-damage-dynamics&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;活细胞DNA损伤焦点自动追踪，可用于定量α粒子诱导的DSBs以评估治疗效果&quot;}">LiFT: Live foci tracking for quantitative analysis of DNA damage dynamics</a>
   * 2026-07-20 <!--dpr-date:20260720-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/20/biorxiv-10-64898-2026-07-09-737638-v1-development-and-validation-of-thalia-a-high-resolutionpediatric-computational-model-of-a-10-month-old-infant" data-sidebar-item="{&quot;title&quot;: &quot;Development and Validation of Thalia: A High-ResolutionPediatric Computational Model of a 10-Month-Old Infant&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/biorxiv-10-64898-2026-07-09-737638-v1-development-and-validation-of-thalia-a-high-resolutionpediatric-computational-model-of-a-10-month-old-infant&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;高分辨率儿科计算模型用于剂量测定&quot;}">Development and Validation of Thalia: A High-ResolutionPediatric Computational Model of a 10-Month-Old Infant</a>

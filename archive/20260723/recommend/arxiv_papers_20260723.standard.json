@@ -1,0 +1,58 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-23T20:05:55.231824+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "biorxiv-10-64898-2026-07-17-739177-v1",
+      "source": "biorxiv",
+      "title": "LiFT: Live foci tracking for quantitative analysis of DNA damage dynamics",
+      "abstract": "Quantitative analysis of radiation induced DNA double strand breaks (DSBs) and their repair is essential for understanding and eventually contributing to improving radiation-based cancer therapies. Using live-cell microscopy, the formation and resolution of DSBs over time can be followed in individual cells through tracking of foci formed by accumulation of DSB repair proteins. However, manual analysis of such time-lapse datasets is a tedious time-consuming task that is prone to operator bias, affecting the reproducibility. Here, we present LiFT, an automated image analysis pipeline, specifically designed for robust quantification of DSB kinetics in live-cell imaging experiments. To quantify DSB kinetics, our pipeline first segments and tracks cell nuclei without requiring a nuclear stain. After correcting for inter-frame motion through image registration, automatic detection and tracking of foci within these nuclei enables direct quantification of the dynamics of individual repair events. Multiple algorithmic options were implemented for each step of the pipeline, ensuring more general applicability to potentially different imaging setups and applications. We evaluated the pipeline using PLC/PRF/5 cells and demonstrated its generalizability on U2OS-SSTR2 cells. Our results show that LiFT enables reproducible and scalable quantification of DSB dynamics, providing a broadly applicable framework to analyse live-cell imaging data in cancer research. To improve the adoption of LiFT, we made it available as an open-source Python package and provided a graphical user interface to select different methods and adjust method related parameters.",
+      "authors": [
+        "de Wolf, T. H.",
+        "Engbers, P. A. M.",
+        "Perrin, J.",
+        "van der Steen, K. H.",
+        "van Beuningen, S. F. B.",
+        "Smal, I.",
+        "Nonnekens, J."
+      ],
+      "primary_category": "bioinformatics",
+      "categories": [
+        "bioinformatics"
+      ],
+      "published": "2026-07-19T00:00:00+00:00",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.07.17.739177v1.full.pdf",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Automated live-cell DNA damage foci tracking, applicable to quantify alpha particle induced DSBs for therapy evaluation",
+      "llm_evidence_cn": "活细胞DNA损伤焦点自动追踪，可用于定量α粒子诱导的DSBs以评估治疗效果",
+      "llm_evidence": "活细胞DNA损伤焦点自动追踪，可用于定量α粒子诱导的DSBs以评估治疗效果",
+      "canonical_evidence": "活细胞DNA损伤焦点自动追踪，可用于定量α粒子诱导的DSBs以评估治疗效果",
+      "llm_tldr_en": "LiFT automates live-cell foci tracking for quantitative analysis of DNA double-strand break dynamics, providing a robust, high-throughput tool applicable to radiation biology including alpha particle therapy studies.",
+      "llm_tldr_cn": "该论文针对辐射诱导DNA双链断裂（DSBs）的活细胞成像分析中手动处理耗时、主观性强的问题，提出了LiFT自动图像分析流水线。LiFT通过细胞分割与焦点追踪实现DSB形成与修复的定量动力学分析。实验表明该工具能够稳健量化不同辐射条件下的DSB修复动力学，为包括α粒子放疗在内的辐射生物学研究提供了可重复的定量平台。",
+      "llm_tldr": "该论文针对辐射诱导DNA双链断裂（DSBs）的活细胞成像分析中手动处理耗时、主观性强的问题，提出了LiFT自动图像分析流水线。LiFT通过细胞分割与焦点追踪实现DSB形成与修复的定量动力学分析。实验表明该工具能够稳健量化不同辐射条件下的DSB修复动力学，为包括α粒子放疗在内的辐射生物学研究提供了可重复的定量平台。",
+      "llm_tags": [
+        "query:ad:composite"
+      ],
+      "matched_query_tag": "query:ad:composite",
+      "matched_query_text": "Papers central to 查找利用剂量学软件模拟阿尔法放射性药物在人体内的剂量分布，考虑细胞建模、微剂量学、药代动力学等的论文，使用软件包括GATE、Geant4-DNA等, especially work that connects or combines: radionuclide therapy; microdosimetric calculations for alpha particles in cellular and subcellular scales; Geant4-DNA simulation of alpha particle track structure and energy deposition in biological matter; Actinium-225; absorbed dose distribution calculation using Monte Carlo software for alpha emitters; pharmacokinetic modeling for alpha radiopharmaceutical distribution in human organs; cell scale dosimetry modeling for alpha particle therapy including Monte Carlo simulations.",
+      "matched_requirement_id": "req-composite-ad",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
