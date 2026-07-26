@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-26",
+  "date": "2026-07-26",
+  "generated_at": "2026-07-26T20:35:06",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/26/2607.20044v1-a-hybrid-framework-for-uncertainty-quantification-in-partially-observed-dynamic-biological-systems",
+      "section": "quick",
+      "title_en": "A Hybrid Framework for Uncertainty Quantification in Partially Observed Dynamic Biological Systems",
+      "authors": "Alberto Portela, Julio R. Banga",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.20044v1",
+      "score": "6.0",
+      "evidence": "适用于药代动力学建模的ODE模型不确定量化框架",
+      "tldr": "针对部分观测动态生物系统中ODE模型不确定性量化计算昂贵且难以处理非线性、弱可识别性的问题，提出混合框架CUQDyn1 Plus，结合留一法杰克刀+经验校准用于观测状态，灵敏度高斯传播用于隐藏状态，支持全局参数估计和协方差传播。在六个基准系统上验证，良态下准确，在非线性、弱可识别性及全局分支切换非可识别性下性能退化。该框架提供计算高效的UQ工作流，并输出诊断以指导可靠性判断，可作为贝叶斯方法的有效补充。",
+      "tags": "query:ad",
+      "abstract_en": "Mechanistic ordinary differential equation (ODE) models are widely used in systems biology, but uncertainty quantification (UQ) remains difficult when only a subset of state variables is experimentally observed. Existing Bayesian and likelihood-based approaches can be computationally demanding for nonlinear, weakly identifiable, or high-dimensional systems. We present a framework, and its corresponding software CUQDyn1 Plus, for UQ in partially observed ODE systems. Our method combines leave-one-out jackknife+-style empirical calibration for observed states with sensitivity-based Gaussian uncertainty propagation for hidden states. The software supports global parameter estimation, covariance propagation, bootstrap trajectory uncertainty and simulation-based calibration. It also facilitates comparison with Bayesian workflows, automated reporting, and reproducibility diagnostics. Validation on six benchmark systems shows accurate behavior in well-conditioned cases and model-dependent degradation under nonlinearity, weak identifiability, or global branch-switching non-identifiability. CUQDyn1 Plus provides a practical and computationally efficient UQ workflow for systems biology models with observed and latent states. Its diagnostic outputs help identify when local Gaussian propagation is reliable and when uncertainty bands should be interpreted cautiously, making it a useful complement to fully Bayesian workflows.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

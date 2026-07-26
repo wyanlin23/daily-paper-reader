@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-26T20:33:36.342383+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.20044v1",
+      "source": "arxiv",
+      "title": "A Hybrid Framework for Uncertainty Quantification in Partially Observed Dynamic Biological Systems",
+      "abstract": "Mechanistic ordinary differential equation (ODE) models are widely used in systems biology, but uncertainty quantification (UQ) remains difficult when only a subset of state variables is experimentally observed. Existing Bayesian and likelihood-based approaches can be computationally demanding for nonlinear, weakly identifiable, or high-dimensional systems. We present a framework, and its corresponding software CUQDyn1 Plus, for UQ in partially observed ODE systems. Our method combines leave-one-out jackknife+-style empirical calibration for observed states with sensitivity-based Gaussian uncertainty propagation for hidden states. The software supports global parameter estimation, covariance propagation, bootstrap trajectory uncertainty and simulation-based calibration. It also facilitates comparison with Bayesian workflows, automated reporting, and reproducibility diagnostics. Validation on six benchmark systems shows accurate behavior in well-conditioned cases and model-dependent degradation under nonlinearity, weak identifiability, or global branch-switching non-identifiability. CUQDyn1 Plus provides a practical and computationally efficient UQ workflow for systems biology models with observed and latent states. Its diagnostic outputs help identify when local Gaussian propagation is reliable and when uncertainty bands should be interpreted cautiously, making it a useful complement to fully Bayesian workflows.",
+      "authors": [
+        "Alberto Portela",
+        "Julio R. Banga"
+      ],
+      "primary_category": "q-bio.QM",
+      "categories": [
+        "q-bio.QM"
+      ],
+      "published": "2026-07-22T11:38:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.20044v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Uncertainty quantification framework for ODE models applicable to pharmacokinetic modeling",
+      "llm_evidence_cn": "适用于药代动力学建模的ODE模型不确定量化框架",
+      "llm_evidence": "适用于药代动力学建模的ODE模型不确定量化框架",
+      "canonical_evidence": "适用于药代动力学建模的ODE模型不确定量化框架",
+      "llm_tldr_en": "Proposes a hybrid UQ framework combining jackknife calibration and sensitivity propagation for partially observed ODE systems, with software CUQDyn1 Plus; applicable to pharmacokinetic models.",
+      "llm_tldr_cn": "针对部分观测动态生物系统中参数估计和不确定量化难题，提出了一种混合框架，结合留一法杰克刀经验校准和基于敏感性的高斯不确定传播。该方法能够处理非线性弱可识别系统，支持全局参数估计和协方差传播，并配套软件开发工具CUQDyn1 Plus。该框架可推广至药代动力学模型中的剂量分布不确定分析。",
+      "llm_tldr": "针对部分观测动态生物系统中参数估计和不确定量化难题，提出了一种混合框架，结合留一法杰克刀经验校准和基于敏感性的高斯不确定传播。该方法能够处理非线性弱可识别系统，支持全局参数估计和协方差传播，并配套软件开发工具CUQDyn1 Plus。该框架可推广至药代动力学模型中的剂量分布不确定分析。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "pharmacokinetic modeling for alpha radiopharmaceutical distribution in human organs",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
