@@ -1,0 +1,629 @@
+Title: STORM: RDMA-based Monte Carlo Transport Scheme for Distributed-Memory Particle Simulations
+
+URL Source: https://arxiv.org/pdf/2607.20639v1
+
+Published Time: Fri, 24 Jul 2026 00:13:43 GMT
+
+Number of Pages: 22
+
+Markdown Content:
+> Draft version July 24, 2026
+> Typeset using L ATEX twocolumn style in AASTeX7.0.1
+
+STORM: RDMA-based Monte Carlo Transport Scheme for Distributed-Memory Particle Simulations 
+
+Maor Mizrachi, 1 Barak Raveh, 1 and Elad Steinberg 2
+
+> 1School of Computer Science and Engineering, The Hebrew University, 9190401 Jerusalem, Israel
+> 2Racah Institute of Physics, The Hebrew University, 9190401 Jerusalem, Israel
+
+ABSTRACT Monte Carlo particle transport enables high-fidelity astrophysical radiation and neutrino simulations - from core-collapse supernovae and neutron-star mergers to accretion flows - by handling multidimen-sional geometries, frequency dependence, and moving media without angular discretization. However, inter-rank communication limits scalability on unstructured meshes: standard two-sided MPI requires receivers to post receives and poll completions, creating per-iteration progress overhead that grows with the number of communication partners. Such problems have not demonstrated high scaling ef-ficiency at O(10 4) cores. We present STORM (Scalable Transport via One-sided Remote Memory), an open-source library for Monte Carlo transport on general meshes, physics, and boundary con-ditions. STORM provides a lock-free, mesh-independent communication layer that replaces MPI’s matched-send/receive semantics with Remote Direct Memory Access (RDMA) - one-sided operations that write directly into a remote rank’s memory without involving its CPU. Each rank pair shares a single-producer, single-consumer ring buffer; RDMA writes transfer particles while receivers remain passive. A two-sided MPI backend provides a portable fallback. In an adversarial uniform-emission benchmark, the RDMA backend sustains > 97% weak-scaling and > 88% strong-scaling efficiency up to 13,440 cores (112 cores per network adapter), with 1 .14-1 .27 × speedups over the two-sided alterna-tive. In a Hohlraum IMC benchmark at 4,480 ranks, it is 1 .41 × faster because MPI progress overhead is reduced by 6 .1×. By decoupling communication from physics models and mesh representations, 
+
+STORM removes a barrier to scaling Monte Carlo transport in astrophysical multiphysics codes, en-abling coupled radiation-hydrodynamics with energy- and angle-resolved photon or neutrino transport on dynamically evolving meshes at scale. 
+
+Keywords: Monte Carlo methods - radiative transfer - RDMA - distributed-memory computing -asynchronous communication 
+
+1. INTRODUCTION Radiation and neutrino transport are central to many of the most challenging problems in computational as-trophysics. In core-collapse supernovae, neutrino heat-ing behind the stalled shock helps determine whether an explosion is launched; in neutron-star mergers and post-merger accretion flows, neutrino cooling and lepton-number transport shape the composition of the ejecta and the resulting electromagnetic counterparts; and in supernova ejecta, stellar envelopes, and accretion disks, radiation transport controls thermal histories, spectra, and the exchange of momentum between matter and ra-diation (D. Kasen et al. 2006; U. M. Noebauer & S. A. Sim 2019; A. Mezzacappa et al. 2020; F. Foucart 2023). 
+
+> Corresponding author: Maor Mizrachi Email: maormiz@cs.huji.ac.il
+
+These systems are difficult to model because the radia-tion/neutrino field is intrinsically high dimensional, de-pending on space, direction, frequency or energy, and time, while also coupling nonlinearly to matter through opacities, emissivities, scattering kernels, and velocity-dependent effects. Monte Carlo transport is attractive in this setting be-cause it samples particle histories directly rather than explicitly discretizing the full angular phase space. This makes it well suited to multidimensional geometries, anisotropic radiation fields, frequency dependence, and moving media. Astrophysical Monte Carlo radiative-transfer codes such as SEDONA , TORUS , MCFOST ,and ARTEMIS have demonstrated the method’s flex-ibility for spectra, continuum and line transfer, dust radiative equilibrium, polarization, and time-dependent transport (D. Kasen et al. 2006; C. Pinte et al. 2006; T. J. Harries et al. 2019; U. M. Noebauer & S. A. Sim arXiv:2607.20639v1 [astro-ph.IM] 22 Jul 2026 2 Mizrachi et al. 
+
+2019; A. M. Dempsey et al. 2024). For radiation hy-drodynamics, Implicit Monte Carlo ( IMC ) (J. A. F. Jr. & J. D. Cummings 1971; A. B. Wollaber 2016) and Discrete Diffusion Monte Carlo ( DDMC ) (J. D. Dens-more et al. 2007, 2012) provide stable and efficient treat-ments of optically thick thermal radiation, and recent moving-mesh work such as AREPO-MCRT (A. Smith et al. 2020) illustrates the growing role of Monte Carlo transport in dynamic, unstructured astrophysical simu-lations. The same considerations motivate Monte Carlo meth-ods for neutrino transport. Fully resolved Boltzmann or discrete-ordinates neutrino transport remains extremely expensive in multidimensional supernova and merger calculations, while leakage, flux-limited diffusion, and moment schemes trade angular fidelity for computa-tional speed (O. E. B. Messer et al. 1998; S. Richers et al. 2017; A. Mezzacappa et al. 2020; F. Foucart 2023). Mo-ment methods with analytic closures, including M1 , are now widely used, but their closures can fail when the radiation field contains intersecting beams or strongly nonlocal angular structure (F. Foucart 2018; E. M. Murchikova et al. 2017). Monte Carlo neutrino trans-port has therefore become an important complementary approach for benchmark calculations, snapshot trans-port, closure construction, and problems where angle-and energy-dependent neutrino physics is especially im-portant (E. Abdikamalov et al. 2012; S. Richers et al. 2015; F. Foucart 2018, 2023). As Monte Carlo transport is coupled to larger three-dimensional astrophysical simulations, the communica-tion problem becomes a limiting concern. In a domain-decomposed calculation, photon or neutrino packets are advanced locally until they cross a subdomain boundary, at which point ownership must be transferred to an-other MPI rank. The resulting traffic is irregular: pack-ets cross boundaries at stochastic times, in directions set by the radiation field and mesh geometry, and with rates that can vary strongly across the domain. Mov-ing meshes, adaptive refinement, and load rebalancing make the pattern even less predictable. If communica-tion requires the receiving rank to poll all neighbors or to participate in matched receives, particle transfer can compete directly with useful transport work and can be-come a scalability bottleneck even when the underlying physical Monte Carlo algorithm is highly parallel. One way to reduce this overhead is to bypass the matched-message semantics of MPI and instead use one-sided Remote Direct Memory Access (RDMA) oper-ations, which allow a sender to deposit data directly into a remote rank’s memory without involving the re-mote CPU. The relevant distinction, however, is not simply “RDMA versus MPI”. Optimized MPI point-to-point implementations commonly use RDMA-capable transports underneath, for example through rendezvous protocols or UCX. The overhead addressed here comes from the abstraction boundary: MPI exposes a generic matched-message interface in which receives must be posted, completion and progress are driven through tests, waits, or probes, and memory-registration and or-dering details are hidden behind a portable library. For stochastic particle transport this generic asynchronous-progress model can put probing in the hot loop and gives the application little control over the fine-grained details that determine latency under bursty, neighbor-dependent traffic. Our approach is therefore to replace the particle communication library with an application-specific low-level RDMA protocol, while retaining an optimized MPI point-to-point backend as the portable baseline. Previous work has addressed related communication issues in large-scale Monte Carlo transport. T. A. Brun-ner & P. S. Brantley (2009) introduced an efficient domain-decomposition algorithm with a tree-based com-pletion detector for particle Monte Carlo, while P. K. Romano et al. (2011) explored MPI remote memory ac-cess for particle communication in Monte Carlo neutron transport and P. K. Romano et al. (2013) studied tally-server decomposition. Much of the transport literature, however, necessarily emphasizes the physics model, ac-celeration strategy, or closure approximation. The com-munication substrate itself remains a reusable systems problem: ranks must move particles asynchronously, co-ordinate remote buffers safely, avoid deadlock, resize buffers under bursty traffic, and detect global comple-tion without excessive synchronization. In this paper we present STORM 3 (Scalable Trans-port via One-sided Remote Memory), a publicly available, open-source library that provides a mesh-independent communication and particle-management layer for distributed Monte Carlo transport. STORM 
+
+implements Monte Carlo transport of general physics on general meshes with general boundary conditions, using direct one-sided Remote Direct Memory Access (RDMA ) operations, pairwise communication Han-dlers, local aggregation of outgoing particles, a deadlock-free reallocation protocol, and a distributed termination detector. Its only physics-side requirement is that the application determine when a packet leaves the local subdomain and identify the destination rank and as-sociated metadata. STORM is distributed as a stan- 
+
+> 3https://github.com/maormizrachi/STORM
+
+STORM: RDMA-based MC Transport for Distributed-Memory Particle Simulations 3dalone package and is also integrated into the open-source three-dimensional moving-mesh hydrodynamics code RICH 4 (A. Yalinewich et al. 2015), where it con-nects to the MadVoro parallel Voronoi tessellation builder (M. Mizrachi et al. 2025) for Monte Carlo ra-diative transfer on moving Voronoi meshes. The IMC 
+
+implementation built on STORM is described sepa-rately in a companion paper (Mizrachi et al., in prepa-ration). Here we deliberately isolate the communication layer, which is applicable to photon, neutrino, and other particle-transport problems on structured, adaptive, un-structured, or moving-mesh decompositions. The remainder of this paper is organized as follows. Section 2 describes the Open Fabrics Interfaces (OFI) API used by our primary backend and briefly introduces the alternative backends. Section 3 presents STORM ’s communication architecture in detail: the per-pair Han-dler design, the one-sided transfer protocol, particle aggregation, deadlock-free buffer reallocation, and dis-tributed termination detection. The coupling to a mov-ing Voronoi mesh, including remapping and load bal-ancing, is described in Section 3.7. Section 4 validates the scheme on a uniform-emission benchmark, presents strong- and weak-scaling results, and introduces a cylin-drical Hohlraum benchmark for realistic IMC timing comparisons. Section 5 concludes with a summary and directions for future work.  
+
+> 2.
+
+RDMA AND COMMUNICATION BACKENDS Remote Direct Memory Access (RDMA) allows one process to read from or write to the memory of a remote process without involving the remote CPU. On modern HPC clusters, the network adapter executes RDMA op-erations entirely in hardware after the application posts a request, delivering low-latency, high-throughput data movement that is ideally suited for the fine-grained, asynchronous particle transfers required by distributed Monte Carlo transport. RDMA is not an exotic technology external to the MPI ecosystem. On the contrary, most modern MPI implementations already use RDMA internally - for example, via rendezvous protocols for large messages or through the UCX framework - and MPI 3 exposes one-sided RDMA semantics directly through its RMA interface ( MPI Put , MPI Get , MPI Compare and swap ). The relevant distinction in this work is therefore not RDMA-capable hardware versus non-RDMA hardware, but an application-specific low-level RDMA protocol versus generic MPI communication semantics. Our OFI backend bypasses the MPI abstraction layer to issue  
+
+> 4https://gitlab.com/eladtan/RICH
+
+RDMA operations directly through the Open Fabrics In-terfaces ( libfabric ) API, gaining fine-grained control over memory registration, completion detection, opera-tion ordering, and progress that the standardized MPI interface cannot fully expose. This section describes the OFI interface, followed by a brief overview of the alter-native backends. 2.1. Open Fabrics Interfaces (OFI) 
+
+The Open Fabrics Interfaces API ( libfabric ) pro-vides a portable, provider-agnostic interface for issuing RDMA operations across diverse network fabrics. Un-like InfiniBand Verbs, which exposes hardware-specific abstractions tied to InfiniBand adapters, libfabric 
+
+supports multiple fabric providers - including InfiniBand (via the verbs provider), Cray Slingshot ( cxi ), AWS Elastic Fabric Adapter ( efa ), and Ethernet ( tcp/rxm ) -through a unified API. At startup STORM queries the available providers and automatically selects the best match for the local hardware, requiring no recompila-tion or user intervention. Fig. 1 summarizes the key abstractions. The resource hierarchy begins with a Fabric object representing the physical network, from which a Do-main is created to scope all communication resources. Memory targeted by RDMA must be registered with the domain via fi mr reg , which pins the pages in physical memory and returns a memory-region key. Each Han-dler registers two regions: the particle ring buffer and the head/tail counter pair. Communication proceeds through a single Reliable Datagram (RDM) endpoint shared across all peers. Un-like connected endpoint models that require one end-point per peer, the RDM endpoint is connectionless: re-mote ranks are addressed through an Address Vector 
+
+- a lookup table of peer addresses populated once at setup time via fi av insert . This design makes the endpoint count independent of the number of communi-cation partners, improving scalability for many-neighbor decompositions. Because all of our operations are one-sided, the remote endpoint need not execute any re-ceive call. A single shared Completion Queue, polled via fi cq read , detects operation completions. Our implementation uses four RDMA operation types, issued as direct function calls on the endpoint: 
+
+RDMA Write (fi write ) to transfer particle data into the remote ring buffer, RDMA Read (fi read )to read remote head/tail counters, Atomic Fetch-and-Add (fi fetch atomic ) to publish newly written par-ticles (Section 3.3), and Atomic Compare-and-Swap 
+
+(fi compare atomic ) for the reallocation protocol (Sec-tion 3.5). At startup, each rank obtains its local end-4 Mizrachi et al. 
+
+point name via fi getname ; the names are exchanged via MPI Allgather and inserted into the Address Vec-tor. This one-time setup requires no per-peer state-machine transitions and is amortized over subsequent transfers. 2.2. Alternative Backends 
+
+Our implementation supports three additional com-munication backends beyond OFI: a native InfiniBand Verbs (IBV) backend, MPI’s standard RMA interface, and classical two-sided (point-to-point) MPI messaging (T. A. Brunner & P. S. Brantley 2009). All four back-ends implement the same internal interface, so the choice is transparent to application code and can be changed at build or run time. The IBV backend issues RDMA operations directly through the InfiniBand Verbs API ( libibverbs ), using one Reliable Connected (RC) Queue Pair per peer rank. It provides the same fine-grained control as OFI but is specific to InfiniBand hardware; on InfiniBand clusters it offers comparable performance to the OFI backend with the verbs provider. The MPI RMA backend uses the stan-dard one-sided primitives (MPI Put , MPI Get ,
+
+MPI Compare and swap ) within passive-target epochs (MPI Win lock /MPI Win unlock ), providing a portable fallback that runs on any MPI-3-compliant implemen-tation without requiring direct access to the network hardware. In practice, however, the MPI RMA API imposes several restrictions that limit its effectiveness for fine-grained particle transfers: operations must be bracketed by epochs, completion is coarse-grained (an entire epoch rather than individual operations), and the interplay between memory models, synchronization modes, and progress semantics constrains the ability of MPI libraries to map RMA calls efficiently onto the underlying hardware. As a result, the MPI RMA back-end is consistently the slowest of our backends and is included primarily as a lowest-common-denominator fallback. The two-sided (point-to-point) backend re-places all one-sided operations with matched 
+
+MPI Isend /MPI Irecv pairs. Although conceptually simpler, this backend has been carefully optimized: it uses non-blocking operations with manual progress, message aggregation, and per-peer send queues to min-imize synchronization overhead. It serves as a universal fallback that requires no special hardware or MPI RMA support. This is a conservative baseline: the MPI library may still use RDMA internally, but the application must drive progress through the point-to-point interface and cannot directly control remote buffers, per-operation completion, or the ordering of low-level network opera-tions. We present comparative results between the OFI and point-to-point backends in Section 4.  
+
+> 3.
+
+COMMUNICATION ARCHITECTURE The architecture is described in terms of one-sided RDMA operations. The per-pair channel concept, ag-gregation strategy, and termination protocol apply to all backends; the specific SPSC ring-buffer Handler struc-ture described below is used by the one-sided backends (OFI, IBV, and MPI RMA), while the point-to-point backend replaces it with per-peer message queues. Fig. 2 provides an overview of the complete per-timestep loop: each rank initializes its particles, then enters a main loop that repeatedly propagates particles via the physics module. Depending on the outcome, a particle either moves to a local cell, is transferred to a neighbor rank via the selected backend, or is removed (absorbed/escaped). The loop terminates when a distributed particle counter reaches zero and all ranks confirm they hold no remain-ing work. The subsections that follow detail each com-ponent of this architecture. 3.1. Architecture Overview 
+
+3.1.1. Generality of the Communication Layer 
+
+The communication layer is deliberately separated from the representation of the spatial discretization. In the most general case, the manager only requires that the application determines, after advancing a particle, one of the following outcomes: (i) the particle remains local, (ii) the particle must be transferred to a known destination rank, or (iii) the particle is removed. Any additional metadata needed by the destination rank -for example, a destination cell index, a stable cell iden-tifier, a patch identifier, or a particle-container handle -is carried as part of the particle state. Consequently, the Handler design, aggregation buffers, reallocation proto-col, and termination detector do not depend on Voronoi cells specifically. The moving-Voronoi remapping proce-dure described later is one concrete application-specific layer built on top of this general communication sub-strate. 3.1.2. Physics-Agnostic Architecture 
+
+The communication engine - implemented in STORM 
+
+as the RDMAMonteCarloManager class - is entirely decou-pled from the underlying particle physics. All physics-specific behavior is supplied through three abstract in-terfaces that the user implements. The first is the physics interface, which defines three callback stages invoked by the manager during each timestep (see Fig. 2): STORM: RDMA-based MC Transport for Distributed-Memory Particle Simulations 5
+
+Rank A (origin)     
+
+> Application (user space)
+> Domain
+> Buffer A mr key
+> Buffer B mr key
+> MR
+> MR
+> Endpoint (RDM)
+> Address Vector [B, C, . . . ]
+> EP
+> AV
+> Completion Queue CQ
+> NIC (fabric provider)
+
+Rank B (target)     
+
+> CPU uninvolved
+> Domain
+> Buffer X mr key
+> Buffer Y mr key
+> MR
+> MR
+> Endpoint (RDM)
+> Address Vector [A, C, . . . ]
+> EP
+> AV
+> Completion Queue CQ
+> NIC (fabric provider)
+
+Network fabric        
+
+> 1fi write
+> 2
+> NIC reads
+> local MR
+> 3
+> data over fabric
+> 4fi cq read
+> Legend: CPU →EP ( fi write )NIC data path completion
+
+Figure 1. OFI ( libfabric ) architecture and one-sided RDMA write in four steps. (1) The application on Rank A issues an RDMA operation (e.g. fi write ), specifying the local buffer’s memory descriptor, the remote buffer’s address and memory-region key, and the target’s fi addr t from the Address Vector. (2) The NIC reads the source data from the local registered Memory Region. (3) The NIC transmits the data over the network fabric and writes it directly into Rank B’s registered Memory Region - without involving Rank B’s CPU. (4) A completion entry is posted to Rank A’s Completion Queue, which the application polls via fi cq read to detect that the operation has finished. Each rank maintains a single RDM endpoint shared across all peers; remote ranks are addressed through an Address Vector. Memory Regions and the endpoint are grouped within a Domain for resource scoping and access control. 
+
+1. Pre-step (preStep ): create new packets (e.g. thermal or source photons) and performs any per-timestep initialization required by the physics model. 2. Per-particle step (step ): given a single packet, advances it for one (or more) event(s) according to the physics and returns a status code that tells the manager what to do next - continue propagating the packet within the current cell (the particle’s state, e.g. direction or energy, may have been up-dated by the interaction even though it remains in the same cell), move it to a neighboring cell (the manager then decides whether this is a local index update or an RDMA transfer), mark it as finished (e.g. reached the end of the time step), or remove it. The physics may also spawn new packets on the fly (e.g. via inelastic scattering or fluorescence) by appending them to a designated list. Because each packet stores the index of the cell it currently occupies, the physics module can tally energy de-position and other quantities directly during this step. 3. Post-step (postStep ): finalizes per-timestep tal-lies and updates material state (e.g. deposited en-ergy, temperature) after all packets have been pro-cessed. The second is the boundary condition interface. It pro-vides two methods: one is called by the manager when-ever a packet reaches the domain boundary, returning a status that determines whether the packet is absorbed, reflected, or escapes; the other may be called by the physics pre-step to inject new source packets from the boundary (e.g. a driven black-body surface). 6 Mizrachi et al. 
+
+The third is the population control interface. After the main transport loop completes and before the physics post-step, the manager passes all surviving packets to the population-control module, which returns a new list in which the total weight in a cell is conserved but the number of packets has been adjusted. Any population-control strategy that satisfies this interface can be used. In our implementation we use a comb algorithm: within each cell, packets whose count exceeds a user-specified threshold Nmax are merged by redistributing their com-bined energy over fewer representative packets, while cells with fewer than a minimum count Nmin have their packets split to maintain statistical resolution. Because the manager interacts with these three com-ponents only through their abstract interfaces, STORM 
+
+can be reused with different physics models (e.g. grey or multigroup photon radiation, neutrino transport), boundary prescriptions, population-control strategies, and spatial discretizations without modification. 3.2. Handler Design 
+
+3.2.1. Motivation for One-Sided Communication 
+
+In a domain-decomposed Monte Carlo particle transport simulation, packets cross rank boundaries at unpredictable times and in unpredictable di-rections. With classical two-sided communication (MPI Send /MPI Recv ), data movement is expressed through matched sends and receives: the receiver even-tually must post a matching receive, and the application must periodically enter the MPI library to drive com-pletion. Non-blocking point-to-point operations reduce hard blocking, but they do not remove this progress obli-gation. This creates a fundamental tension - a rank that is busy propagating its own particles cannot simultane-ously service incoming transfers from all of its neigh-bors without either (i) probing or testing for messages from every peer after many particle steps, introducing overhead in the hot loop, or (ii) batching transfers to synchronization points, which delays packets and un-derutilizes the interconnect. One-sided operations eliminate this coupling. With RDMA the sender writes the particle data directly into the receiver’s pre-registered memory; the receiver need not execute any communication call at all. This yields three concrete advantages: 1. Asynchronous progress. A rank can continue propagating local particles while incoming pack-ets are deposited into its buffers by remote ranks, without any interruption or polling. 2. Low latency. Each transfer is a single RDMA op-eration (e.g. fi write ) or a MPI Put into a known memory offset, avoiding the handshake and enve-lope matching overhead of two-sided messaging. 3. Decoupled load balance. Fast ranks that finish their local work early can immediately push par-ticles to slower neighbors; they do not stall wait-ing for the receiver to post a receive. Conversely, an overloaded rank is never forced to interrupt its computation to participate in a receive call. That said, modern two-sided implementations can par-tially mitigate these drawbacks through non-blocking operations, message aggregation, and manual progress loops. Indeed, a well-optimized MPI layer may itself use RDMA internally for large messages - for exam-ple, via a rendezvous protocol that pins memory and performs a zero-copy transfer. However, the two-sided semantics are preserved: the receiving rank must still post a matching receive call for the transfer to com-plete, and the sender must periodically call MPI Test 
+
+or MPI Wait to detect completion. The result is not a lack of RDMA in MPI, but a loss of application con-trol over the delicate details of asynchronous progress, remote-buffer layout, completion granularity, and order-ing. We therefore also provide an optimized point-to-point backend that employs non-blocking sends, mes-sage aggregation, and manual progress loops, offering a competitive alternative when direct low-level RDMA ac-cess is unavailable or when memory-pinning constraints make one-sided communication impractical. The per-pair channel concept, aggregation strategy, and termi-nation protocol described below apply uniformly to both the RDMA and point-to-point backends. The specific SPSC ring-buffer Handler structure (Section 3.2) is used by the one-sided backends; the point-to-point backend replaces it with per-peer message queues while preserv-ing the same per-pair isolation guarantees. 3.2.2. Per-Pair Channel Architecture 
+
+The most straightforward RDMA design would give each rank a single particle buffer, exposed as one MPI window, into which any remote rank may write. How-ever, this approach suffers from three serious problems. First, because multiple senders may target the same re-ceiver concurrently, every write must be protected by a global lock on the receiver’s buffer. Under high traf-fic this lock forces senders to execute sequentially: they queue behind one another even when they are deposit-ing particles into entirely different slots. Second, the receiver itself needs to read from the same buffer to process incoming particles, so it must contend for the same lock, coupling the receiver’s computation rate to the senders’ transfer rate. Third - and most critically -the lock ordering between ranks is not naturally acyclic. STORM: RDMA-based MC Transport for Distributed-Memory Particle Simulations 7  
+
+> Set timeLeft = dt
+> for all particles
+> physics->preStep()
+> create new particles
+> amountManager
+> .Initialize (N)
+> HandleAll()
+> physics.step(particle)
+> particle outcome?
+> local cell move
+> local cell
+> RDMA transfer to neighbor rank
+> ghost cell
+> remove / mark done
+> remove/done
+> amountManager
+> .Decrease ()
+> next particle
+> all particles globally done?
+> all local particles processed
+> populationControl
+> .activate ()
+> physics
+> .postStep ()
+> yes no
+> wait for incoming particles
+
+Figure 2. Per-timestep main loop of the Monte Carlo manager. After initialization and particle creation ( preStep ), each rank enters the HandleAll routine (dashed box), which iterates over all locally available particles: each particle is advanced by physics.step and, depending on the outcome, either moves to a local cell, is transferred to a neighbor rank via RDMA (Algorithm 1), or is removed (with the distributed counter decremented accordingly). The inner loop (right-side arrow) continues until no particles remain in the local handlers. Control then passes to the termination check (Section 3.6): if all particles across all ranks are globally done, the step concludes with population control and postStep ; otherwise, the rank re-enters HandleAll 
+
+to process any particles that have arrived via RDMA in the interim. 
+
+If rank A holds the lock on B’s buffer while B simultane-ously holds the lock on A’s buffer, neither can proceed, resulting in deadlock. With P ranks the number of po-tential deadlock cycles grows combinatorially, making the design unreliable at scale. These shortcomings motivate a finer-grained architec-ture in which each pair of ranks has its own private channel, eliminating cross-sender contention and triv-ially avoiding deadlock by construction. To exploit these properties we introduce a dedicated communication channel - termed a Handler - for ev-ery ordered pair of neighboring ranks in the domain decomposition. If rank A’s subdomain is adjacent to rank B’s, then rank B allocates a Handler into which 
+
+A will write, and A allocates a separate Handler for traffic arriving from B. Handlers are instantiated when-ever a new neighboring pair appears: at the beginning of the run for the initial decomposition, and after each load-rebalancing repartition for any newly adjacent rank pairs. At creation time their memory is registered for RDMA access, so remote memory is already accessible when the first particle crosses the subdomain boundary. 3.2.3. Handler Structure 
+
+As illustrated in Figs. 3 and 5, each Handler is imple-mented as a single-producer, single-consumer (SPSC) ring buffer backed by two RDMA-accessible memory re-gions: 8 Mizrachi et al. 
+
+particles[] p0 p1 p2 p3 p4            
+
+> 012345678910 11
+> buffsize = 12
+
+head tail 
+
+counters head = 14 (14 % 12 = 2) tail = 19 (19 % 12 = 7)                   
+
+> occupied = tail −head = 5 free = buffsize −occupied = 7
+> occupied (5 particles) free free
+> Figure 3. Ring-buffer layout of a single Handler. The particles[ ] array is a circular buffer; dark cells are occupied slots in the region from head mod buffsize to tail mod buffsize .Two RDMA-registered memory regions expose the particle data and the [ head ,tail ] counter pair, respectively. Because each Handler has exactly one sender and one receiver (SPSC), no locks are required on the transfer path.
+
+• particles[ ] - a pre-allocated circular buffer of particle slots, indexed modulo the buffer capacity 
+
+buffsize .
+
+• head and tail - two monotonically increasing 64-bit counters exposed through a second RDMA-registered region. tail records the total number of particles ever produced (written into the buffer by the sender), and head records the total num-ber ever consumed (read and retired by the re-ceiver). The occupied count is tail − head , and a slot at logical position k maps to physical index 
+
+k mod buffsize .Because each Handler connects exactly one sender to one receiver, the SPSC invariant is structurally guaran-teed: only the sender ever advances tail , and only the receiver ever advances head . This separation of concerns eliminates the need for any remote lock on the transfer path. Fig. 3 shows the detailed ring-buffer layout of a sin-gle Handler: particles occupy contiguous slots from 
+
+head mod buffsize to tail mod buffsize , wrapping around at the end of the array when necessary. Fig. 4 shows the full Handler matrix for a three-rank example: each row corresponds to a rank’s local view, each column to a peer. Diagonal entries are self-handlers backed by plain memory allocations, while off-diagonal entries are remote handlers backed by RDMA-registered memory. All handlers are lock-free on the transfer path. The ring-buffer layout provides two key advantages over an alternative design based on separate index ar-rays. First, particles are always stored contiguously (modulo wrap-around), so the sender writes them in bulk starting at the tail position with no scattered in-dex lookups - a significant throughput improvement over writing individual particles into random free slots. Sec-ond, and more critically, the SPSC structure eliminates all remote locking from the transfer path: the sender only ever increments tail (via an atomic FetchAndAdd ), and the receiver only ever increments head . Neither side touches the other’s counter during normal opera-tion. The receiver retires processed particles by copying the occupied region to a local list and advancing head 
+
+- an operation that touches only local memory and re-quires no remote coordination. 3.3. Transferring Particles 
+
+The transfer protocol is fully one-sided and lock-free: the receiver (rank B) remains completely passive while the sender (rank A) carries out all memory operations via RDMA without acquiring any locks. Algorithm 1 gives the pseudocode and Fig. 5 illustrates the corre-sponding data flow. The sender first reads the remote [ head , tail ] coun-ters to determine available capacity. Let Np denote the number of particles to be transferred. If the ring buffer is full - i.e. tail − head + Np > buffsize - the realloca-tion protocol (Section 3.5) is invoked and the counters are re-read. Once sufficient capacity is confirmed, the sender writes all Np particles contiguously into the ring buffer starting at position tail mod buffsize , issuing a second Put for the wrap-around segment if the write crosses the end of the array. Finally, the sender atom-ically increments the remote tail counter by Np via a single FetchAndAdd operation, which simultaneously STORM: RDMA-based MC Transport for Distributed-Memory Particle Simulations 9
+
+Handler for Rank 0 Handler for Rank 1 Handler for Rank 2          
+
+> Rank 0 Rank 1 Rank 2
+> P
+> H=0 T=5
+> SPSC (lock-free)
+> P
+> H=3 T=5
+> SPSC (lock-free)
+> P
+> H=0 T=0
+> SPSC (lock-free)
+> P
+> H=6 T=7
+> SPSC (lock-free)
+> P
+> H=0 T=4
+> SPSC (lock-free)
+> P
+> H=2 T=5
+> SPSC (lock-free)
+> P
+> H=0 T=0
+> SPSC (lock-free)
+> P
+> H=1 T=3
+> SPSC (lock-free)
+> P
+> H=0 T=6
+> SPSC (lock-free)
+
+Figure 4. The rankHandlers[ ] matrix for a three-rank communicator. Each cell ( i, j ) is the Handler that rank i holds for rank j. Diagonal cells (blue background) are self-handlers using plain allocated memory. Off-diagonal cells (orange background) are remote handlers backed by RDMA-registered memory. Each Handler is a SPSC ring buffer: P shows the particle buffer with dark cells indicating occupied slots, and the labels H and T denote the current head and tail counters. All handlers are lock-free. 
+
+Algorithm 1: Lock-free one-sided RDMA parti-cle transfer from rank A to rank B.
+
+Input: Np particles to transfer; remote Handler HB
+
+on rank B 
+
+> 1
+
+[h, t ] ← Get( HB .counters ) // read remote [head, tail]  
+
+> 2
+
+while t − h + Np > H B .buffsize do  
+
+> 3
+
+RequestReallocation( B) 
+
+> 4
+
+[h, t ] ← Get( HB .counters ) 
+
+> 5
+
+s ← t mod buffsize  
+
+> 6
+
+first ← min( Np, buffsize − s) 
+
+> 7
+
+Put( particles [0 .. first) → HB .particles[ s .. s +first) ) 
+
+> 8
+
+if first < N p then  
+
+> 9
+
+Put( particles [first .. N p) →
+
+HB .particles[0 .. N p−first) ) // wrap-around  
+
+> 10
+
+FetchAndAdd( Np → HB .tail ) // atomically publish 
+
+publishes the new particles to the receiver and returns the old counter value as a consistency check. Because every memory access targets rank B’s win-dow, rank B issues no explicit receive; it discovers newly arrived particles simply by observing that its local 
+
+tail − head has increased. No lock is required at any point: the SPSC invariant guarantees that only rank A
+
+writes tail and only rank B writes head , so the two sides never contend on the same counter. The atomic 
+
+FetchAndAdd ensures that the tail increment is visible to the receiver only after all particle data has been written. 3.4. Particle Aggregation 
+
+Although the lock-free transfer protocol (Algorithm 1) already handles batches of Np particles in a single invo-cation, each call still requires reading the remote coun-ters, issuing one or two RDMA Put operations, and performing an atomic FetchAndAdd . When a rank has many outgoing particles destined for the same peer - a common occurrence, since neighboring subdomains of-ten exchange bursts of particles across a shared bound-ary - invoking the protocol once per particle incurs over-head from repeated RDMA round-trips. To mitigate this, each rank maintains a local aggrega-tion buffer per peer. Outgoing particles are not trans-ferred immediately; instead, they are appended to the aggregation buffer for the target rank. When the buffer reaches a configurable threshold size, or when the rank’s local work queue is exhausted, the entire buffer is flushed in a single batched transfer. The batched transfer reads the remote counters once, writes all particle data con-tiguously into the ring buffer, and publishes the batch with a single FetchAndAdd - amortizing the cost of one counter read and one atomic update over the entire batch. This aggregation reduces the total number of RDMA initiation round-trips and atomic operations by afactor proportional to the average batch size. In 10 Mizrachi et al. 
+
+Rank A (sender) 
+
+Particles p0, . . . , p N −1      
+
+> 1Read remote counters
+> if full →reallocation
+> 2Write particles at tail
+> wraps if needed
+> 3Atomic FetchAndAdd
+> publishes particles
+> SPSC: no mutex required
+
+Rank B’s Handler (passive)                 
+
+> head : 12
+> tail : 15
+> particles[ ] (ring buffer)
+> papbpcp0p1
+> 01234567
+> HT
+> wraps to slot 0
+> tail :15 →17 atomic FetchAndAdd( +2 )
+> Legend:
+> read (one-sided)
+> write (one-sided)
+> atomic (FetchAndAdd)
+
+Figure 5. Lock-free one-sided RDMA transfer of particles from rank A to rank B’s Handler. Rank B executes no code during the entire operation. Dashed blue arrows denote one-sided reads (data flows from B’s memory to A); solid green arrows denote one-sided writes ( A deposits data into B’s memory). The sender reads the remote [ head , tail ] counters (1), writes the particles contiguously into the ring buffer at the tail position (2), and atomically increments the remote tail via FetchAndAdd (3). No lock is required because each Handler has exactly one sender (SPSC). Highlighted cells show the newly written data. If the buffer is full at step (1), the reallocation protocol (Section 3.5) is invoked before retrying. 
+
+communication-intensive regimes where hundreds of particles per timestep cross each domain boundary, the reduction in overhead is substantial. The aggregation threshold is a tunable parameter; in our benchmarks we use a default batch size of 64 particles, which provides a good balance between latency (particles are not held in the buffer indefinitely) and throughput (the per-particle RDMA overhead is effectively negligible). Aggrega-tion is equally applicable to the point-to-point backend, where it reduces the number of individual MPI Isend 
+
+calls. 3.5. Buffer Reallocation 
+
+Each Handler’s particle buffer is pre-allocated with a fixed capacity. During the simulation the traffic be-tween two ranks may exceed this initial size, so the buffer must be enlarged at runtime. Reallocation is triggered when a sender discovers, during the transfer protocol (Algorithm 1), that the receiver’s ring buffer is full -i.e. tail − head + Np > buffsize . Enlarging a buffer requires deregistering the old RDMA-exposed memory and registering a new, larger region, and the sender must obtain the receiver’s updated remote memory key and base address before it can resume transfers. 
+
+Asynchronous reallocation (one-sided backends). —The OFI and IBV backends use a fully asynchronous protocol that allows computation to overlap with reallocation. When a sender discovers that its peer’s buffer is full, it fires a non-blocking reallocation request (containing the requested growth factor) to the peer via MPI Isend and 
+
+returns immediately without blocking . The particles that could not be transferred remain in the local send buffer and are retried on subsequent flush attempts. On the receiver side, a persistent listener polls for in-coming asynchronous reallocation requests. When a re-quest arrives, the receiver enlarges the local Handler’s buffer unilaterally - allocating a new, larger RDMA-registered memory region, copying existing contents, and deregistering the old region - then sends back a metadata message containing the updated remote mem-ory key, base address, and new buffer capacity. This metadata is sent via a non-blocking MPI Isend , so the receiver also never blocks. The sender periodically calls a progress function that performs three operations (each at a configurable polling frequency): 1. Progress outgoing sends: polls pending factor-send and metadata-send requests for completion. 2. Check metadata updates: probes for incoming metadata responses from peers. When a response arrives, the sender updates its local copy of the peer’s remote addresses and keys, enabling future transfers to use the newly enlarged buffer. 3. Handle incoming requests: serves incoming re-allocation requests from other ranks that need this 
+
+rank to enlarge a buffer, performing the local re-allocation and replying with metadata. STORM: RDMA-based MC Transport for Distributed-Memory Particle Simulations 11 
+
+Algorithm 2: Asynchronous reallocation: sender initiates a request. The sender does not block; particles for peer b are queued until the realloca-tion completes.                      
+
+> Input: Peer rank bwhose buffer is full; growth factor
+> f
+> 1if b∈pendingRanks then
+> 2return // already in flight
+> 3Add bto pendingRanks
+> 4MPI Isend( f,b,AsyncRequest )// non-blocking
+> 5return // resume processing
+
+Algorithm 3: Asynchronous reallocation: peri-odic progress. Called by every rank during the main transport loop. Each sub-step has a config-urable polling frequency to amortize overhead.                          
+
+> // (a) Poll pending sends for completion.
+> 1ProgressOutgoingSends()
+> // (b) Check for metadata from peers.
+> 2foreach completed metadata message from rank rdo
+> 3UpdatePeerRemoteInfo( r, metadata )// new rkey, addr, size
+> 4Remove rfrom pendingRanks
+> // (c) Serve incoming realloc requests.
+> 5foreach incoming request from rank rwith factor f
+> do
+> 6metadata ←LocalReallocate( r,f)// enlarge local buffer
+> 7MPI Isend( metadata, r,Metadata )
+> // non-blocking reply
+
+While a reallocation for a given peer is pending, the sender skips flushes to that peer and queues the parti-cles for later delivery. This ensures that no rank ever blocks waiting for a reallocation to complete - the main transport loop continues processing other particles and servicing other peers. Deadlock is impossible because no rank ever enters a blocking wait: the protocol is entirely non-blocking and progress is guaranteed by the periodic polling. Algorithms 2 and 3 summarize the sender- and receiver-side logic, respectively.  
+
+> Synchronous reallocation (fallback backends). —
+
+The MPI RMA and point-to-point backends use a synchronous protocol in which the sender blocks until the reallocation completes. To avoid deadlock, each rank maintains a persistent listener for incoming reallocation requests and continues to poll and serve them while waiting for its own acknowledgement. A wait-for priority rule breaks potential cycles: if a rank is waiting for rank x and x’s own request arrives, that request is served first. As a further optimization, before sending a new request the rank drains all pending incoming requests; if the target peer’s request is among them, it is served immediately and the outgoing request is skipped.  
+
+> Buffer recreation. —
+
+In both protocols, buffer recreation follows the same steps: a new RDMA-registered region is allocated with the requested capacity, the contents of the old buffer are copied, and the old region is dereg-istered. In the asynchronous protocol the receiver per-forms this locally and sends back the new metadata; in the synchronous protocol both ranks enter a coordinated rendezvous to exchange updated buffer sizes and remote memory keys. 3.6. Termination 
+
+A Monte Carlo step is complete only when every par-ticle packet across all ranks has finished its time step. Detecting this global condition in a distributed-memory setting is non-trivial: a rank that has locally exhausted its particles cannot conclude that the simulation is fin-ished, because packets may still be in flight toward it from other ranks. We adopt the tree-based completion-detection algo-rithm of T. A. Brunner & P. S. Brantley (2009), which proved to be efficient and scalable. The P ranks are ar-ranged in a complete binary tree rooted at rank 0, with rank i having parent ⌊(i − 1) /2⌋ and children 2 i + 1, 2i + 2 (where they exist). The algorithm proceeds in two phases, also demonstrated in Fig. 6.  
+
+> Phase 1: Counter aggregation. —
+
+A global particle counter is maintained by reducing local changes up the tree. Each rank accumulates a local delta that records net particle creation (e.g. newly created packets), de-struction (absorption or escape) and reaching census (timestep termination). Periodically, each non-root rank sends its accumulated delta to its parent via an MPI Send 
+
+and resets its local accumulator. Interior nodes add in-coming deltas from their children to their own accumu-lator before forwarding up. The root adds all incoming contributions to a global counter.  
+
+> Phase 2: Verification. —
+
+A zero global counter does not, by itself, guarantee that no particles remain in the sys-tem. Because the counter aggregates net changes asyn-chronously, a transient zero can occur when the creation of a new particle on one rank coincides with the removal of an unrelated particle on another: the two deltas can-cel before reaching the root, even though a live parti-cle still exists. To guard against such false zeros, the root initiates a verification sweep whenever the counter reaches zero. The root sends a verify signal down the tree; each interior node forwards it to its children. On 12 Mizrachi et al. 
+
+receiving this signal every rank inspects its own state, confirming that it holds no local particles and has no outstanding outgoing transfers. The results are com-bined with a global logical AND. If all ranks report true, the simulation is declared complete; otherwise the counter continues to be tracked and the verification is retried when the root next sees zero. The tree topology reduces the communication load on the root from O (P ) to O (log P ) messages per aggrega-tion round, which is essential for scaling to large rank counts where frequent global reductions would serialize progress. 3.7. Moving Mesh and Dynamic Decomposition 
+
+This subsection is specific to the moving-Voronoi ap-plication that motivates our implementation. It de-scribes how the general communication scheme is cou-pled to a hydrodynamics code whose mesh points move and whose domain decomposition may change over time. The communication scheme itself does not require a Voronoi mesh or a moving mesh; only the remapping logic in this subsection is application-specific. Our target application couples particle transport to a moving, unstructured Voronoi mesh, whose parallel con-struction is described in M. Mizrachi et al. (2025). The hydrodynamic step advects the mesh-generating points and may also change the domain decomposition to main-tain load balance. Both operations rebuild the Voronoi tessellation and can change (i) the local indexing of cells on each rank, (ii) the owner rank of a given physical re-gion, and (iii) the mesh topology itself, since the Voronoi cells deform as their generating points move and new cells may be introduced at runtime through adaptive mesh refinement (AMR). Consequently, particle packets may require migration between ranks even if the Monte Carlo transport operator is not applied. The central difficulty is that on an unstructured Voronoi mesh one cannot determine the exact owner rank of an arbitrary point by a simple arithmetic map-ping (as is possible for regular grids). At best, a rank can compute an approximate owner using a coarse geomet-ric partition (e.g., a distributed version of an oct-tree); the true owner is defined by which Voronoi cell contains the point in the current tessellation, which generally re-quires explicit geometric containment tests and, in par-allel, may involve querying other ranks. Therefore, af-ter each mesh update we execute a dedicated remapping procedure to re-place packets consistently. We handle these migrations in a dedicated remapping 
+
+phase between the hydrodynamic update and the sub-sequent Monte Carlo step. Packets always store their physical position in global coordinates, together with a stable cell identifier and a (rank-local) cell index. After rebuilding the tessellation, remapping proceeds in three stages. 1. Fast index fix-up. When the cell still exists on the same rank, packets can be updated by match-ing the stable cell identifier to the new local index. This avoids any time-consuming geometric search in the common case where the tessellation is re-built but ownership does not change. 2. Local relabeling. Packets whose declared cell is no longer valid are re-located using the new geom-etry. A rank first tries to reassign them locally: if the packet remains inside its declared cell it is kept unchanged; otherwise, a local spatial index over the mesh points provides a small set of can-didate cells that are tested for containment. 3. Inter-rank migration. Packets that cannot be placed locally are migrated to the ranks to which they belong. We first use a coarse geometric par-tition to send packets to an approximate owner rank. Remaining unresolved cases are handled by a distributed search: candidate ranks are queried in expanding neighborhoods until one confirms that the packet lies in one of its cells. All ex-changes are performed in bulk, and a final valida-tion pass ensures that every packet lies inside its declared cell on its new owner rank. When load balancing changes the decomposition (i.e. mesh points are exchanged between ranks), packets must be migrated consistently with that exchange. We there-fore apply the same translation used for mesh-point in-dices to the packet cell indices and transfer packets to their new owner ranks before the Monte Carlo step be-gins. Overall, the moving-mesh remapping ensures that ev-ery Monte Carlo step begins from a consistent state in which each packet resides on the rank that owns the Voronoi cell containing its position in the updated tes-sellation. 3.7.1. Load Balancing 
+
+The computational cost of the Monte Carlo step is generally distributed differently from that of the hy-drodynamic step, because particle traffic concentrates in regions of high optical activity rather than following the mesh-point density. The simulation therefore main-tains two independent load-balancing decompositions on the same Voronoi mesh: one optimized for the hydrody-namic solver (weighted by cell count or reconstruction cost) and one optimized for the Monte Carlo transport (weighted by radiation workload). Each decomposition STORM: RDMA-based MC Transport for Distributed-Memory Particle Simulations 13 
+
+(a) Phase 1: counter aggregation                
+
+> 0
+> 12
+> 3456
+> ∆ = +2 ∆ = −1∆ = +1 ∆ = −3
+> ∆ = 0 ∆ = +1
+> +2 −1+1 −3
+> +1 −1
+> counter = 0
+
+(b) Phase 2: verification                  
+
+> 0
+> 12
+> 3456
+> verify verify
+> ✓✓✓✓
+> ✓✓
+> all ✓→terminate
+> 0 particles 0 particles 0 particles 0 particles
+> delta aggregation (up) verify signal (down) confirmation (up)
+
+Figure 6. Tree-based distributed termination detection for P = 7 ranks arranged in a complete binary tree. (a) Phase 1: each rank accumulates a local particle-count delta (∆) and periodically sends it to its parent; interior nodes aggregate their children’s deltas with their own before forwarding. When the root’s global counter reaches zero, Phase 2 is triggered. (b) Phase 2: the root broadcasts a verify signal down the tree (dashed red arrows). Every rank inspects its local state and reports whether it holds zero particles and has no outstanding transfers. Confirmations propagate back up (solid green arrows). If all ranks confirm, the simulation terminates; otherwise the counter continues to be tracked. 
+
+assigns a different partitioning of the mesh-generating points across MPI ranks. Switching between the two decompositions is efficient: because both operate on the same underlying set of mesh-generating points, transitioning from one to the other requires only migrating the points (and their as-sociated hydrodynamic state or photon packets) that change ownership - a partial exchange rather than a full mesh rebuild. The Voronoi tessellation is reconstructed incrementally from the updated point set, reusing the geometric infrastructure already in place. In practice, the fraction of points that migrate between the two de-compositions is small when the workload distributions are not radically different, making the switch inexpen-sive relative to the cost of a full repartitioning. The user controls how frequently each load balance is reassessed - for example, once every ten radiation time steps - and supplies a weight function for the Monte Carlo decomposition. In our experience, a simple weight that assigns each cell the number of particle-step events executed inside it during the preceding Monte Carlo step provides a reasonable balance for problems without ex-treme spatial inhomogeneity. 3.8. Discussion 
+
+The per-pair Handler architecture trades memory for concurrency. A na¨ ıve implementation would allocate a Handler for every pair of ranks, giving O(P 2) Handlers across the communicator. A natural concern is whether this memory overhead is acceptable. In practice, Handlers are created lazily : a Handler between ranks A and B is instantiated only when the two ranks first become communication neighbors and need to exchange particles. On meshes, this usually co-incides with geometric adjacency, but the argument is more general: in any spatially local domain decomposi-tion, each rank communicates with only a bounded set of peers. Because such simulations give each rank only 
+
+O(1) active communication neighbors, only a small frac-tion of all possible pairs ever materialize. Furthermore, after every load-rebalancing step the system shrinks the buffers of all existing Handlers - reducing those that are no longer between active neighbors to a minimal allo-cation and reclaiming the freed memory. The dynamic reallocation mechanism (Section 3.5) enlarges buffers on demand when traffic increases. As a result, the aggre-gate memory footprint at any given time is proportional to the number of active communication pairs rather than to P 2.Second, the per-pair design eliminates global locks and enables fully concurrent transfers between disjoint rank pairs. This translates directly into improved strong-scaling behavior: as more ranks are added, each rank’s particle workload decreases while the transfer band-width remains uncontested. The time saved by avoiding synchronization and lock contention typically far out-14 Mizrachi et al. 
+
+weighs the additional memory consumed by the Handler metadata. Third, the Monte Carlo step itself can be memory-intensive, since the number of particle packets in flight at any moment may be large. However, this cost is in-herently parallelizable: adding more cores reduces the per-rank particle count proportionally, so memory pres-sure from the particle population is always relievable by scaling out. The dominant fixed memory consumer on each rank is the mesh and hydrodynamic state, not the Monte Carlo communication buffers; even at moder-ately large rank counts, the Handlers memory footprint is a small fraction of the per-rank memory budget. To give a concrete estimate: each Handler stores a parti-cle ring buffer of N slots at 128 bytes per slot plus a 16-byte counter pair ( head and tail ). With a default capacity of N = 1024 slots, a single Handler occupies approximately 128 KB. A rank with ∼20 active neigh-bors therefore allocates ∼2.6 MB for Handlers - a neg-ligible overhead compared with the mesh and hydrody-namic state, which in our uniform-emission benchmark amounts to several hundred megabytes per rank. 3.8.1. Summary of Communication Guarantees 
+
+The combination of the per-pair Handler design, the lock-free SPSC transfer protocol, the reallocation pro-tocol, and the tree-based termination detector provides the following guarantees: 
+
+• Data-race freedom. The SPSC ring-buffer in-variant structurally prevents data races on the transfer path: only the sender writes tail and particle data, and only the receiver reads particles and writes head . No lock is needed during nor-mal operation; the per-pair Handler architecture ensures that each buffer has exactly one producer and one consumer. 
+
+• Deadlock freedom. The transfer path is entirely lock-free, eliminating lock-ordering hazards. The reallocation protocol, which falls back to two-sided messaging, breaks potential circular-wait chains through wait-for priority and active progress while blocked (Section 3.5). No rank can be indefinitely stalled waiting for a peer that is itself waiting in a cycle. 
+
+• Starvation freedom. Timestamp-ordered ser-vice of reallocation requests reduces contention and improves fairness, while the transfer proto-col retries after reallocation, so a sender is never permanently blocked by a full buffer. 
+
+• Progress. The receiver is fully passive during transfers: it issues no matching receive and is never interrupted. A sender can complete a trans-fer in a bounded number of RDMA operations (one counter read, one or two particle writes, and one atomic increment). Even while blocked on real-location acknowledgements, a rank continues to serve incoming requests, ensuring system-wide for-ward progress. 
+
+• Correct termination. The tree-based counter aggregation and two-phase verification (Sec-tion 3.6) detect global completion without false positives; the verification phase ensures that no in-flight particles are overlooked. 3.8.2. Limitations of RDMA-Exposed Memory 
+
+While our scheme supports a high number of particles per rank, as we demonstrate in the benchmarking results (Section 4), it is important to note that RDMA-exposed memory must be pinned (locked in physical memory) by the operating system to allow the network adapter to perform direct memory access. This pinning means that RDMA-registered buffers cannot be evicted to swap space and persist until the shrink operation is explicitly invoked or the program terminates, so peak memory us-age during a Monte Carlo step may exceed what the simulation strictly requires at any given moment. To mitigate this, we issue the madvise system call with the 
+
+MADV DONTNEED flag after deregistering RDMA-exposed memory, advising the kernel that the region is no longer needed. This call has no effect on pinned pages, which is why it is issued only after deregistration.  
+
+> 4.
+
+NUMERICAL RESULTS We assess the performance of our low-level RDMA particle-transfer scheme using two complementary benchmarks. The first is a dedicated communica-tion stress test - a uniform-emission benchmark on a three-dimensional unstructured Voronoi mesh. It is de-signed to isolate the cost of inter-rank particle trans-fers from physics-related work: every cell in the domain emits photons uniformly into a completely transparent medium with rigid (reflecting) boundaries, so photons free-stream across cell boundaries throughout the en-tire domain until their time step expires. The second is a cylindrical Hohlraum IMC benchmark, which re-tains realistic heterogeneous opacities, boundary-driven radiation, temperature evolution, and spatially nonuni-form communication traffic. Unless stated otherwise, performance results are obtained with the OFI back-end using the verbs provider on InfiniBand hardware; comparisons with the optimized point-to-point backend quantify the benefit of the low-level one-sided implemen-tation over a carefully tuned MPI baseline. STORM: RDMA-based MC Transport for Distributed-Memory Particle Simulations 15 4.1. Computing Environment 
+
+RICH is written in C++ and was compiled with GCC 15.1.0 (g++ ). For message passing we use Open MPI 4.1.6 (itself built with GCC 15.1.0). The code has no external library dependencies beyond MPI itself, Boost 1.85.0, and, for the native RDMA back-ends, libfabric (OFI) or libibverbs (IBV). All exper-iments were performed on the Leonardo supercomputer (CINECA, Italy) 5, using the DCGP (Data-Centric Gen-eral Purpose) partition. Each DCGP node contains two Intel Sapphire Rapids Xeon Platinum 8480 processors (56 cores per socket, 112 cores per node). The nodes are interconnected via InfiniBand HDR100 (100 Gb/s) using NVIDIA ConnectX-6 adapters, organized in a Dragon-fly+ topology. 4.2. Uniform Emission Benchmark 
+
+4.2.1. Setup 
+
+The benchmark geometry is a three-dimensional cube of side length L = 10 cm centered at the origin, dis-cretized with an unstructured Voronoi mesh. The mesh is constructed from Nbase randomly sampled points fill-ing the domain. The resulting point cloud is relaxed using 5 Lloyd iterations and used to build the parallel Voronoi tessellation. The entire medium is completely transparent: absorp-tion and scattering opacities are identically zero. Pho-ton packets therefore free-stream at the speed of light without interaction. The boundary condition is rigid (reflecting): packets that reach any face of the bound-ing cube are reflected back into the domain, keeping all photons alive until their timestep expires. No popula-tion control is applied - all surviving packets are carried forward without merging or splitting. At the start of each cycle, every mesh cell injects 
+
+nemit photon packets. Each packet is placed at a uni-formly random position within its cell and launched with a random isotropic direction at speed c. Because the medium is transparent and the boundaries are reflecting, each photon propagates in straight-line segments across cell boundaries for the full duration of the timestep. The number of cell crossings per photon scales with the mesh resolution: finer meshes produce more crossings and hence more inter-rank transfers. Uniform emission across the entire domain ensures that every rank gen-erates and receives comparable traffic, providing a spa-tially homogeneous stress test for the communication layer.  
+
+> 5https://docs.hpc.cineca.it/hpc/leonardo.html
+
+The absence of absorption, scattering, or thermal coupling eliminates all physics-related computational cost. The only meaningful work performed by the code is (i) propagating photons across cell boundaries, (ii) transferring particles between ranks when they cross subdomain boundaries, and (iii) detecting global termi-nation. This design isolates the communication over-head as the dominant cost and provides a clean measure-ment of the transfer protocol’s scalability. Validation on realistic radiation-hydrodynamics problems - includ-ing Implicit Monte Carlo transport with full absorption, emission, and scattering physics - is presented in a com-panion paper (Mizrachi et al., in preparation). 4.2.2. Scalability 
+
+Both strong- and weak-scaling tests keep the per-core mesh density fixed at Nbase /P = 5 000 cells per core (equivalently 560 000 per node on the 112-core Leonardo nodes), with nemit = 5 photons per cell per cycle and 5 cycles (the last 3 of which are timed). Because every cell emits, the total mesh size grows proportionally with the number of cores. The per-photon transport cost is controlled by the timestep ∆ t: on a mesh of N total cells the mean cell spacing scales as N −1/3, so each photon’s cell crossings per unit time scale as N 1/3, and the total number of particle-step calls is proportional to N ·nemit ·
+
+∆t · N 1/3. Strong and weak scaling are obtained by choosing the ∆ t exponent so that total work or per-core work, respectively, remains constant.  
+
+> Strong scaling. —
+
+A na¨ ıve strong-scaling design would fix the total number of cells and divide them among an increasing number of cores. However, as the core count grows, the per-core cell count drops proportion-ally to 1 /P . Because the cell-crossing calculation domi-nates the per-particle work, fewer cells per core means a smaller working set that fits more readily into cache, ar-tificially accelerating the computation and producing su-perlinear speedups that obscure the communication scal-ing we wish to measure. We therefore adopt a different strategy: the per-core cell count is held constant (main-taining a realistic memory footprint and cache pressure), while the total transport work is controlled through the timestep ∆ t.Concretely, the total transport work - measured by the aggregate number of particle-step calls across all ranks -is held constant. Because the total mesh size grows lin-early with the number of cores P , the timestep is scaled as ∆ t ∝ P −4/3 so that each photon crosses proportion-ally fewer cells, keeping the global step count fixed at approximately 2 .35 ×10 7 particle-step calls per cycle. At the baseline of 2240 cores (20 nodes), ∆ t = 2 × 10 −10 s. As more cores are added, the per-core share of transport 16 Mizrachi et al. 
+
+Table 1. Strong-scaling results for the uniform-emission benchmark. Wall-clock time (s) is the average of the last 3 cycle step times. Efficiency is relative to 2240 ranks (per backend). RDMA speedup is TP2P /T OFI .                                            
+
+> OFI (RDMA) P2P RDMA Nodes Ranks Time (s) Eff. (%) Time (s) Eff. (%) speedup 20 2 240 27.93 100.0 30.19 100.0 1.08 ×
+> 40 4 480 14.32 97.5 16.93 89.2 1.18 ×
+> 60 6 720 9.97 93.4 11.75 85.7 1.18 ×
+> 80 8 960 7.82 89.3 8.97 84.2 1.15 ×
+> 100 11 200 6.19 90.3 7.61 79.3 1.23 ×
+> 120 13 440 5.27 88.3 6.68 75.3 1.27 ×
+
+work decreases proportionally, while the volume of inter-rank transfers grows because additional domain bound-aries are introduced by the finer decomposition. Strong scaling therefore directly tests the efficiency of the trans-fer protocol and the overhead of the distributed termina-tion detector under increasing communication pressure, without being confounded by cache effects. Fig. 7 and Table 1 present the results. The reported wall-clock time is the maximum across all ranks of the per-cycle step time, averaged over the last 3 cycles. Each ideal reference curve has the form A/P , where P is the number of processors and A = Tref × Pref is anchored to the measured time at 2240 ranks (separately for each backend). Both backends scale well from 2240 to 4480 cores (20-40 nodes), with OFI at 97.5 % efficiency (1 .95 × speedup over 2 × ideal). At higher core counts the efficiency decreases gradually: at 11 200 cores (100 nodes) the OFI backend achieves 90.3 % efficiency (4 .52 × speedup), while the P2P backend is at 79.3 % (3 .97 ×). At the largest tested scale of 13 440 cores (120 nodes), the OFI backend retains 88.3 % efficiency compared to 75.3 % for P2P. Across the full range, the OFI backend consistently outperforms P2P in both absolute time and scaling ef-ficiency, with the gap widening at larger core counts: the RDMA speedup grows from 1 .08 × at 2240 ranks to 1.27 × at 13 440 ranks. 
+
+Weak scaling. —For the weak-scaling test the per-core workload is held approximately constant. As described above, the per-core mesh density is the same as for strong scaling (5 000 cells per core). The timestep is scaled as ∆ t ∝ P −1/3 so that each photon crosses a similar number of cells per cycle regardless of the to-tal mesh size, keeping the per-core particle-step count approximately constant. At the baseline of 2240 cores, ∆t = 2 × 10 −10 s. Fig. 8 and Table 2 present the weak-scaling results. Ideal weak scaling corresponds to a horizontal line: as 
+
+Table 2. Weak-scaling results for the uniform-emission benchmark. Wall-clock time (s) is the average of the last 3 cycle step times. Efficiency is Tref /T (P ), where Tref is the baseline time at 20 nodes (2240 ranks) per backend. RDMA speedup is TP2P /T OFI .                                            
+
+> OFI (RDMA) P2P RDMA Nodes Ranks Time (s) Eff. (%) Time (s) Eff. (%) speedup 20 2 240 27.80 100.0 30.07 100.0 1.08 ×
+> 40 4 480 28.32 98.1 32.46 92.6 1.15 ×
+> 60 6 720 28.31 98.2 32.65 92.1 1.15 ×
+> 80 8 960 28.57 97.3 32.57 92.3 1.14 ×
+> 100 11 200 28.08 99.0 32.16 93.5 1.15 ×
+> 120 13 440 28.23 98.5 32.31 93.1 1.14 ×
+
+the problem grows proportionally with the number of processors, the wall-clock time should remain constant. Efficiency is defined as Tref /T (P ), where Tref is the base-line time at 2240 ranks (20 nodes). The OFI backend demonstrates near-ideal weak scal-ing across the entire range, with efficiency never falling below 97 %: the wall-clock time varies by less than 3 % from 20 to 120 nodes. The P2P backend exhibits a larger overhead of 7-9 % at 40 nodes and above, stabilizing near 92-94 % efficiency. Both backends show that the com-munication layer introduces only modest overhead as the domain is divided more finely. The OFI backend’s ad-vantage over P2P is a consistent ∼ 1.14 × speedup across all scales, reflecting the lower per-transfer latency of one-sided RDMA operations. 4.3. Cylindrical Hohlraum Benchmark 
+
+The uniform-emission benchmark intentionally re-moves most physics so that communication dominates. To complement it, we also use the cylindrical Hohlraum benchmark of R. G. McClarren & T. J. Urbatsch (2009), following the setup used in the RICH IMC validation suite (Mizrachi et al., in preparation). The underlying 
+
+IMC implementation - including the transport physics, random-walk acceleration, and material coupling - is de-scribed in detail in the companion paper; here we focus on the communication-layer performance. This bench-mark is not a pure communication microbenchmark: it measures the transport layer in a production-like IMC 
+
+workload with optically thin streaming regions, optically thick absorbing structures, temperature-dependent ma-terial response, and strongly nonuniform packet traffic. 4.3.1. Setup 
+
+The problem is specified in RZ cylindrical geome-try and consists of an evacuated cylindrical cavity (the hohlraum) with absorbing walls and internal structures. We implement it as a full three-dimensional simulation STORM: RDMA-based MC Transport for Distributed-Memory Particle Simulations 17 2240 
+
+> 4480
+> 6720
+> 8960
+> 11200
+> 13440
+
+Number of processors 
+
+> 5
+> 10
+> 20
+> Wallclock time of last 3 cycles (s)
+
+## Uniform benchmark strong scaling    
+
+> RDMA last 3 cycles
+> P2P last 3 cycles
+> RDMA ideal strong scaling ref (A=62570)
+> P2P ideal strong scaling ref (A=67621)
+> Figure 7. Strong-scaling results for the uniform-emission benchmark on a log-log scale. Wall-clock time (average of the last 3 cycle step times) is shown as a function of the number of MPI ranks for the OFI (RDMA) and point-to-point (P2P) backends. Dashed lines show the ideal A/P scaling anchored at 2240 ranks.
+
+by revolving the RZ cross-section around the symmetry axis, which we take to be the x-axis. The computational domain is x ∈ [0 , 1.4] cm and r = py2 + z2 ≤ 0.65 cm. Four material regions define the absorbing structures: 
+
+• Left wall: x ∈ [0 .10 , 0.15], r ≤ 0.45 cm. 
+
+• Capsule: x ∈ [0 .55 , 0.95], r ≤ 0.45 cm. 
+
+• Right end cap: x ∈ [1 .35 , 1.40], r ≤ 0.65 cm. 
+
+• Outer cylindrical wall: x ∈ [0 .10 , 1.40], r ∈
+
+[0 .60 , 0.65] cm. The absorbing material has opacity κa =300 ( T / keV) −3 cm −1 and heat capacity cv = 3 ×
+
+10 15 erg keV −1 cm −3. The vacuum regions have neg-ligible opacity and heat capacity. A blackbody source at T = 1 keV drives the left x-boundary. The ini-tial temperature is 300 K and the simulation runs to 
+
+t = 10 ns. No hydrodynamics is applied. The Voronoi mesh is generated with refinement near material interfaces: mesh-generating points are concen-trated near the boundaries between absorbing and vac-uum regions, then relaxed and tessellated. This pro-duces a heterogeneous unstructured mesh of 2,450,000 cells ( Nbase = 50 ,000) with smaller cells near the sharp opacity transitions and larger cells in the smoother vac-uum channel. The mesh is distributed across 4,480 MPI ranks, with 5 new photon packets emitted per cell per timestep (up to a maximum of 15). At steady state, each of the 101 MC cycles processes approximately 161 million particles: about 100 million census particles car-ried from the previous timestep and roughly 61 million (∼ 38%) newly created via thermal emission. During each cycle, approximately 23 .6% of particles are ab-sorbed by the material, about 14 .1% escape through the domain boundary, and the remaining ∼ 62% survive as census particles for the next cycle - maintaining an approximate balance between creation and destruction characteristic of a converged IMC simulation. The IMC 
+
+random-walk acceleration is enabled in optically thick absorbing regions so that the benchmark measures the communication layer in the same accelerated transport mode used for realistic calculations. 4.3.2. Backend Comparison 
+
+The Hohlraum problem stresses different aspects of the communication layer than the uniform-emission benchmark. Radiation is injected from one side rather than uniformly throughout the domain, so packet den-sity and inter-rank traffic evolve in space and time as the radiation front moves through the vacuum channel 18 Mizrachi et al. 2240 
+
+> 4480
+> 6720
+> 8960
+> 11200
+> 13440
+
+Number of processors 
+
+> 20
+> 22
+> 24
+> 26
+> 28
+> 30
+> 32
+> 34
+> 36
+> 38
+> 40
+> Wallclock time of last 3 cycles (s)
+
+## Uniform benchmark weak scaling      
+
+> RDMA last 3 cycles
+> P2P last 3 cycles
+> RDMA ideal weak scaling (T=27.8s)
+> P2P ideal weak scaling (T=30.1s)
+> Figure 8. Weak-scaling results for the uniform-emission benchmark. Wall-clock time (average of the last 3 cycle step times) is shown as a function of the number of MPI ranks, with per-core workload held approximately constant ( Nbase /P = 5 000 cells per core, ∆ t∝P−1/3). The dashed line shows the ideal weak-scaling reference (constant time).
+
+and into the absorbing material. The transparent cav-ity creates long streaming trajectories that cross many cell and rank boundaries, while the optically thick walls and capsule create localized work through repeated ma-terial interactions and random-walk events. The result-ing workload is both communication-intensive and load-imbalanced, making it a useful end-to-end benchmark for the full particle manager. To compare the OFI and P2P backends under real-istic IMC traffic, we run the same Hohlraum problem with both backends on 40 nodes (4 480 ranks). Fig. 10 decomposes the average per-rank wall-clock time for a representative MC step into six categories (see caption for definitions). All values are averages across ranks for a single representative stabilized timestep. The OFI backend completes each MC step in 4.02 s versus 5.68 s for P2P, a 1 .41 × speedup. Both back-ends execute the same IMC physics code and perform the same total number of particle steps (9 .31 × 10 9), so the physics time - face-intersection calculations, opac-ity lookups, scattering events, and energy deposition -is identical at 0.59 s per rank. The largest single cate-gory in both backends is send/recv : the combined cost of scanning per-rank buffers for incoming particles and flushing aggregated send buffers to the network. This accounts for 1.92 s (48 %) for OFI and 2.22 s (39 %) for P2P. Because the particle workload is unevenly dis-tributed - the most loaded rank processes ∼5× more par-ticles than the average - much of the receive-side time is effectively idle waiting due to load imbalance. The category showing the largest relative difference between backends is MPI progress - the per-iteration overhead of MPI progress calls, cell-move bookkeeping, particle-list management, and send-buffer queueing within the inner particle loop - which costs 0.16 s in OFI versus 0.97 s in P2P (6 .1×). This gap arises because the P2P backend must explicitly drive MPI receive progress, re-sulting in ∼4.4× more main-loop iterations and pro-portionally more per-iteration overhead. The remaining costs - termination (the distributed completion counter, 
+
+∼8-10 %), reallocation (one-sided only, 4.7 %), and busy waiting (∼21-24 %) - are individually modest but con-sistently lower in the OFI backend. In summary, the Hohlraum benchmark demonstrates that the OFI backend achieves a 1.41 × wall-clock speedup over the P2P backend at 4 480 ranks, with lower overhead in every non-physics category (Fig. 10). The 
+
+IMC implementation that underpins these benchmarks STORM: RDMA-based MC Transport for Distributed-Memory Particle Simulations 19        
+
+> Figure 9. Cylindrical Hohlraum benchmark used as a realistic IMC timing case. Top left: material-type field showing the absorbing wall regions and vacuum channel. Top right: characteristic Voronoi-cell size, with refinement near material-vacuum interfaces. Bottom left: three-dimensional view of the unstructured Voronoi tessellation, showing only the absorbing material regions. Bottom right: representative temperature slices - material temperature (bottom half) and radiation temperature (top half) - illustrating how radiation from the driven x= 0 boundary heats the capsule and wall regions.
+
+- including the transport physics, random-walk acceler-ation, and coupling to the Voronoi mesh - is described in detail in the companion paper (Mizrachi et al., in preparation).  
+
+> 5.
+
+CONCLUSION We have presented STORM , a publicly avail-able, open-source library providing a scalable, mesh-independent communication layer for Monte Carlo particle transport in domain-decomposed, distributed-memory simulations. The core design - a per-pair SPSC ring-buffer Handler architecture with lock-free one-sided RDMA transfers, local aggregation, deadlock-free buffer reallocation, and tree-based termination de-tection - eliminates cross-sender contention, removes all locking from the common transfer path, avoids deadlock by construction, and leaves the receiving rank entirely passive during transfers. 
+
+STORM is independent of the spatial discretization and transport physics: it requires only that the appli-cation determine when a particle leaves the local sub-domain and identify the destination rank. Four inter-changeable backends - OFI ( libfabric ), native Infini-Band Verbs, MPI RMA, and optimized point-to-point messaging - accommodate a wide range of cluster hard-ware without modifying application code. We validated STORM within the open-source RICH 
+
+code using a uniform-emission benchmark - a deliber-ately adversarial stress test with a transparent medium and reflecting boundaries, designed to maximize inter-rank particle traffic and isolate the communication cost 20 Mizrachi et al.   
+
+> P2P
+> 0.59 s
+> 0.97 s 2.22 s (39 %)
+> 0.57 s
+> 1.33 s
+
+5.68 s  
+
+> comm. 3.76 s
+> IBV
+> 0.59 s
+> 0.16 s
+> 1.92 s (48 %)
+> 0.31 s
+> 0.19 s
+> 0.85 s
+
+4.02 s              
+
+> comm. 2.58 s
+> 1.41 ×
+> 0123456
+> Average per-rank wall-clock time per MC step (s)
+> Computation: Physics Busy waiting: Imbalance (Loop Overhead)
+> Communication: MPI Progress Send/Recv Termin. Realloc.
+
+Figure 10. Average per-rank wall-clock time breakdown for a representative MC step of the cylindrical Hohlraum IMC 
+
+benchmark on 40 nodes (4 480 ranks), comparing the OFI (RDMA) and P2P backends. All values are averages across ranks. Computation: Physics - the physics->step() 
+
+call (face-intersection geometry, opacity lookup, scattering, and energy deposition). Communication: MPI Progress -per-iteration overhead of MPI progress calls, cell-move book-keeping, particle-list management, and send-buffer queueing within the inner particle loop; Send/Recv - send and receive calls, buffer management, and flushing of aggregated parti-cle buffers to the network; Termination - probing and ad-vancing the tree-based distributed termination counter; Re-alloc. - asynchronous buffer reallocation progress (one-sided backends only). Busy waiting: accumulated per-iteration overhead of timing instrumentation and loop control across millions of main-loop iterations. Both backends perform the same 9 .31 × 10 9 particle steps; the physics time is identical. The 1 .41 × speedup originates from reduced MPI progress overhead and lower communication costs. 
+
+from physics-related work. Even under these conditions, and on a particularly demanding hardware configuration (112 cores sharing a single 100 Gb/s NIC per node), the OFI backend maintains 88 % strong-scaling parallel effi-ciency at 13 440 cores (120 nodes) and near-ideal weak-scaling efficiency above 97 % across the entire range from 20 to 120 nodes. To our knowledge, this combination of scaling efficiency under adversarial communication load at this core count is unique among Monte Carlo trans-port implementations. It is important to note that the uniform-emission benchmark represents an adversarial scenario for com-munication scalability: the medium is entirely transpar-ent and the boundaries are reflecting, so every photon free-streams across the domain without scattering or ab-sorption for the full duration of the timestep. In realistic radiation-transport problems, photons undergo interac-tions that keep them local for longer periods, substan-tially reducing the volume of inter-rank transfers rel-ative to useful physics work. A per-step time break-down on a cylindrical Hohlraum IMC benchmark - with heterogeneous opacities, boundary-driven radiation, and spatially nonuniform traffic - confirms this: the physics computation (face intersection, scattering, energy depo-sition) is identical between backends and accounts for 
+
+∼15 % of the average rank’s time, while the dominant cost is receive polling, much of which reflects idle waiting due to load imbalance rather than active communica-tion. The 1 .41 × OFI speedup at 4 480 ranks originates from reduced MPI progress overhead (6 .1× lower), more efficient receive polling, and lower communication costs - advantages of the passive RDMA receive model over explicit MPI progress calls. Detailed physics validation for the Hohlraum problem is presented in (Mizrachi et al., in preparation). A further contributing factor to the observed over-head is network contention: each node’s single 100 Gb/s InfiniBand NIC is shared among all 112 cores, provid-ing less than 1 Gb/s of effective per-core bandwidth un-der uniform traffic. This is a particularly demanding configuration; on systems with fewer cores per node, or equipped with higher-bandwidth network adapters (e.g. HDR 200 Gb/s or NDR 400 Gb/s), the per-core band-width would increase substantially and we expect the communication overhead to decrease correspondingly, yielding significantly higher scaling efficiency than re-ported here. Notably, both the OFI and P2P backends confirm that the Handler architecture and lock-free protocol maintain their scalability regardless of the underlying transport mechanism, although the OFI backend con-sistently achieves higher efficiency at larger core counts. This should be interpreted as a comparison between an application-specific low-level RDMA protocol and generic MPI point-to-point semantics, not as a com-parison between RDMA hardware and an MPI path that lacks RDMA. The MPI implementation may use RDMA internally, but it still exposes matched-message progress, posted receives, and library-controlled comple-tion. The OFI backend’s primary benefit is the direct control it gives over remote-buffer layout, memory regis-tration, operation ordering, and completion granularity, yielding a consistent speedup in absolute wall-clock time - ranging from 1 .14 × to 1 .27 × over the optimized P2P backend on the uniform-emission benchmark at 40 nodes and above, and 1 .41 × on the realistic Hohlraum IMC 
+
+workload at 40 nodes. The OFI backend’s reliance on libfabric rather than a hardware-specific API ensures broad portability: the same code path supports InfiniBand (via the verbs 
+
+provider), Cray Slingshot ( cxi ), AWS Elastic Fabric Adapter ( efa ), and Ethernet ( tcp/rxm ). A native IBV backend is also available for direct InfiniBand Verbs ac-STORM: RDMA-based MC Transport for Distributed-Memory Particle Simulations 21 cess where desired, and the MPI RMA and point-to-point backends serve as universal fallbacks on platforms without libfabric .Looking ahead, STORM removes a key barrier to scaling Monte Carlo transport in astrophysical multi-physics codes. High-fidelity simulations of supernovae, neutron-star mergers, and accretion disks increasingly demand coupled radiation-hydrodynamics with energy-and angle-resolved photon or neutrino transport on dy-namically evolving meshes. By decoupling the commu-nication substrate from both the physics model and the mesh representation, STORM can serve as a reusable building block for such applications, allowing develop-ers to scale to larger core counts without redesigning the particle-transfer infrastructure. CODE AVAILABILITY 
+
+STORM is publicly available as open-source soft-ware at https://github.com/maormizrachi/STORM, re-leased under the BSD 3-Clause licence. It is dis-tributed both as a standalone package and as an in-tegrated module within the RICH three-dimensional moving-mesh hydrodynamics code at https://gitlab. com/eladtan/RICH. STORM interfaces with the 
+
+MadVoro parallel Voronoi tessellation builder (M. Mizrachi et al. 2025) for applications on unstructured moving meshes, but can be coupled to any mesh repre-sentation. The code may be freely used and modified; we request that any published work which uses STORM 
+
+cite this paper. ACKNOWLEDGMENTS This work used computational resources awarded by the EuroHPC Joint Undertaking (project EHPC-DEV-2026D04-204), on Leonardo hosted by CINECA. REFERENCES 
+
+Abdikamalov, E., Burrows, A., Ott, C. D., et al. 2012, The Astrophysical Journal, 755, 111, doi: 10.1088/0004-637X/755/2/111 Brunner, T. A., & Brantley, P. S. 2009, Journal of Computational Physics, 228, 3882, doi: 10.1016/j.jcp.2009.02.013 Dempsey, A. M., et al. 2024, artemis: Astrophysical multifluid radiation hydrodynamics code,, https://github.com/lanl/artemis Densmore, J. D., Thompson, K. G., & Urbatsch, T. J. 2012, Journal of Computational Physics, 231, 6924, doi: 10.1016/j.jcp.2012.06.020 Densmore, J. D., Urbatsch, T. J., Evans, T. M., & Buksas, M. W. 2007, Journal of Computational Physics, 222, 485, doi: 10.1016/j.jcp.2006.07.031 Foucart, F. 2018, Monthly Notices of the Royal Astronomical Society, 475, 4186, doi: 10.1093/mnras/sty108 Foucart, F. 2023, Living Reviews in Computational Astrophysics, 9, 1, doi: 10.1007/s41115-023-00016-y Harries, T. J., Haworth, T. J., Acreman, D., et al. 2019, Astronomy and Computing, 27, 63, doi: 10.1016/j.ascom.2019.03.002 Jr., J. A. F., & Cummings, J. D. 1971, Journal of Computational Physics, 8, 313, doi: 10.1016/0021-9991(71)90015-5 Kasen, D., Thomas, R. C., & Nugent, P. 2006, The Astrophysical Journal, 651, 366, doi: 10.1086/506190 McClarren, R. G., & Urbatsch, T. J. 2009, Journal of Computational Physics, 228, 5669, doi: 10.1016/j.jcp.2009.04.028 Messer, O. E. B., Mezzacappa, A., Bruenn, S. W., & Guidry, M. W. 1998, The Astrophysical Journal, 507, 353, doi: 10.1086/306323 Mezzacappa, A., Endeve, E., Messer, O. E. B., & Bruenn, S. W. 2020, Living Reviews in Computational Astrophysics, 6, 4, doi: 10.1007/s41115-020-00010-8 Mizrachi, M., Raveh, B., & Steinberg, E. 2025, RAS Techniques and Instruments, 4, rzaf039, doi: 10.1093/rasti/rzaf039 Mizrachi, M., Steinberg, E., & Raveh, B. 2026, in preparation Murchikova, E. M., Abdikamalov, E., & Urbatsch, T. 2017, Monthly Notices of the Royal Astronomical Society, 469, 1725, doi: 10.1093/mnras/stx986 Noebauer, U. M., & Sim, S. A. 2019, Living Reviews in Computational Astrophysics, 5, 1, doi: 10.1007/s41115-019-0004-9 Pinte, C., M´ enard, F., Duchˆ ene, G., & Bastien, P. 2006, Astronomy & Astrophysics, 459, 797, doi: 10.1051/0004-6361:20053275 Richers, S., Kasen, D., O’Connor, E., Fern´ andez, R., & Ott, C. D. 2015, The Astrophysical Journal, 813, 38, doi: 10.1088/0004-637X/813/1/38 Richers, S., Nagakura, H., Ott, C. D., et al. 2017, The Astrophysical Journal, 847, 133, doi: 10.3847/1538-4357/aa8bb2 22 Mizrachi et al. 
+
+Romano, P. K., Forget, B., & Brown, F. 2011, Progress in Nuclear Science and Technology, 2, 670, doi: 10.15669/PNST.2.670 Romano, P. K., Siegel, A. R., Forget, B., & Smith, K. 2013, Journal of Computational Physics, 252, 20, doi: 10.1016/j.jcp.2013.06.011 Smith, A., Kannan, R., Tsang, B. T.-S., Vogelsberger, M., & Pakmor, R. 2020, The Astrophysical Journal, 905, 27, doi: 10.3847/1538-4357/abc47e Wollaber, A. B. 2016, Journal of Computational and Theoretical Transport, 45, 1, doi: 10.1080/23324309.2016.1138132 Yalinewich, A., Steinberg, E., & Sari, R. 2015, The Astrophysical Journal Supplement Series, 216, 35, doi: 10.1088/0067-0049/216/2/35

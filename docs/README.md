@@ -6,24 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-26
-- 运行时间：2026-07-26 20:35:01 UTC
+- 最新运行日期：2026-07-27
+- 运行时间：2026-07-27 20:08:03 UTC
 - 运行状态：成功
 - 本次总论文数：1
 - 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今天速读1篇论文，聚焦部分观测动态生物系统的混合不确定性量化框架。该框架整合多种方法，提升复杂生物系统建模的鲁棒性。建议关注混合框架在实际生物建模中的代码实现与案例验证。
-- 详情：[/202607/26/README](/202607/26/README)
+今日速读一篇关于分布式内存粒子模拟的RDMA蒙特卡洛传输方案。值得关注的是如何利用RDMA优化通信瓶颈，实现高效粒子输运。后续可深入考察该方案与传统MPI实现的性能对比细节。
+- 详情：[/202607/27/README](/202607/27/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [A Hybrid Framework for Uncertainty Quantification in Partially Observed Dynamic Biological Systems](/202607/26/2607.20044v1-a-hybrid-framework-for-uncertainty-quantification-in-partially-observed-dynamic-biological-systems)  
+1. [STORM: RDMA-based Monte Carlo Transport Scheme for Distributed-Memory Particle Simulations](/202607/27/2607.20639v1-storm-rdma-based-monte-carlo-transport-scheme-for-distributed-memory-particle-simulations)  
    标签：评分：6.0/10、query:ad
-   evidence：适用于药代动力学建模的ODE模型不确定量化框架
+   evidence：面向分布式粒子模拟的蒙特卡洛传输库
 
 
 <div class="dpr-home-promo-card">
