@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-31",
+  "date": "2026-07-31",
+  "generated_at": "2026-07-31T21:28:59",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/31/2607.23327v1-evaluation-of-reference-region-modelling-techniques-in-quantitative-dynamic-contrast-enhanced-magnetic-resonance-imaging-of-breast-cancer",
+      "section": "quick",
+      "title_en": "Evaluation of reference region modelling techniques in quantitative dynamic contrast-enhanced magnetic resonance imaging of breast cancer",
+      "authors": "Christian Notte, Zaki Ahmed, Ives R. Levesque",
+      "date": "2026-07-25",
+      "pdf": "https://arxiv.org/pdf/2607.23327v1",
+      "score": "6.0",
+      "evidence": "用于DCE-MRI示踪剂动力学的参考区域药代动力学模型，可转移至阿尔法放射性药物分布建模",
+      "tldr": "针对低时间分辨率DCE-MRI乳腺癌定量分析，本文评估参考区域模型(RRM)与扩展RRM相对标准Tofts类模型的性能。基于10例化疗前后乳腺癌患者图像，RRM与AIF驱动模型得到相似的绝对定量结果，但在Ktrans和vp上存在缩放差异。RRM能通过Ktrans变化完全区分完全缓解者，无需AIF信息，可作为低时间分辨率下可靠替代方案。",
+      "tags": "query:ad",
+      "abstract_en": "Purpose: To assess the validity of reference region model (RRM) techniques for quantitative perfusion analysis of low temporal resolution DCE-MRI of breast lesions. Methods: Tofts model (TM), extended Tofts model (ETM), RRM, and extended RRM (ERRM) were applied to a dataset of images from ten patients with confirmed breast cancer collected before and after one cycle of chemotherapy, with known pathologic treatment response. Quantitative maps of estimated perfusion parameters were produced using each model, and changes in median perfusion parameters before and after a cycle of chemotherapy were compared across models. Relative parameters from reference region models were made absolute using the reference region and input function tail (RRIFT) technique. Tumour region voxel count before and after treatment was also recorded. Results: RRMs produced similar absolute quantitative analysis compared to AIF-driven models (TM and ETM), with scaling dicerences in Ktrans parameter estimates and disagreement in vp parameter estimates between ETM and ERRM. RRMs and AIF-driven models were equally capable of separating complete responders based on change in median Ktrans parameter, while change in tumour voxel count was not predictive of treatment response. Both RRMs were also able to fully separate complete responders using relative Ktrans parameter estimates, with no AIF information. Conclusions: RRMs show similar performance as standard models in quantitative analysis of breast lesions, with reduced reliance on the AIF . Results imply that RRMs may be a suitable alternative at low temporal resolutions to provide reliable, patient-specific quantitative analysis.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
