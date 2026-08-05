@@ -1,0 +1,62 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-05T21:33:19.638286+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2608.03208v1",
+      "source": "arxiv",
+      "title": "Spectacular - A Modular DAQ System for Microdosimetry",
+      "abstract": "Particle therapy using light ions like protons, helium ions or carbon ions enables precise tumor targeting with enhanced biological effectiveness while minimizing damage to healthy tissue. Successful treatment planning depends not only on the absorbed dose but also on quality of the radiation, as quantified by the linear energy transfer (LET). Microdosimetry provides a direct experimental determination of such quantities by measuring the energy deposited per incoming particle in micrometer-sized solid-state detectors representing the relevant biological scales. However, the small signal amplitudes and high particle rates in therapeutic ion beams challenge existing readout systems, which are not sufficiently optimized for reliable operation with respect to pileup and signal-to-noise ratio (SNR). To address this, a modular data acquisition (DAQ) system was developed to accelerate the design of custom readout electronics and sensor characterization in microdosimetry and related spectroscopic applications. Centered around a Xilinx Zynq system-on-chip, it combines real-time processing, high-bandwidth streaming, and high-resolution digitization (16 bit at 100 MSas$^{-1}$) to enable advanced digital signal processing. The platform integrates programmable power supplies, a bias-voltage filter, test-pulse generators, and flexible I/O. Detector and preamplifier front-ends are hosted on interchangeable daugtherboards connected via a standardized interface, allowing different hardware configurations and readout algorithms to be evaluated on the same platform. The Spectacular DAQ system was successfully tested at the MedAustron ion therapy facility with custom charge-sensitive amplifiers and a diamond microdosimeter. By enabling optimization fast testing of different readout electronics and sensors, it supports and advances the integration of microdosimetry into routine clinical practice.",
+      "authors": [
+        "Matthias Knopf",
+        "Simon Waid",
+        "Daniel Radmanovac",
+        "Sebastian Onder",
+        "Richard Thalmeier",
+        "Peter Fischer",
+        "Stefan Gundacker",
+        "Claudio Verona",
+        "Edoardo Domenicone",
+        "Thomas Bergauer",
+        "Albert Hirtl"
+      ],
+      "primary_category": "physics.ins-det",
+      "categories": [
+        "physics.ins-det",
+        "physics.med-ph"
+      ],
+      "published": "2026-08-04T06:47:32+00:00",
+      "link": "https://arxiv.org/pdf/2608.03208v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "microdosimetry and energy deposition measurements in micrometer-sized detectors for particle therapy",
+      "llm_evidence_cn": "微剂量学、粒子治疗中微米尺度的能量沉积测量",
+      "llm_evidence": "微剂量学、粒子治疗中微米尺度的能量沉积测量",
+      "canonical_evidence": "微剂量学、粒子治疗中微米尺度的能量沉积测量",
+      "llm_tldr_en": "A modular DAQ system for microdosimetry, handling small signals and high particle rates in therapeutic ion beams to enable reliable measurement of energy deposition at micrometer scales for LET assessment.",
+      "llm_tldr_cn": "质子、氦离子等粒子治疗中，微剂量测量需要在极高粒子通量下读取微米级探测器产生的微弱信号，现有系统容易受堆积效应影响。本文提出Spectacular模块化DAQ系统，针对治疗离子束环境优化信号读出与处理，抑制堆积并支持高计数率。该系统能够实时测量单个粒子在模拟生物尺度探测器内的能量沉积，为评估线性能量传递（LET）等辐射品质参数提供可靠实验工具。该系统为粒子治疗微剂量学实验提供了稳定、可扩展的解决方案。",
+      "llm_tldr": "质子、氦离子等粒子治疗中，微剂量测量需要在极高粒子通量下读取微米级探测器产生的微弱信号，现有系统容易受堆积效应影响。本文提出Spectacular模块化DAQ系统，针对治疗离子束环境优化信号读出与处理，抑制堆积并支持高计数率。该系统能够实时测量单个粒子在模拟生物尺度探测器内的能量沉积，为评估线性能量传递（LET）等辐射品质参数提供可靠实验工具。该系统为粒子治疗微剂量学实验提供了稳定、可扩展的解决方案。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "microdosimetric calculations for alpha particles in cellular and subcellular scales",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}

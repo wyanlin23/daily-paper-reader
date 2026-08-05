@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-05",
+  "date": "2026-08-05",
+  "generated_at": "2026-08-05T21:34:43",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/05/2608.03208v1-spectacular---a-modular-daq-system-for-microdosimetry",
+      "section": "deep",
+      "title_en": "Spectacular - A Modular DAQ System for Microdosimetry",
+      "authors": "Matthias Knopf, Simon Waid, Daniel Radmanovac, Sebastian Onder, Richard Thalmeier, Peter Fischer, Stefan Gundacker, Claudio Verona, Edoardo Domenicone, Thomas Bergauer, Albert Hirtl",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.03208v1",
+      "score": "8.0",
+      "evidence": "微剂量学、粒子治疗中微米尺度的能量沉积测量",
+      "tldr": "粒子治疗需精确评估辐射品质，微剂量学依靠固态探测器测量能量沉积，但现有读出系统受堆积和信噪比限制。为此开发了基于Zynq的模块化DAQ系统，具备16bit/100MS/s数字化、实时处理、可编程电源及可更换前端子板。在MedAustron离子治疗设施中与定制电荷灵敏放大器和金刚石微剂量计联测成功，验证了平台性能。该系统可快速优化不同读出电子和传感器，推动微剂量学临床常规应用。",
+      "tags": "query:ad",
+      "abstract_en": "Particle therapy using light ions like protons, helium ions or carbon ions enables precise tumor targeting with enhanced biological effectiveness while minimizing damage to healthy tissue. Successful treatment planning depends not only on the absorbed dose but also on quality of the radiation, as quantified by the linear energy transfer (LET). Microdosimetry provides a direct experimental determination of such quantities by measuring the energy deposited per incoming particle in micrometer-sized solid-state detectors representing the relevant biological scales. However, the small signal amplitudes and high particle rates in therapeutic ion beams challenge existing readout systems, which are not sufficiently optimized for reliable operation with respect to pileup and signal-to-noise ratio (SNR). To address this, a modular data acquisition (DAQ) system was developed to accelerate the design of custom readout electronics and sensor characterization in microdosimetry and related spectroscopic applications. Centered around a Xilinx Zynq system-on-chip, it combines real-time processing, high-bandwidth streaming, and high-resolution digitization (16 bit at 100 MSas$^{-1}$) to enable advanced digital signal processing. The platform integrates programmable power supplies, a bias-voltage filter, test-pulse generators, and flexible I/O. Detector and preamplifier front-ends are hosted on interchangeable daugtherboards connected via a standardized interface, allowing different hardware configurations and readout algorithms to be evaluated on the same platform. The Spectacular DAQ system was successfully tested at the MedAustron ion therapy facility with custom charge-sensitive amplifiers and a diamond microdosimeter. By enabling optimization fast testing of different readout electronics and sensors, it supports and advances the integration of microdosimetry into routine clinical practice.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

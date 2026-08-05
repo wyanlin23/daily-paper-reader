@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-05 <!--dpr-date:20260805-->
+    * 精读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/05/2608.03208v1-spectacular---a-modular-daq-system-for-microdosimetry" data-sidebar-item="{&quot;title&quot;: &quot;Spectacular - A Modular DAQ System for Microdosimetry&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.03208v1-spectacular---a-modular-daq-system-for-microdosimetry&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;微剂量学、粒子治疗中微米尺度的能量沉积测量&quot;}">Spectacular - A Modular DAQ System for Microdosimetry</a>
   * 2026-07-31 <!--dpr-date:20260731-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/31/2607.23327v1-evaluation-of-reference-region-modelling-techniques-in-quantitative-dynamic-contrast-enhanced-magnetic-resonance-imaging-of-breast-cancer" data-sidebar-item="{&quot;title&quot;: &quot;Evaluation of reference region modelling techniques in quantitative dynamic contrast-enhanced magnetic resonance imaging of breast cancer&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.23327v1-evaluation-of-reference-region-modelling-techniques-in-quantitative-dynamic-contrast-enhanced-magnetic-resonance-imaging-of-breast-cancer&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;用于DCE-MRI示踪剂动力学的参考区域药代动力学模型，可转移至阿尔法放射性药物分布建模&quot;}">Evaluation of reference region modelling techniques in quantitative dynamic contrast-enhanced magnetic resonance imaging of breast cancer</a>

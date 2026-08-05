@@ -1,0 +1,194 @@
+Title: Spectacular - A Modular DAQ System for Microdosimetry
+
+URL Source: https://arxiv.org/pdf/2608.03208v1
+
+Published Time: Wed, 05 Aug 2026 00:44:16 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+Prepared for submission to JINST 
+
+27 th International Workshop on Radiation Imaging Detectors (IWORID) June 28, 2026 to July 2, 2026 Ghent, Belgium 
+
+# Spectacular – A Modular DAQ System for Microdosimetry 
+
+Matthias Knopf, 𝑎, 1 Simon Waid, 𝑏 Daniel Radmanovac, 𝑏,𝑎 Sebastian Onder, 𝑏,𝑎 Richard Thalmeier, 𝑏 Peter Fischer, 𝑏,𝑎 Stefan Gundacker, 𝑏 Claudio Verona, 𝑐 Edoardo Domenicone, 𝑐 Thomas Bergauer, 𝑏 Albert Hirtl 𝑎 
+
+> 𝑎
+
+TU Wien, Atominstitut, Stadionallee 2, 1020 Wien, Austria 
+
+> 𝑏
+
+Marietta Blau Institute for Particle Physics (MBI), Austrian Academy of Sciences, Dominikanerbastei 16, 1010 Vienna, Austria 
+
+> 𝑐
+
+Dip. di Ingegneria Industriale Università di Roma "Tor Vergata", INFN-Roma2, Rome 00133, Italy 
+
+E-mail: matthias.knopf@tuwien.ac.at 
+
+Abstract : Particle therapy using light ions like protons, helium ions or carbon ions enables precise tumor targeting with enhanced biological effectiveness while minimizing damage to healthy tissue. Successful treatment planning depends not only on the absorbed dose but also on quality of the radiation, as quantified by the linear energy transfer (LET). Microdosimetry provides a direct exper-imental determination of such quantities by measuring the energy deposited per incoming particle in micrometer-sized solid-state detectors representing the relevant biological scales. However, the small signal amplitudes and high particle rates in therapeutic ion beams (up to 10 10 s−1) challenge existing readout systems, which are not sufficiently optimized for reliable operation with respect to pileup and signal-to-noise ratio (SNR). To address this, a modular data acquisition (DAQ) system was developed to accelerate the design of custom readout electronics and sensor characterization in microdosimetry and related spectroscopic applications. Centered around a Xilinx Zynq system-on-chip, it combines real-time processing, high-bandwidth streaming, and high-resolution digitization (16 bit at 100 MSa s −1) to enable advanced digital signal processing. The platform integrates pro-grammable power supplies, a bias-voltage filter, test-pulse generators, and flexible I/O. Detector and preamplifier front-ends are hosted on interchangeable daugtherboards connected via a standardized interface, allowing different hardware configurations and readout algorithms to be evaluated on the same platform. The Spectacular DAQ system was successfully tested at the MedAustron ion ther-apy facility with custom charge-sensitive amplifiers and a diamond microdosimeter. By enabling optimization fast testing of different readout electronics and sensors, it supports and advances the integration of microdosimetry into routine clinical practice. 
+
+Keywords: Microdosimetry and nanodosimetry, Dosimetry concepts and apparatus, Data acqui-sition circuits, Modular electronics 
+
+> 1Corresponding author. arXiv:2608.03208v1 [physics.ins-det] 4 Aug 2026
+
+Contents 
+
+1 Introduction 12 Experimental Microdosimetry 13 The Spectacular Data Acquisition System 34 Characterization at the MedAustron Ion Therapy Center 65 Conclusion and Outlook 6
+
+1 Introduction 
+
+Light-ion therapy is an established cancer treatment modality, increasingly available worldwide as an alternative to conventional photon radiotherapy. Its clinical advantage derives from the favorable depth-dose relation of charged particles, characterized by the Bragg peak, and their enhanced bio-logical effectiveness. Clinical studies in carbon-ion radiation therapy (CIRT) have linked radiation quality to tumor control, mainly using dose-averaged linear energy transfer (LET), 𝐿𝐸𝑇 𝐷 [1–3]. Furthermore, recent cell irradiation studies with protons show that similar 𝐿𝐸𝑇 𝐷 values can lead to different biological responses when beam compositions differ, suggesting that the entire distribution may provide relevant information beyond average values [4]. This motivates the introduction of ra-diation quality metrics into treatment planning and clinical workflows [5, 6]. As LET is not directly measurable and is commonly obtained through Monte Carlo (MC) simulations, microdosimetry offers an experimental approach for characterizing radiation quality. Its clinical implementation may support both relative biological effectiveness (RBE)-based treatment optimization and quality assurance (QA) applications, including independent treatment verification and beam-quality as-sessment. Microdosimetric characterization of therapeutic ion beams with solid-state detectors has been extensively investigated over the past decades, covering proton [7], helium [8], carbon [9], and heavier ion beams [10]. However, routine clinical implementation requires a transition from application-specific research prototypes to dedicated readout systems designed to meet the con-straints of realistic treatment environments. In particular, high-rate operation must be ensured to minimize pulse pile-up, while maintaining sufficient spectroscopic resolution to characterize the full dynamic range encountered in a therapeutic setting. 
+
+2 Experimental Microdosimetry 
+
+Microdosimetry characterizes the quality of radiation fields by describing the stochastic distribution of energy deposition events in microscopic sites through lineal-energy spectra. The lineal energy, 
+
+𝑦 , is defined as the energy imparted, Δ𝐸 , by an individual radiation event within a target volume of specified size and composition, normalized by its mean chord length ¯ℓpath [11] – 1 – 𝑦 = Δ𝐸 
+
+¯ℓpath 
+
+. (2.1) The frequency spectra 𝑓 (𝑦 ) of lineal energy are typically obtained in a single-event mode from pulse height analysis (PHA) using charge-sensitive readout electronics. This constitutes a charge-sensitive amplifier (CSA), which amplifies the generated signal charge into a voltage step proportional to the deposited energy in the sensitive volume (SV), followed by pulse shaping to optimize the frequency content for amplitude signal-to-noise ratio (SNR) and subsequent digitization and pulse height extraction. Traditionally, different analog shaping circuits were used followed by a multichannel analyzer (MCA). However, modern high-speed, high-resolution analog-to-digital converters (ADCs) enable direct digitization of the preamplifier signal, followed by digital signal processing (DSP) that provides more precise control over the shaping parameters and filtering. The histogram of the measured pulse heights directly yields the frequency lineal energy spectrum, 𝑓 (𝑦 ),following proper calibration, which is most commonly performed using particle-edge calibration based on known spectral features [12]. Normalized to area one, this corresponds to the probability distribution function for the energy deposition of a given particle in the radiation field. The dose distribution is derived from the frequency spectrum by weighting each event according to its lineal energy 
+
+𝑑 (𝑦 ) = 1¯𝑦 𝐹 
+
+𝑦 𝑓 (𝑦 ). (2.2) Normalization by the frequency-mean lineal energy ¯𝑦 𝐹 ensures that the resulting distribution represents the relative contribution to the absorbed dose. For visualization, microdosimetric spectra are commonly presented using the weighted representations 𝑦 𝑓 (𝑦 ) and 𝑦𝑑 (𝑦 ) in a semi-logarithmic plot [11]. While gas-based tissue-equivalent proportional counters (TEPCs) used to be the reference detector for microdosimetry, their relatively large physical dimensions limit spatial resolution and increase pileup at the high particle fluxes typical of therapeutic ion beams (up to 10 10 s−1). 10 0 10 1 10 2 10 3
+
+> y [keV/μm]
+> 0.0
+> 0.5
+> 1.0
+> 1.5
+> 2.0
+> 2.5
+> 3.0
+> yd(y)
+> protons - 252.7 MeV (Entrance)
+> protons - 62.4 MeV (Edge)
+> 4He - 402.8 MeV/u (Entrance)
+> 4He - 40.0 MeV/u (Edge)
+> 12 C - 402.8 MeV/u (Entrance)
+> 12 C - 120.0 MeV/u (Edge)
+
+Figure 1 . The dynamic range of microdosimetric lineal-energy spectra in a typical light-ion therapy setting with protons, carbon-ions and helium-ions in a 10 μm diamond detector. The entrance spectra at the highest energies and the particle edge [12] spectra at the lowest available energies are shown for the example of MedAustron. The results are obtained from MC simulations using Gate [13]. 
+
+– 2 – Advances in microfabrication have established solid-state microdosimeters manufactured from silicon [14, 15], chemical vapor deposition (CVD)-diamond [16–18], and recently in silicon carbide (SiC)) [19, 20], whose true μm-scale sensitive volumes and rapid charge collection provide superior spatial resolution and reliable operation at clinically relevant dose rates. An overview is given in [21]. However, despite significant technological advances, experimental microdosimetry in the context of light-ion beam therapy continues to face challenges due to the high dose rates and low SNR. 
+
+Signal-to-Noise Ratio The signal generated in microdosimeters is inherently small given the dimensions of the SVs. At the same time, clinical ion beams exhibit an exceptionally large dynamic range, extending from high-energy protons in the entrance channel and low-LET contributions from delta-electrons to stopping carbon ions near the Bragg peak. Figure 1 shows examples for protons, helium-ions and carbon-ions at MedAustron. A 250 MeV proton deposits on average only 8.2 keV 
+
+in a 10 μm-thick diamond detector, corresponding to about 625 e . To faithfully resolve low-LET events, the readout electronics should therefore aim for an equivalent noise charge (ENC) below 
+
+100 e . Modern CSAs in conjunction with optimized printed circuit board (PCB) design and pulse shaping can meet these requirements. 
+
+Pileup The optimum shaping time for low-noise charge-sensitive readout is typically on the order of 1 μs, limiting the rate at which individual events can be resolved. Thus, obtaining pileup-free microdosimetric spectra at clinical dose rates remains challenging despite the small sensitive areas of modern microdosimeters, typically on the order of 100 μm. Particle extraction from therapeutic accelerators follows a Poisson-like stochastic process, resulting in a finite probability of closely spaced events even at moderate average count rates[22, 23]. Simply reducing the detector area is not a practical solution, as the acquisition time required to obtain sufficient counting statistics would become prohibitively long. Pileup can be mitigated using pileup rejection (PUR) algorithms, the most common being the fast–slow coincidence method. In this approach, the preamplifier output is processed by two parallel shaping paths: a fast shaper with a shaping time on the order of 50 ns 
+
+and a slow shaper with a shaping time of approximately 1 μs. The fast channel is used to detect closely spaced events and inhibits their acquisition, while the slow channel, optimized for maximum SNR, is used to extract the pulse amplitude. An additional avenue for improving pileup rejection is offered by the intrinsic micro-spill time structure of extracted accelerator beams. The particle flux is modulated at the accelerator orbital frequency, which in synchrotrons is comparable to the optimum shaping time of the readout chain, allowing this temporal correlation to be exploited for improved event separation [23]. 
+
+3 The Spectacular Data Acquisition System 
+
+Acquiring statistically meaningful spectra under clinically relevant conditions within practical timescales requires instrumentation capable of simultaneously handling high count rates, wide dynamic ranges, and stringent resolution requirements, ideally approaching 0.1 keV μm−1. Satisfy-ing these demands requires the combined optimization of the analog electronics and DSP. – 3 – Hardware Spectacular is based aroud a Xilinx Zynq UltraScale+ system-on-chip (SoC), enabling real-time signal processing and high-bandwidth streaming of transient signals digitized by a 16-bit ADC (Analog Devices AD9446) operating at 100 MSa s −1. A carrier board supplies power, control, and digitization capabilities for up to four analog front-end channels, which are hosted on separate daughter boards. These daugtherboards can be hot-swapped during operation through a standardized board-edge connector (M.2 NGFF). The hardware was designed to support four analog channels. However, in this first prototype only one channel is digitized at a time and the input is multiplexed to the ADC driver. To enable fast hardware development, the SoC was integrated using a commercial development board (Trenz TE0706) to the back of the carrier board, which in turn hosts a system-on-model (SoM) (Trenz TE0820-05-4AE21MA). Four positive and four negative supply voltages, individually programmable up to ±5 V , are provided to supply the analog front ends. The carrier board also features a test and a reset pulse generator capable of producing fast pulses with ∼ns rise time. Positive and negative pulses with amplitudes of up to ±2.5 V can be routed to any of four dedicated front-end lines. These signals can be used either to inject test pulses into the front-end electronics or to provide an active reset for the CSAs. In addition, several field programmable gate array (FPGA) I/O lines are reserved and are available for future extensions or custom functionality. The board further provides an analog monitoring output and a dedicated test input directly connected to the ADC driver for the injection of test signals. The PCBs can be seen in figure 2.        
+
+> Figure 2 .Left: The prototype Spectacular carrier board in the experimental room at MedAustron. The holder was used to put RW3 water-equivalent plates in front of the detector to achieve different radiation qualities. The inset shows the 10 μmdiamond microdosimeter array used for the presented measurements. Right: The analog frontend used for the presented measurements, featuring four custom CSAs based around commercial op-amps.
+
+Software & Gateware The modular hardware architecture (figure 3) is complemented by a hier-archical software framework that provides a flexible processing environment in which algorithms can be deployed on the onboard FPGA, the embedded CPU, or the host PC depending on the required performance and latency. To accommodate the continuous data stream of 200 MB s −1, the data are delta-compressed on the FPGA before being packaged in a custom format and provided via direct memory access (DMA) to the CPU. The firmware running on the SoC then streams the – 4 – data over a Gigabit Ethernet socket to the host PC running the Python control software. This user software also provides functionality for slow control and live visualization and evaluation of the digitized data stream in a modular GUI. Furthermore, all acquired data can be permanently stored in a compressed custom binary format. Acquisitions can either be performed in an untriggered mode or synchronized with the accelerator extraction trigger signal. The FPGA also controls the active reset of the CSAs by detecting threshold crossings in the digitized signal. ADC         
+
+> 16 bit 100 MSa/s
+> MPSoC
+> (FPGA + CPU)
+> Frontend Daugtherboard
+> Microdosimeter
+> up to 4x Power Supplies
+> Testpulse / Reset Generator
+> ADC Driver
+> Carrier Board
+> User PC
+> Python Software (Client) Firmware (Server)
+> CSA 0100 200 300 400 500 600 700 800
+> Time [Samples]
+> 200
+> 0
+> 200
+> 400
+> 600
+> Amplitude [ADC units]  Raw (shifted)
+> T = 50 ns
+> T = 1 μs
+
+Figure 3 . Left: Architecture of the Spectacular system. Right: Fast and slow quasi-Gaussian shaped pulses. 
+
+Analog Frontend The long-term goal is to integrate a microdosimetric application-specific in-tegrated circuit (ASIC) with Spectacular system [24]. Given the extended development cycle, a discrete CSA based on commercially available components was developed for initial testing. It is based on a low-noise FET-input operational amplifier (Analog Devices OPA817), configured as a CSA with a small feedback capacitance 𝐶 𝑓 =50 fF and a passive reset using a 𝑅 𝑓 =1 G Ω feedback resistor. To avoid ADC saturation during sustained pulse trains, an additional active reset option was implemented using pico-ampere diodes connected to the input node, enabling FPGA-controlled discharge of the feedback capacitance. The ENC of the CSA was determined with the sensor at-tached and installed in the irradiation room at MedAustron from the full width at half maximum (FWHM) of the baseline fluctuations. At the experimentally established optimal shaping time of 
+
+1 μs, the amplifier achieves an ENC of ∼175 e . The capacitance of the sensor amplifier interconnect is expected to contribute significantly to this value and has been reduced in an upcoming PCB revision. Linearity of the whole readout chain was verified by injecting calibrated charge pulses through a 0.1 pF test capacitor at the input node. No saturation was observed up to an injected charge of 250 fC , roughly corresponding to the highest possible energy deposition of a carbon-ion in a 10 μm-thick diamond SV (carbon edge)[12]. 
+
+Processing For the presented measurements, a fourth-order quasi-Gaussian shaper is synthesized following the approach described in [25]. From the resulting transfer function, a finite impulse response (FIR) filter kernel is constructed to enable fast online filtering of the preamplifier signal. The amplitudes were extracted using a 1 μs shaping time. PUR was implemented using a 50 ns 
+
+fast shaping function and inhibiting the acquisition of subsequent pulses up to the fourth order (see figure 3). – 5 – 4 Characterization at the MedAustron Ion Therapy Center 
+
+A 10 μm-thick diamond microdosimeter was used for the measurements presented in this work. The detector was fabricated at the Department for Industrial Engineering of the University of Tor Vergata (Rome) using a CVD process [16]. It comprises an array of twelve independent 160 μm × 160 μm
+
+Schottky diodes defined by chromium top electrodes. The common back electrode consists of a highly boron-doped diamond layer. During the measurements, one diode was reverse-biased at 
+
+15 V using a Keithley 2470 SMU and DC-coupled to the input of the CSA. Microdosimetric spectra were acquired for 62 .4 MeV protons and for 120 MeV u −1 12 C6+ -ion beams using a single-spot beam at the iso-center under full clinical dose-rate conditions. Different radiation qualities were obtained along the depth-dose curve by placing water-equivalent RW3 "solid water" plates (PTW Freiburg, Germany) in front of the detector (see figure 2). The spectra were calibrated using the proton edge [12], which was well resolved in the spectrum acquired at a water equivalent thickness (WET) of 2.9 cm . For carbon ions, the full dynamic range could be covered. For protons, however, the noise performance is yet insufficient to fully resolve low-LET particles in the entrance channel, and a conservative lower cutoff of 3.5 keV μm−1 was applied. Consequently, only spectra acquired after 2 cm WET could be fully resolved. With ongoing revisions of both the analog front-end and carrier board, together with the integration of a chip-based CSA, this previously inaccessible range is expected to be uncovered. The results are shown in figure 4. 10 1 10 2              
+
+> y [keV/μm]
+> 0.0
+> 0.5
+> 1.0
+> 1.5
+> 2.0
+> yd(y)
+> 2 cm
+> 2.3 cm
+> 2.5 cm
+> 2.6 cm
+> 2.7 cm
+> 2.8 cm
+> 2.9 cm
+> GATE
+> Measured
+> 00.5 11.5 22.5 3
+> Depth in water [cm] 10 110 210 3
+> y [keV/μm]
+> 0.0
+> 0.5
+> 1.0
+> 1.5
+> 2.0
+> 2.5
+> 3.0
+> 3.5
+> yd(y)
+> Position
+> 0 cm
+> 2.3 cm
+> 2.7 cm
+> 2.8 cm
+> 2.9 cm
+> 00.5 11.5 22.5 3
+> Depth in water [cm]
+
+Figure 4 . Microdosimetric spectra along the depth-dose curve in water-equivalent RW3 plates acquired for 
+
+62 .4 MeV proton (left) and 120 MeV u −1 12 C6+ -ion (right) beams at MedAustron. The position is indicated on the depth-dose curves obtained from MC simulations using Gate 9.3 [13]. 
+
+5 Conclusion and Outlook 
+
+Despite the distinct requirements of microdosimetry, dedicated readout electronics remain scarce. The MicroPlus probe [14] and the DIODE detector [26] represent notable exceptions. Nevertheless, both systems are limited to integrating the analog front-end and digitization, with further signal processing delegated to external hardware. The realization of a complete, modular, and easily extendable hardware platform represents an important advancement in the field. The long-term objective is the integration of the complete analog chain into a dedicated ASIC, enabling improved performance through a tighter control of the parameters. As an initial implementation, the first – 6 – prototype of the Spectacular system has demonstrated promising performance in resolution and dose-rate capacities for microdosimetric measurements with different ion beams at therapeutic rates. Further hardware iterations, including a revised carrier board and multiple analog front-end designs, are currently under development and are expected to provide improved noise performance. In particular, the integration of a dedicated CSA ASIC [24], which is under characterization at the time of writing, is anticipated to further improve the achievable signal resolution. In parallel, the software framework is continuously being expanded to simplify data acquisition, speed up processing, and facilitate operation by non-expert users. Future developments will also focus on migrating a larger fraction of the DSP to the FPGA, providing the scalability required for simultaneous multi-channel readout and live processing. Future developments will focus on the integration of Spectacular with a range of silicon carbide and diamond microdosimeters. Ultimately, this work aims to contribute towards making microdosimetric measurements a more accessible and practical tool for generating experimental data relevant to clinical ion-beam applications. 
+
+Acknowledgments 
+
+The financial support of the Austrian Ministry of Education, Science and Research is gratefully acknowledged for providing beam time and research infrastructure at MedAustron. The authors ac-knowledge TU Wien Bibliothek for financial support through its Open Access Funding Programme. This project has received funding from the Austrian Research Promotion Agency FFG, Austria, grant number 918092. 
+
+References             
+
+> [1] Y. Hagiwara, T. Bhattacharyya, N. Matsufuji, Y. Isozaki, H. Takiyama, K. Nemoto et al., Influence of dose-averaged linear energy transfer on tumour control after carbon-ion radiation therapy for pancreatic cancer , . [2] S. Matsumoto, S.H. Lee, R. Imai, T. Inaniwa, N. Matsufuji, M. Fukahori et al., Unresectable chondrosarcomas treated with carbon ion radiotherapy: Relationship between dose-averaged linear energy transfer and local recurrence , . [3] S. Molinelli, G. Magro, A. Mairani, A. Allajbej, A. Mirandola, A. Chalaszczyk et al., How LEM-based RBE and dose-averaged LET affected clinical outcomes of sacral chordoma patients treated with carbon ion radiotherapy , . [4] F. Guan, L. Bronk, M. Kerr, Y. Li, L.A. Braby, M. Sobieski et al., Interpreting the biological effects of protons as a function of physical quantity: linear energy transfer or microdosimetric lineal energy spectrum? , . [5] F. Kalholm, L. Grzanka, E. Traneus and N. Bassler, A systematic review on the usage of averaged LET in radiation biology for particle therapy , . [6] J. Magini, P. Pisciotta, M. Hussein, S. Both, A. Gerbershagen, E. Traneus et al., Integration of microdosimetry into treatment planning systems using look-up tables (lut): A proof-of-concept ,
+> Physica Medica 136 (2025) 105031. [7] L.T. Tran, L. Chartier, D. Bolst, A. Pogossov, S. Guatelli, M. Petasecca et al., Characterization of proton pencil beam scanning and passive beam using a high spatial resolution solid-state microdosimeter ,Medical physics 44 (2017) 6085.
+
+– 7 – [8] G. Petringa, C. Verona, A. Attili, L. Brighel, R. Catalano, G.A.P. Cirrone et al., Microdosimetric characterization of a clinical helium beam using a microplus-bridge detector and a diamond detector for rbe assessment , Physics in Medicine & Biology 70 (2025) 195010. [9] G. Magrin, C. Verona, M. Ciocca, M. Marinelli, E. Mastella, M. Stock et al., Microdosimetric characterization of clinical carbon-ion beams using synthetic diamond detectors and spectral conversion methods , . [10] S.H. Lee, K. Mizushima, R. Kohno, Y. Iwata, S. Yonai, T. Shirai et al., Estimating the biological effects of helium, carbon, oxygen, and neon ion beams using 3d silicon microdosimeters , . [11] L.A. Braby, V. Conte, M. Dingfelder, D.T. Goodhead, L.S. Pinsky, A.B. Rosenfeld et al., ICRU report 98, stochastic nature of radiation interactions: Microdosimetry , . [12] V. Conte, D. Moro, B. Grosswendt and P. Colautti, Lineal energy calibration of mini tissue-equivalent gas-proportional counters (TEPC) , . [13] S. Jan, G. Santin, D. Strul, S. Staelens, K. Assié, D. Autret et al., GATE: a simulation toolkit for PET and SPECT , . [14] A.B. Rosenfeld, Novel detectors for silicon based microdosimetry, their concepts and applications , . [15] C. Guardiola, C. Fleta, D. Quirion, G. Pellegrini and F. Gómez, Silicon 3d microdetectors for microdosimetry in hadron therapy , . [16] C. Verona, G. Verona Rinati, G. Schettino and G. Parisi, Development and fabrication of microdosimeter arrays based on single-crystal diamond schottky diodes , . [17] I.A. Zahradnik, P. Barberet, D. Tromson, L. De Marzi and M.T. Pomorski, A diamond guard ring microdosimeter for ion beam therapy , . [18] J.A. Davis, K. Ganesan, D.A. Prokopovich, M. Petasecca, M.L.F. Lerch, D.N. Jamieson et al., A 3D lateral electrode structure for diamond based microdosimetry , . [19] G. Petringa, C. Verona, R. Catalano, M. Guarrera, A. Kurmanova, L. Brighel et al., Toward the use of silicon carbide based detector for protontherapy microdosimetry , . [20] M.J. Venegas, C. Guardiola, G. Pellegrini, C.T. Muñoz, J.G. López, M.D.C. Jiménez-Ramos et al., 
+
+Ion-beam-induced charge study of new 4h-SiC detectors for microdosimetry , . [21] G. Parisi, F. Romano and G. Schettino, Microdosimetry for hadron therapy: A state of the art of detection technology , . [22] M. Knopf, A. Gsponer, M. Kausel, S. Waid, S. Onder, S. Gundacker et al., Characterizing the delivered spill structure of medical proton and carbon-ion beams at MedAustron using a high frequency silicon carbide readout , . [23] M. Knopf et al., Measurements of the micro-spill structure of medical cyclotron and synchrotron beams and its impact on pulse pileup , 2605.07508 .[24] S. Waid, M. Knopf, G. Magrin, A. Hirtl, S. Onder, S. Gundacker et al., A frontend ASIC for microdosimetry , . [25] S. Ohkawa, M. Yoshizawa and K. Husimi, Direct synthesis of the gaussian filter for nuclear pulse amplifiers , . [26] C. Verona, A. Fabbri, A. Fazzi, L. Bianchi, A. Bianchi, G.A.P. Cirrone et al., Experimental characterization of a diamond detection system for combined dose, LET and RBE assessment in clinical proton beams , . 
+
+– 8 –
