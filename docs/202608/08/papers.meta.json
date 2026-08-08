@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-08",
+  "date": "2026-08-08",
+  "generated_at": "2026-08-08T20:47:20",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/08/2607.28874v1-active-learning-for-data-efficient-calibration-of-stochastic-simulation-models",
+      "section": "quick",
+      "title_en": "Active Learning for Data-Efficient Calibration of Stochastic Simulation Models",
+      "authors": "Özge Sürer",
+      "date": "2026-07-30",
+      "pdf": "https://arxiv.org/pdf/2607.28874v1",
+      "score": "6.0",
+      "evidence": "基于主动学习与代理模型的随机模拟校准方法，可用于放射性药物分布药代动力学模型的校准",
+      "tldr": "针对随机仿真模型标定中仿真计算昂贵、训练统计代理模型的数据效率低的问题，现有主动学习难以同时处理探索新输入与重复采样现有输入的平衡。本文提出一种不确定性感知的主动学习框架，以学习仿真参数后验密度为核心目标，分别推导用于探索与复制的采集函数，并在每阶段基于不确定性减少量自动选择最优操作。在合成基准与真实流行病模型上的实验显示，该方法能显著提升参数后验分布的估计精度，同时降低所需仿真总数，为昂贵随机仿真校准提供了高效方案。",
+      "tags": "query:ad",
+      "abstract_en": "Simulation-based calibration aims to infer unknown parameters of complex simulation models by aligning model outputs with real-world observations. When simulation runs are computationally expensive, statistical emulators trained on simulation data are used to efficiently approximate the model. An intelligent, adaptive selection of simulation inputs for building the emulator can substantially improve the efficiency of the calibration process. This task is particularly challenging for stochastic simulations with noisy outputs, since both selecting new input locations (exploration) and allocating repeated runs at existing inputs (replication) are essential for efficiently learning the input-output relationship. In this paper, we introduce an active learning framework that adaptively balances exploration and replication for data-efficient calibration. Our uncertainty-aware acquisition criterion targets learning the posterior density of the unknown simulation parameters, and we derive two corresponding forms of the acquisition function for exploration and replication. Building on these, we propose a strategy that, at each stage of the sequential design, chooses between exploration and replication to most effectively reduce the uncertainty in the estimate of the posterior density of the simulation parameters. Experiments on synthetic benchmarks and a real epidemiological model demonstrate that our approach significantly improves learning of the posterior distribution of the simulation parameters while reducing the number of required simulations, making it well-suited for expensive stochastic simulation settings.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

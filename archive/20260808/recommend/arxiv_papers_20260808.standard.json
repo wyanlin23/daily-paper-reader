@@ -1,0 +1,52 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-08T20:45:00.276819+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.28874v1",
+      "source": "arxiv",
+      "title": "Active Learning for Data-Efficient Calibration of Stochastic Simulation Models",
+      "abstract": "Simulation-based calibration aims to infer unknown parameters of complex simulation models by aligning model outputs with real-world observations. When simulation runs are computationally expensive, statistical emulators trained on simulation data are used to efficiently approximate the model. An intelligent, adaptive selection of simulation inputs for building the emulator can substantially improve the efficiency of the calibration process. This task is particularly challenging for stochastic simulations with noisy outputs, since both selecting new input locations (exploration) and allocating repeated runs at existing inputs (replication) are essential for efficiently learning the input-output relationship. In this paper, we introduce an active learning framework that adaptively balances exploration and replication for data-efficient calibration. Our uncertainty-aware acquisition criterion targets learning the posterior density of the unknown simulation parameters, and we derive two corresponding forms of the acquisition function for exploration and replication. Building on these, we propose a strategy that, at each stage of the sequential design, chooses between exploration and replication to most effectively reduce the uncertainty in the estimate of the posterior density of the simulation parameters. Experiments on synthetic benchmarks and a real epidemiological model demonstrate that our approach significantly improves learning of the posterior distribution of the simulation parameters while reducing the number of required simulations, making it well-suited for expensive stochastic simulation settings.",
+      "authors": [
+        "Özge Sürer"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME"
+      ],
+      "published": "2026-07-30T22:36:46+00:00",
+      "link": "https://arxiv.org/pdf/2607.28874v1",
+      "tags": [
+        "keyword:ad",
+        "query:ad"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Active learning and emulator-based calibration for stochastic simulation models, applicable to calibrating pharmacokinetic models of radiopharmaceutical distribution",
+      "llm_evidence_cn": "基于主动学习与代理模型的随机模拟校准方法，可用于放射性药物分布药代动力学模型的校准",
+      "llm_evidence": "基于主动学习与代理模型的随机模拟校准方法，可用于放射性药物分布药代动力学模型的校准",
+      "canonical_evidence": "基于主动学习与代理模型的随机模拟校准方法，可用于放射性药物分布药代动力学模型的校准",
+      "llm_tldr_en": "Proposes active learning for adaptive selection and replication of simulation runs to calibrate expensive stochastic models, improving data efficiency. It can be applied to kinetic model calibration in radiopharmaceutical dosimetry.",
+      "llm_tldr_cn": "针对随机模拟模型校准中仿真运行昂贵且输出含噪的问题，该文提出主动学习策略，在构建代理模型时自适应选择新的输入位置并分配重复运行次数，兼顾探索与复制。这使得校准随机仿真模型所需的模拟次数显著降低。由于药代动力学模型常需依据临床测量数据校准放射性药物在人体器官中的分布，该方法可直接用于这类剂量学模拟的模型校准，提高数据效率与校准精度。",
+      "llm_tldr": "针对随机模拟模型校准中仿真运行昂贵且输出含噪的问题，该文提出主动学习策略，在构建代理模型时自适应选择新的输入位置并分配重复运行次数，兼顾探索与复制。这使得校准随机仿真模型所需的模拟次数显著降低。由于药代动力学模型常需依据临床测量数据校准放射性药物在人体器官中的分布，该方法可直接用于这类剂量学模拟的模型校准，提高数据效率与校准精度。",
+      "llm_tags": [
+        "query:ad"
+      ],
+      "matched_query_tag": "query:ad",
+      "matched_query_text": "pharmacokinetic modeling for alpha radiopharmaceutical distribution in human organs",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

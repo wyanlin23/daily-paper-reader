@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-08 <!--dpr-date:20260808-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/08/2607.28874v1-active-learning-for-data-efficient-calibration-of-stochastic-simulation-models" data-sidebar-item="{&quot;title&quot;: &quot;Active Learning for Data-Efficient Calibration of Stochastic Simulation Models&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.28874v1-active-learning-for-data-efficient-calibration-of-stochastic-simulation-models&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;基于主动学习与代理模型的随机模拟校准方法，可用于放射性药物分布药代动力学模型的校准&quot;}">Active Learning for Data-Efficient Calibration of Stochastic Simulation Models</a>
   * 2026-08-05 <!--dpr-date:20260805-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/05/2608.03208v1-spectacular---a-modular-daq-system-for-microdosimetry" data-sidebar-item="{&quot;title&quot;: &quot;Spectacular - A Modular DAQ System for Microdosimetry&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.03208v1-spectacular---a-modular-daq-system-for-microdosimetry&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;ad&quot;}], &quot;evidence&quot;: &quot;微剂量学、粒子治疗中微米尺度的能量沉积测量&quot;}">Spectacular - A Modular DAQ System for Microdosimetry</a>
